@@ -1,6 +1,9 @@
+import 'package:animation_aba/language/l10n.dart';
 import 'package:animation_aba/utils/local_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'modules/slash/screens/slash_screen.dart';
 
@@ -22,7 +25,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
       home: const SlashScreen(),
+      supportedLocales: L10n.all,
     );
   }
 }

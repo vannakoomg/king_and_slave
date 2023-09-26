@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
-import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,10 +36,10 @@ class HomeScreen extends StatelessWidget {
                                 onTap: () {
                                   controller.sword01.value = false;
                                   controller.sword02.value = false;
-                                  Get.to(() => const RoomScreen(),
-                                      arguments: 0);
-                                  // Get.to(() => const GameScreen(),
-                                  //     arguments: 0);
+                                  Get.to(
+                                    () => const RoomScreen(),
+                                    arguments: 0,
+                                  );
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -51,8 +50,10 @@ class HomeScreen extends StatelessWidget {
                                   onTap: () {
                                     controller.sword01.value = false;
                                     controller.sword02.value = false;
-                                    Get.to(() => const GameScreen(),
-                                        arguments: 1);
+                                    Get.to(
+                                      () => const RoomScreen(),
+                                      arguments: 1,
+                                    );
                                   },
                                   child: Container(
                                     color: Colors.transparent,

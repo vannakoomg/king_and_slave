@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "71139392601",
+    "project_id": "king-slave",
+    "storage_bucket": "king-slave.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71139392601:android:97a5c81d217cf5d1ac0548",
+        "android_client_info": {
+          "package_name": "com.king.and.slave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1uVX5rgcbJ36irPgD5txpOVUMoDsL-_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

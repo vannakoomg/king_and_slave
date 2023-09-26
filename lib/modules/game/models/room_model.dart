@@ -1,24 +1,81 @@
 class RoomModel {
-  String? roomName;
+  String? id;
+  String? name;
   String? password;
-  String? roomId;
-  String? userId;
+  int? type;
+  King? king;
+  King? slave;
 
-  RoomModel({this.roomName, this.password, this.roomId, this.userId});
+  RoomModel(
+      {this.id, this.name, this.password, this.type, this.king, this.slave});
 
   RoomModel.fromJson(Map<String, dynamic> json) {
-    roomName = json['room_name'];
+    id = json['id'];
+    name = json['name'];
     password = json['password'];
-    roomId = json['room_id'];
-    userId = json['user_id'];
+    type = json['type'];
+    king = json['king'] != null ? King.fromJson(json['king']) : null;
+    slave = json['slave'] != null ? King.fromJson(json['slave']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['room_name'] = roomName;
+    data['id'] = id;
+    data['name'] = name;
     data['password'] = password;
-    data['room_id'] = roomId;
-    data['user_id'] = userId;
+    data['type'] = type;
+    if (king != null) {
+      data['king'] = king!.toJson();
+    }
+    if (slave != null) {
+      data['slave'] = slave!.toJson();
+    }
+    return data;
+  }
+}
+
+class King {
+  Cardmodel? card;
+  int? index;
+  int? length;
+  bool? turn;
+
+  King({this.card, this.index, this.length, this.turn});
+
+  King.fromJson(Map<String, dynamic> json) {
+    card = json['card'] != null ? Cardmodel.fromJson(json['card']) : null;
+    index = json['index'];
+    length = json['length'];
+    turn = json['turn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (card != null) {
+      data['card'] = card!.toJson();
+    }
+    data['index'] = index;
+    data['length'] = length;
+    data['turn'] = turn;
+    return data;
+  }
+}
+
+class Cardmodel {
+  String? image;
+  String? name;
+
+  Cardmodel({this.image, this.name});
+
+  Cardmodel.fromJson(Map<String, dynamic> json) {
+    image = json['image'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['image'] = image;
+    data['name'] = name;
     return data;
   }
 }

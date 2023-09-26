@@ -1,4 +1,4 @@
-package com.example.animation_aba
+package com.king.and.slave
 
 import io.flutter.embedding.android.FlutterActivity
 

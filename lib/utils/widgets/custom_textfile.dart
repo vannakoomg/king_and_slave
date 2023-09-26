@@ -8,7 +8,7 @@ class CustomTextfile extends StatelessWidget {
   const CustomTextfile({
     super.key,
     required this.controller,
-    required this.onchanged,
+    this.onchanged,
     this.textInputType = TextInputType.text,
     required this.hintText,
   });
@@ -22,7 +22,7 @@ class CustomTextfile extends StatelessWidget {
         keyboardType: textInputType,
         controller: controller,
         onChanged: (value) {
-          onchanged!(value);
+          onchanged == null ? () {} : onchanged!(value);
         },
         decoration: InputDecoration(
           border: InputBorder.none,

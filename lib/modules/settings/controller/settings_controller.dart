@@ -1,4 +1,4 @@
-import 'package:animation_aba/utils/controller/image.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:get/get.dart';
 
 class SettingController extends GetxController {

@@ -1,16 +1,20 @@
 import 'dart:math';
 
-import 'package:animation_aba/utils/controller/image.dart';
+import 'package:animation_aba/modules/game/models/room_model.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/game_model.dart';
 
 class Controller extends GetxController {
-  final listYourCard = <GameCard>[].obs;
-  final listEnemyCard = <GameCard>[].obs;
-  final yourCard = GameCard().obs;
-  final enemyCard = GameCard().obs;
+  final type = 0.obs;
+  final roomId = "".obs;
+  final listYourCard = <Cardmodel>[].obs;
+  final listEnemyCard = <Cardmodel>[].obs;
+  final yourCard = Cardmodel().obs;
+  final enemyCard = Cardmodel().obs;
   final positionYourCard = <Postion>[].obs;
   final positionEnemyCard = <Postion>[].obs;
   final oldPostion = Postion(x: 0, y: 0).obs;
@@ -28,7 +32,8 @@ class Controller extends GetxController {
   final startGame = false.obs;
   final rotate = 0.0.obs;
   final sword = false.obs;
-
+  final showLoading = false.obs;
+  final letStart = false.obs;
   void setDefault(double w, double h, int type) {
     screenWight.value = w;
     screenHigh.value = h;
@@ -49,14 +54,14 @@ class Controller extends GetxController {
       positionEnemyCard.add(Postion(x: i * 0.2 * w, y: 10));
       int j = Random().nextInt(you.length);
       int k = Random().nextInt(enemy.length);
-      listYourCard.add(GameCard(
+      listYourCard.add(Cardmodel(
           image: you[j] == "king"
               ? Singleton.instance.king.value
               : you[j] == "slave"
                   ? Singleton.instance.slave.value
                   : Singleton.instance.soldier.value,
           name: you[j]));
-      listEnemyCard.add(GameCard(
+      listEnemyCard.add(Cardmodel(
           image: enemy[k] == "king"
               ? Singleton.instance.king.value
               : you[j] == "slave"
@@ -89,6 +94,7 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragEnd(int index) {
+    debugPrint("value $type");
     if (!isPlaying.value) {
       if (positionYourCard[index].y! + 40 >
           screenHigh.value / 2 - highOfCard.value) {
@@ -106,10 +112,43 @@ class Controller extends GetxController {
                 y: 10));
           }
         });
+        final play =
+            FirebaseFirestore.instance.collection('room').doc(roomId.value);
+        if (type.value == 0) {
+          play.update({
+            "king": {
+              "card": {
+                "image": yourCard.value.image,
+                "name": yourCard.value.name
+              },
+              "index": index,
+              "length": listYourCard.length,
+              "turn": true
+            },
+            "slave.turn": false
+          });
+        } else {
+          play.update({
+            "slave": {
+              "card": {
+                "image": yourCard.value.image,
+                "name": yourCard.value.name
+              },
+              "index": index,
+              "length": listYourCard.length,
+              "turn": true
+            },
+            "king.turn": false
+          });
+        }
       } else {
-        istouchCard.value = false;
+        //  positionYourCard[index] =
         positionYourCard[index] = oldPostion.value;
+        istouchCard.value = false;
+        // Future.delayed(const Duration(milliseconds: 1000), () {
+        // });
       }
+      debugPrint("room id ${roomId.value}");
     }
   }
 
@@ -122,7 +161,8 @@ class Controller extends GetxController {
     }
   }
 
-  void enmey(int index, GameCard enmey) {
+  void enmey(int index, Cardmodel enmey) {
+    debugPrint("vannak ka k play");
     enemyCard.value = enmey;
     openEnemy.value = false;
     positionEnemyCard[index] = Postion(
@@ -150,7 +190,7 @@ class Controller extends GetxController {
     });
   }
 
-  void endGame() {
+  void endGame(String id) {
     rotate.value = 3.14;
     String result = "";
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -172,13 +212,27 @@ class Controller extends GetxController {
         debugPrint("your lose");
         result = "lose";
       }
-      Future.delayed(const Duration(milliseconds: 2000), () {
-        if (result != "drou") {
-          isPlaying.value = false;
-          showEnemy.value = false;
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (result == 'drou') {
+          Get.defaultDialog(
+            actions: [const Text("fdsfdfdf")],
+            custom: Container(
+              height: 400,
+              color: Colors.red,
+              width: 400,
+            ),
+            title: "sdfasjkf",
+          );
+        } else {
+          final play =
+              FirebaseFirestore.instance.collection('room').doc(roomId.value);
+          Get.back();
+          play.delete();
         }
+        isPlaying.value = false;
+        showEnemy.value = false;
         rotate.value = 0;
-        enemyCard.value = GameCard();
+        enemyCard.value = Cardmodel();
       });
     });
   }

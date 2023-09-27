@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../modules/game/screens/room_style.dart';
+
 class CustomTextfile extends StatelessWidget {
   final TextEditingController controller;
   final Function? onchanged;
@@ -15,18 +17,29 @@ class CustomTextfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      color: Colors.green,
-      child: TextFormField(
-        keyboardType: textInputType,
-        controller: controller,
-        onChanged: (value) {
-          onchanged == null ? () {} : onchanged!(value);
-        },
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: "$hintText",
+    return CustomPaint(
+      size: Size(MediaQuery.of(context).size.width, 40
+          // (MediaQuery.of(context).size.width *
+          //         0.125)
+          //     .toDouble(),
+          ),
+      painter: RoomStyle(),
+      child: Container(
+        padding: const EdgeInsets.only(left: 30, right: 10),
+        // height: 45,
+        child: TextFormField(
+          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+          keyboardType: textInputType,
+          controller: controller,
+          onChanged: (value) {
+            onchanged == null ? () {} : onchanged!(value);
+          },
+          decoration: InputDecoration(
+              isDense: false,
+              border: InputBorder.none,
+              hintText: "$hintText",
+              hintStyle: TextStyle(
+                  color: Colors.white.withOpacity(0.8), fontSize: 14)),
         ),
       ),
     );

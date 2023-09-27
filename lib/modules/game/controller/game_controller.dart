@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:animation_aba/modules/game/models/room_model.dart';
@@ -29,11 +30,14 @@ class Controller extends GetxController {
   final showEnemy = false.obs;
   final index = 0.obs;
   final openEnemy = false.obs;
-  final startGame = false.obs;
   final rotate = 0.0.obs;
   final sword = false.obs;
   final showLoading = false.obs;
   final letStart = false.obs;
+  final time = 120.obs;
+  final isStart = false.obs;
+  final isShowTime = false.obs;
+
   void setDefault(double w, double h, int type) {
     screenWight.value = w;
     screenHigh.value = h;
@@ -85,12 +89,35 @@ class Controller extends GetxController {
       if (neww.y! < 0) {
         neww.y = 0;
       }
-      if (neww.y! > screenHigh.value / 2 - highOfCard.value - 10) {
-        neww.y = screenHigh.value / 2 - highOfCard.value - 10;
+      if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
+        neww.y = screenHigh.value / 2 - highOfCard.value + 5;
       }
       newPostion.value = neww;
       positionYourCard[index] = neww;
     }
+  }
+
+  Timer? timer;
+
+  void onPlaying() {
+    timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) {
+      if (isStart.value && time.value > 0) {
+        time.value--;
+        // if (time.value == 110) {
+        //   final play =
+        //       FirebaseFirestore.instance.collection('room').doc(roomId.value);
+        //   if (type.value == 0) {
+        //     play.update({
+        //       "king.status": "lose",
+        //     });
+        //   } else {
+        //     play.update({
+        //       "slave.status": "lose",
+        //     });
+        //   }
+        // }
+      }
+    });
   }
 
   void onVerticalDragEnd(int index) {
@@ -98,6 +125,8 @@ class Controller extends GetxController {
     if (!isPlaying.value) {
       if (positionYourCard[index].y! + 40 >
           screenHigh.value / 2 - highOfCard.value) {
+        time.value = 120;
+        isStart.value = false;
         newPostion.value = positionYourCard[index];
         isPlaying.value = true;
         positionYourCard.removeAt(index);
@@ -123,7 +152,8 @@ class Controller extends GetxController {
               },
               "index": index,
               "length": listYourCard.length,
-              "turn": true
+              "turn": true,
+              "status": ""
             },
             "slave.turn": false
           });
@@ -136,7 +166,8 @@ class Controller extends GetxController {
               },
               "index": index,
               "length": listYourCard.length,
-              "turn": true
+              "turn": true,
+              "status": ""
             },
             "king.turn": false
           });
@@ -162,12 +193,11 @@ class Controller extends GetxController {
   }
 
   void enmey(int index, Cardmodel enmey) {
-    debugPrint("vannak ka k play");
     enemyCard.value = enmey;
     openEnemy.value = false;
     positionEnemyCard[index] = Postion(
         x: screenWight / 2 - screenWight / 5 / 2,
-        y: screenHigh / 2 - highOfCard.value - 10);
+        y: screenHigh / 2 - highOfCard.value - 15);
     Future.delayed(const Duration(milliseconds: 500), () {
       showEnemy.value = true;
       newPostionEnmey.value = positionEnemyCard[index];
@@ -213,27 +243,46 @@ class Controller extends GetxController {
         result = "lose";
       }
       Future.delayed(const Duration(milliseconds: 1000), () {
-        if (result == 'drou') {
-          Get.defaultDialog(
-            actions: [const Text("fdsfdfdf")],
-            custom: Container(
-              height: 400,
-              color: Colors.red,
-              width: 400,
-            ),
-            title: "sdfasjkf",
-          );
-        } else {
-          final play =
-              FirebaseFirestore.instance.collection('room').doc(roomId.value);
-          Get.back();
-          play.delete();
-        }
+        // isStart.value = true;
+        // if (result == 'drou') {
+        //   Get.defaultDialog(
+        //       titlePadding: const EdgeInsets.all(0),
+        //       contentPadding: const EdgeInsets.all(0),
+        //       title: '',
+        //       middleText: "We Are Drou");
+        // } else {
+        //   if (result == "lose") {
+        //     Get.defaultDialog(
+        //         titlePadding: const EdgeInsets.all(0),
+        //         contentPadding: const EdgeInsets.all(0),
+        //         title: '',
+        //         middleText: "Your Lose");
+        //   } else {
+        //     Get.defaultDialog(
+        //         titlePadding: const EdgeInsets.all(0),
+        //         contentPadding: const EdgeInsets.all(0),
+        //         title: '',
+        //         middleText: "Your Win");
+        //   }
+        //   final play =
+        //       FirebaseFirestore.instance.collection('room').doc(roomId.value);
+
+        //   // Get.back();
+        //   // play.delete();
+        // }
         isPlaying.value = false;
         showEnemy.value = false;
         rotate.value = 0;
         enemyCard.value = Cardmodel();
       });
     });
+  }
+
+  void ontapSword() {
+    sword.value = false;
+    Get.back();
+    final play =
+        FirebaseFirestore.instance.collection('room').doc(roomId.value);
+    play.delete();
   }
 }

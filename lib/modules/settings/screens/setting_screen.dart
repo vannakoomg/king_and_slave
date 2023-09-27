@@ -52,6 +52,11 @@ class _SettingScreenState extends State<SettingScreen> {
               children: [
                 Expanded(
                   child: Container(
+                    // decoration: const BoxDecoration(
+                    //   //   image: DecorationImage(
+                    //   // image: AssetImage("assets/background/setting.png"),
+                    //   // fit: BoxFit.fitHeight,
+                    // )),
                     padding: const EdgeInsets.only(left: 10, right: 5),
                     width: double.infinity,
                     child: SingleChildScrollView(

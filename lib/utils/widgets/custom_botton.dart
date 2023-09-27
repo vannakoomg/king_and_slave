@@ -14,22 +14,30 @@ class CustomBotton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        ontap();
-      },
-      child: SizedBox(
-          height: 50,
-          child: Row(
-            children: [
-              const Spacer(),
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  color: Colors.pink,
-                  child: Text(title)),
-              const Spacer(),
+        onTap: () {
+          ontap();
+        },
+        child: Container(
+          height: 40,
+          width: 100,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 229, 64, 64).withOpacity(0.5),
+                spreadRadius: 20,
+                blurRadius: 40,
+                offset: const Offset(0, 2), // changes position of shadow
+              ),
             ],
+          ),
+          child: Center(
+              child: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
           )),
-    );
+        ));
   }
 }

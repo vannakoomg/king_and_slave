@@ -11,7 +11,9 @@ class RoomController extends GetxController {
   final roomNameTextEditController = TextEditingController().obs;
   final passwordTextEditController = TextEditingController().obs;
   final enterPasswordTextEditController = TextEditingController().obs;
-
+  final roomId = ''.obs;
+  final roomPassword = ''.obs;
+  final isWorngPassword = false.obs;
   void createRoom() {
     isCreateRoom.value = true;
   }
@@ -27,12 +29,14 @@ class RoomController extends GetxController {
           card: Cardmodel(image: "", name: ""),
           index: -1,
           length: -1,
-          turn: false),
+          turn: false,
+          status: ''),
       slave: King(
           card: Cardmodel(image: "", name: ""),
           index: -2,
           length: -1,
-          turn: false),
+          turn: false,
+          status: ''),
     );
     final json = room.toJson();
     await docuser.set(json);
@@ -43,6 +47,19 @@ class RoomController extends GetxController {
   }
 
   void join() {
-    // debugPrint("$enterPassword ");
+    debugPrint(
+        "${roomPassword.value}, ${enterPasswordTextEditController.value.text}");
+    if (roomPassword.value == enterPasswordTextEditController.value.text) {
+      debugPrint("nice brother");
+      final play =
+          FirebaseFirestore.instance.collection('room').doc(roomId.value);
+      play.update({"slave.index": -1}).then((value) => {
+            Get.to(
+              () => GameScreen(id: roomId.value, you: type.value),
+            )
+          });
+    } else {
+      isWorngPassword.value = true;
+    }
   }
 }

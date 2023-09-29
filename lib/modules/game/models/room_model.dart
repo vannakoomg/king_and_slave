@@ -5,13 +5,20 @@ class RoomModel {
   int? type;
   King? king;
   King? slave;
-
+  String? createDate;
   RoomModel(
-      {this.id, this.name, this.password, this.type, this.king, this.slave});
+      {this.id,
+      this.name,
+      this.password,
+      this.type,
+      this.king,
+      this.slave,
+      this.createDate});
 
   RoomModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    createDate = json['createDate'];
     password = json['password'];
     type = json['type'];
     king = json['king'] != null ? King.fromJson(json['king']) : null;
@@ -21,6 +28,7 @@ class RoomModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['createDate'] = createDate;
     data['name'] = name;
     data['password'] = password;
     data['type'] = type;

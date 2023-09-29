@@ -37,8 +37,11 @@ class Controller extends GetxController {
   final time = 120.obs;
   final isStart = false.obs;
   final isShowTime = false.obs;
-
+  final gamePlay = false.obs;
+  final yourWin = false.obs;
+  final status = "".obs;
   void setDefault(double w, double h, int type) {
+    gamePlay.value = false;
     screenWight.value = w;
     screenHigh.value = h;
     List you = type == 0
@@ -100,24 +103,86 @@ class Controller extends GetxController {
   Timer? timer;
 
   void onPlaying() {
-    timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) {
-      if (isStart.value && time.value > 0) {
-        time.value--;
-        // if (time.value == 110) {
-        //   final play =
-        //       FirebaseFirestore.instance.collection('room').doc(roomId.value);
-        //   if (type.value == 0) {
-        //     play.update({
-        //       "king.status": "lose",
-        //     });
-        //   } else {
-        //     play.update({
-        //       "slave.status": "lose",
-        //     });
-        //   }
-        // }
+    if (status.value == "") {
+      timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) {
+        if (isStart.value && time.value > 0) {
+          time.value--;
+          if (time.value == 0) {
+            final play =
+                FirebaseFirestore.instance.collection('room').doc(roomId.value);
+            if (type.value == 0) {
+              play.update({
+                "king.status": "lose",
+              });
+            } else {
+              play.update({
+                "slave.status": "lose",
+              });
+            }
+            status.value = "you_surrender";
+          }
+        }
+      });
+    }
+  }
+
+  void listionGamePaly(RoomModel roomModel) {
+    if (roomModel.slave!.index == -2) {
+      showLoading.value = true;
+    } else {
+      showLoading.value = false;
+    }
+    if (roomModel.slave!.index == -1 &&
+        roomModel.king!.index == -1 &&
+        roomModel.king!.status == '' &&
+        roomModel.slave!.status == '') {
+      letStart.value = true;
+      Future.delayed(const Duration(milliseconds: 5500), () {
+        letStart.value = false;
+        isStart.value = true;
+        isShowTime.value = true;
+        gamePlay.value = true;
+      });
+    }
+    if (roomModel.king!.status != '' || roomModel.slave!.status != '') {
+      if (roomModel.slave!.status == "lose" &&
+          roomModel.king!.status == "lose") {
+        isStart.value = false;
+        sword.value = false;
+        status.value = "you_surrender";
+      } else {
+        if ((type.value == 0 && roomModel.slave!.status == "lose")) {
+          status.value = 'enemy_surrender';
+          isStart.value = false;
+          sword.value = false;
+        }
+        if (type.value == 1 && roomModel.king!.status == "lose") {
+          status.value = 'enemy_surrender';
+          isStart.value = false;
+          sword.value = false;
+        }
       }
-    });
+    } else {
+      if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
+        if (roomModel.slave!.length == roomModel.king!.length) {
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            endGame(roomModel.id!);
+          });
+        }
+        if (type.value == 0) {
+          if (roomModel.slave!.turn == true) {
+            enmey(
+              roomModel.slave!.index!,
+              roomModel.slave!.card!,
+            );
+          }
+        } else {
+          if (roomModel.king!.turn == true) {
+            enmey(roomModel.king!.index!, roomModel.king!.card!);
+          }
+        }
+      }
+    }
   }
 
   void onVerticalDragEnd(int index) {
@@ -184,6 +249,7 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragStart(int i) {
+    sword.value = false;
     if (!isPlaying.value) {
       isPlaying.value = false;
       oldPostion.value = positionYourCard[i];
@@ -222,67 +288,52 @@ class Controller extends GetxController {
 
   void endGame(String id) {
     rotate.value = 3.14;
-    String result = "";
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (yourCard.value.name == "king" && enemyCard.value.name != "slave") {
-        result = "win";
-        debugPrint("you win");
-      } else if (yourCard.value.name == "slave" &&
-          enemyCard.value.name == "king") {
-        debugPrint("you win");
-        result = "win";
-      } else if (yourCard.value.name == "soldier" &&
-          enemyCard.value.name == "slave") {
-        result = "win";
-        debugPrint("you win");
+    isStart.value = false;
+    time.value = 120;
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      isStart.value = true;
+      if ((yourCard.value.name == "king" && enemyCard.value.name != "slave") ||
+          (yourCard.value.name == "slave" && enemyCard.value.name == "king") ||
+          (yourCard.value.name == "soldier" &&
+              enemyCard.value.name == "slave")) {
+        status.value = "win";
+        isStart.value = true;
       } else if (yourCard.value.name == enemyCard.value.name) {
-        debugPrint("you Drou");
-        result = "drou";
+        status.value = "drou";
+        isStart.value = false;
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          status.value = "";
+          isStart.value = true;
+        });
       } else {
-        debugPrint("your lose");
-        result = "lose";
+        isStart.value = true;
+        status.value = "lose";
       }
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        // isStart.value = true;
-        // if (result == 'drou') {
-        //   Get.defaultDialog(
-        //       titlePadding: const EdgeInsets.all(0),
-        //       contentPadding: const EdgeInsets.all(0),
-        //       title: '',
-        //       middleText: "We Are Drou");
-        // } else {
-        //   if (result == "lose") {
-        //     Get.defaultDialog(
-        //         titlePadding: const EdgeInsets.all(0),
-        //         contentPadding: const EdgeInsets.all(0),
-        //         title: '',
-        //         middleText: "Your Lose");
-        //   } else {
-        //     Get.defaultDialog(
-        //         titlePadding: const EdgeInsets.all(0),
-        //         contentPadding: const EdgeInsets.all(0),
-        //         title: '',
-        //         middleText: "Your Win");
-        //   }
-        //   final play =
-        //       FirebaseFirestore.instance.collection('room').doc(roomId.value);
-
-        //   // Get.back();
-        //   // play.delete();
-        // }
-        isPlaying.value = false;
-        showEnemy.value = false;
-        rotate.value = 0;
-        enemyCard.value = Cardmodel();
-      });
+      isPlaying.value = false;
+      showEnemy.value = false;
+      rotate.value = 0;
+      enemyCard.value = Cardmodel();
     });
   }
 
   void ontapSword() {
     sword.value = false;
-    Get.back();
     final play =
         FirebaseFirestore.instance.collection('room').doc(roomId.value);
-    play.delete();
+    if (gamePlay.value == false) {
+      Get.back();
+      play.delete();
+    } else {
+      if (type.value == 0) {
+        play.update({
+          "king.status": "lose",
+        });
+      } else {
+        play.update({
+          "slave.status": "lose",
+        });
+      }
+      Get.back();
+    }
   }
 }

@@ -25,7 +25,7 @@ class CustomTextfile extends StatelessWidget {
           ),
       painter: RoomStyle(),
       child: Container(
-        padding: const EdgeInsets.only(left: 30, right: 10),
+        padding: const EdgeInsets.only(left: 30, right: 30),
         // height: 45,
         child: TextFormField(
           style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),

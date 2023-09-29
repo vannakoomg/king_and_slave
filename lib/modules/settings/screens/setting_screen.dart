@@ -57,7 +57,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     //   // image: AssetImage("assets/background/setting.png"),
                     //   // fit: BoxFit.fitHeight,
                     // )),
-                    padding: const EdgeInsets.only(left: 10, right: 5),
+                    margin: const EdgeInsets.only(left: 0, right: 5),
                     width: double.infinity,
                     child: SingleChildScrollView(
                       child: Column(
@@ -68,24 +68,25 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.tapKing();
-                                },
-                                child: Container(
-                                  height: w / 7 + w / 7 / 2,
-                                  width: w / 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: controller.isTapKing.value
-                                        ? Border.all(
-                                            color: Colors.pink, width: 2)
-                                        : null,
-                                  ),
-                                  child: Image.asset(
-                                    Singleton.instance.king.value,
-                                    fit: BoxFit.fill,
-                                  ),
+                              const SizedBox(
+                                width: 40,
+                              ),
+                              Container(
+                                height: w / 7 + w / 7 / 2,
+                                width: w / 7,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.white.withOpacity(0.8),
+                                        blurRadius: 50,
+                                        spreadRadius: 1,
+                                        offset: const Offset(0, 3))
+                                  ],
+                                ),
+                                child: Image.asset(
+                                  Singleton.instance.king.value,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                               const Spacer(),
@@ -112,13 +113,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                           margin: const EdgeInsets.all(5),
                                           height: w / 7 + w / 7 / 2,
                                           width: w / 7,
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border: controller.isTapKing.value
-                                                  ? Border.all(
-                                                      color: Colors.pink,
-                                                      width: 0.5)
-                                                  : null),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.transparent,
+                                          ),
                                           child: Image.asset(
                                             e.value,
                                             fit: BoxFit.fill,
@@ -134,24 +131,25 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.tapSoldier();
-                                },
-                                child: Container(
-                                  height: w / 7 + w / 7 / 2,
-                                  width: w / 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: controller.isTapSoldier.value
-                                        ? Border.all(
-                                            color: Colors.pink, width: 0.5)
-                                        : null,
-                                  ),
-                                  child: Image.asset(
-                                    Singleton.instance.soldier.value,
-                                    fit: BoxFit.fill,
-                                  ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Container(
+                                height: w / 7 + w / 7 / 2,
+                                width: w / 7,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.white.withOpacity(0.8),
+                                        blurRadius: 50,
+                                        spreadRadius: 1,
+                                        offset: const Offset(0, 3))
+                                  ],
+                                  color: Colors.transparent,
+                                ),
+                                child: Image.asset(
+                                  Singleton.instance.soldier.value,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                               const Spacer(),
@@ -182,14 +180,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                           margin: const EdgeInsets.all(5),
                                           height: w / 7 + w / 7 / 2,
                                           width: w / 7,
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border:
-                                                  controller.isTapSoldier.value
-                                                      ? Border.all(
-                                                          color: Colors.pink,
-                                                          width: 0.5)
-                                                      : null),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.transparent,
+                                          ),
                                           child: Image.asset(
                                             e.value,
                                             fit: BoxFit.fill,
@@ -200,26 +193,30 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ).toList())),
                             ],
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.tapSalve();
-                                },
-                                child: Container(
-                                  height: w / 7 + w / 7 / 2,
-                                  width: w / 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: controller.isTapSalve.value
-                                        ? Border.all(
-                                            color: Colors.pink, width: 2)
-                                        : null,
-                                  ),
-                                  child: Image.asset(
-                                    Singleton.instance.slave.value,
-                                    fit: BoxFit.fill,
-                                  ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Container(
+                                height: w / 7 + w / 7 / 2,
+                                width: w / 7,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.white.withOpacity(0.8),
+                                        blurRadius: 50,
+                                        spreadRadius: 1,
+                                        offset: const Offset(0, 3))
+                                  ],
+                                ),
+                                child: Image.asset(
+                                  Singleton.instance.slave.value,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                               const Spacer(),
@@ -246,14 +243,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                           margin: const EdgeInsets.all(5),
                                           height: w / 7 + w / 7 / 2,
                                           width: w / 7,
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border:
-                                                  controller.isTapSalve.value
-                                                      ? Border.all(
-                                                          color: Colors.pink,
-                                                          width: 0.5)
-                                                      : null),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.transparent,
+                                          ),
                                           child: Image.asset(
                                             e.value,
                                             fit: BoxFit.fill,
@@ -264,26 +256,31 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ).toList())),
                             ],
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.tapKing();
-                                },
-                                child: Container(
-                                  height: w / 7 + w / 7 / 2,
-                                  width: w / 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: controller.isTapBack.value
-                                        ? Border.all(
-                                            color: Colors.pink, width: 2)
-                                        : null,
-                                  ),
-                                  child: Image.asset(
-                                    Singleton.instance.back.value,
-                                    fit: BoxFit.fill,
-                                  ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Container(
+                                height: w / 7 + w / 7 / 2,
+                                width: w / 7,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.white.withOpacity(0.9),
+                                        blurRadius: 50,
+                                        spreadRadius: 1,
+                                        offset: const Offset(0, 3))
+                                  ],
+                                ),
+                                child: Image.asset(
+                                  Singleton.instance.back.value,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                               const Spacer(),
@@ -310,76 +307,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                           margin: const EdgeInsets.all(5),
                                           height: w / 7 + w / 7 / 2,
                                           width: w / 7,
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border: controller.isTapBack.value
-                                                  ? Border.all(
-                                                      color: Colors.pink,
-                                                      width: 0.5)
-                                                  : null),
-                                          child: Image.asset(
-                                            e.value,
-                                            fit: BoxFit.fill,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.transparent,
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ).toList())),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.tapKing();
-                                },
-                                child: Container(
-                                  height: w / 7 + w / 7 / 2,
-                                  width: w / 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: controller.isTapKing.value
-                                        ? Border.all(
-                                            color: Colors.pink, width: 2)
-                                        : null,
-                                  ),
-                                  child: Image.asset(
-                                    Singleton.instance.king.value,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                  width: w / 7 * 2 + 20,
-                                  child: Wrap(
-                                      children:
-                                          controller.king.asMap().entries.map(
-                                    (e) {
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          final SharedPreferences obj =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          controller.king.removeAt(e.key);
-                                          controller.king.insert(e.key,
-                                              Singleton.instance.king.value);
-                                          Singleton.instance.king.value =
-                                              e.value;
-                                          obj.setString("soldier",
-                                              Singleton.instance.king.value);
-                                        },
-                                        child: Container(
-                                          margin: const EdgeInsets.all(5),
-                                          height: w / 7 + w / 7 / 2,
-                                          width: w / 7,
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              border: controller.isTapKing.value
-                                                  ? Border.all(
-                                                      color: Colors.pink,
-                                                      width: 0.5)
-                                                  : null),
                                           child: Image.asset(
                                             e.value,
                                             fit: BoxFit.fill,

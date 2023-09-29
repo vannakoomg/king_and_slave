@@ -7,6 +7,7 @@ import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RoomScreen extends StatefulWidget {
   const RoomScreen({super.key});
@@ -31,43 +32,25 @@ class _GameRoomScreenState extends State<RoomScreen> {
           () => SafeArea(
               child: Stack(
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                    // color: Colors.black.withOpacity(0.9),
-                    // image: DecorationImage(
-                    //     image: AssetImage("assets/background/game.png"),
-                    //     fit: BoxFit.fitHeight),
-                    ),
+              SizedBox(
                 height: height,
                 width: width,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
                     yourType == 0
                         ? Image.asset("assets/map/mongkot.png")
                         : Image.asset("assets/map/hat.png"),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        Text(
-                          yourType == 0 ? "K I N G" : "S L A V E",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
+                    Text(
+                      yourType == 0 ? "K I N G" : "S L A V E",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600),
                     ),
                     StreamBuilder<List<RoomModel>>(
                         stream: FirebaseFirestore.instance
                             .collection('room')
-                            .where("type", isEqualTo: yourType == 0 ? 1 : 0)
+                            .orderBy("createDate", descending: true)
                             .snapshots()
                             .map(
                               (snapshots) => snapshots.docs
@@ -85,69 +68,84 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               child: ListView.builder(
                                 itemCount: snapshots.data!.length,
                                 itemBuilder: (context, i) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      if (snapshots.data![i].password != '') {
-                                        controller.roomId.value =
-                                            snapshots.data![i].id!;
-                                        controller.roomPassword.value =
-                                            snapshots.data![i].password!;
-                                        controller.isenterPassword.value = true;
-                                      } else {
-                                        final play = FirebaseFirestore.instance
-                                            .collection('room')
-                                            .doc(snapshots.data![i].id!);
-                                        play.update({"slave.index": -1}).then(
-                                            (value) => {
-                                                  Get.to(
-                                                    () => GameScreen(
-                                                        id: snapshots
-                                                            .data![i].id!,
-                                                        you: yourType),
-                                                  )
-                                                });
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, right: 5, left: 5),
-                                      child: CustomPaint(
-                                        size: Size(
-                                            MediaQuery.of(context).size.width,
-                                            40
-                                            // (MediaQuery.of(context).size.width *
-                                            //         0.125)
-                                            //     .toDouble(),
-                                            ),
-                                        painter: RoomStyle(),
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 30, right: 30),
-                                          height: 45,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "${snapshots.data![i].name}",
-                                                style: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 16),
+                                  return snapshots.data![i].slave!.index == -2
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            if (snapshots.data![i].password !=
+                                                '') {
+                                              controller.roomId.value =
+                                                  snapshots.data![i].id!;
+                                              controller.roomPassword.value =
+                                                  snapshots.data![i].password!;
+                                              controller.isenterPassword.value =
+                                                  true;
+                                            } else {
+                                              final play = FirebaseFirestore
+                                                  .instance
+                                                  .collection('room')
+                                                  .doc(snapshots.data![i].id!);
+                                              play.update({
+                                                "slave.index": -1
+                                              }).then((value) => {
+                                                    Get.to(
+                                                      () => GameScreen(
+                                                          id: snapshots
+                                                              .data![i].id!,
+                                                          you: yourType),
+                                                    )
+                                                  });
+                                            }
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.only(
+                                                top: 10, right: 5, left: 5),
+                                            child: CustomPaint(
+                                              size: Size(
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  40
+                                                  // (MediaQuery.of(context).size.width *
+                                                  //         0.125)
+                                                  //     .toDouble(),
+                                                  ),
+                                              painter: RoomStyle(),
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 30, right: 30),
+                                                height: 45,
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "${snapshots.data![i].name}",
+                                                        style: TextStyle(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 16,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                      ),
+                                                    ),
+                                                    if (snapshots.data![i]
+                                                            .password !=
+                                                        '')
+                                                      Image.asset(
+                                                        "assets/shield/2.png",
+                                                        width: 30,
+                                                        height: 30,
+                                                      )
+                                                  ],
+                                                ),
                                               ),
-                                              const Spacer(),
-                                              if (snapshots.data![i].password !=
-                                                  '')
-                                                Image.asset(
-                                                  "assets/shield/2.png",
-                                                  width: 30,
-                                                  height: 30,
-                                                )
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+                                        )
+                                      : const SizedBox();
                                 },
                               ),
                             );
@@ -176,15 +174,12 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color.fromARGB(255, 229, 64, 64)
-                                  .withOpacity(0.5),
+                              color: Colors.pink.withOpacity(0.5),
                               spreadRadius: 15,
                               blurRadius: 40,
-                              offset: const Offset(
-                                  0, 2), // changes position of shadow
+                              offset: const Offset(0, 2),
                             ),
                           ],
-                          // border: Border.all(color: Colors.pink),
                         ),
                         child: const Center(
                           child: Text(
@@ -215,7 +210,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                       child: Center(
                         child: Container(
                           color: Colors.transparent,
-                          height: 280,
+                          height: 298,
                           padding: const EdgeInsets.all(20),
                           child: Column(
                             children: [
@@ -234,6 +229,13 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 controller:
                                     controller.roomNameTextEditController.value,
                                 hintText: 'Room Name',
+                                onchanged: (value) {
+                                  if (value == '') {
+                                    controller.isDisbleButtonOk.value = true;
+                                  } else {
+                                    controller.isDisbleButtonOk.value = false;
+                                  }
+                                },
                               ),
                               const SizedBox(
                                 height: 10,
@@ -247,17 +249,19 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              CustomBotton(
-                                title: "OK",
-                                ontap: () {
-                                  controller.submit(yourType);
-                                },
-                                isdisble: controller.roomNameTextEditController
-                                            .value.text ==
-                                        ''
-                                    ? true
-                                    : false,
-                              ),
+                              controller.isloadingCreateroom.value == false
+                                  ? CustomBotton(
+                                      title: "OK",
+                                      ontap: () {
+                                        controller.isDisbleButtonOk.value =
+                                            true;
+                                        controller.submit(yourType);
+                                      },
+                                      isdisble:
+                                          controller.isDisbleButtonOk.value,
+                                    )
+                                  : LoadingAnimationWidget.staggeredDotsWave(
+                                      color: Colors.pink, size: 28),
                             ],
                           ),
                         ),

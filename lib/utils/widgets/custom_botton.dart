@@ -15,9 +15,12 @@ class CustomBotton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          ontap();
+          if (isdisble == false) {
+            ontap();
+          }
         },
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           height: 40,
           width: 100,
           decoration: BoxDecoration(
@@ -25,10 +28,10 @@ class CustomBotton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color: const Color.fromARGB(255, 229, 64, 64).withOpacity(0.5),
-                spreadRadius: 20,
-                blurRadius: 40,
-                offset: const Offset(0, 2), // changes position of shadow
+                color: isdisble ? Colors.white : Colors.pink.withOpacity(0.5),
+                spreadRadius: isdisble ? 1 : 20,
+                blurRadius: isdisble ? 30 : 40,
+                offset: const Offset(0, 2),
               ),
             ],
           ),

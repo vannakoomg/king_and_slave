@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animation_aba/modules/game/controller/game_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/widgets/count_time.dart';
@@ -12,7 +8,6 @@ import 'package:animation_aba/utils/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../models/game_model.dart';
 
@@ -55,6 +50,7 @@ class _GameScreenState extends State<GameScreen> {
                 .map((json) => RoomModel.fromJson(json.data()!)),
             builder: (context, snapshots) {
               if (snapshots.hasData) {
+                // this funtion for lestion all update in the room game
                 controller.listionGamePaly(snapshots.data!);
                 return Obx(() => Stack(
                       children: [
@@ -118,15 +114,6 @@ class _GameScreenState extends State<GameScreen> {
                                             width: 0.2 * w,
                                             decoration: BoxDecoration(
                                                 color: Colors.transparent,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      blurRadius: 50,
-                                                      spreadRadius: 1,
-                                                      offset:
-                                                          const Offset(0, 3))
-                                                ],
                                                 image: DecorationImage(
                                                     image: AssetImage(
                                                   controller.openEnemy.value
@@ -134,7 +121,7 @@ class _GameScreenState extends State<GameScreen> {
                                                       : "${Singleton.instance.back}",
                                                 )),
                                                 borderRadius:
-                                                    BorderRadius.circular(15)),
+                                                    BorderRadius.circular(10)),
                                           ));
                                     },
                                   ),
@@ -179,7 +166,10 @@ class _GameScreenState extends State<GameScreen> {
                                           ),
                                           e.key);
                                     },
-                                    child: Container(
+                                    child: AnimatedContainer(
+                                      curve: Curves.ease,
+                                      duration:
+                                          const Duration(milliseconds: 250),
                                       padding: const EdgeInsets.only(
                                           right: 5, left: 5),
                                       height: 0.2 * w + 0.2 * w / 3,
@@ -188,8 +178,12 @@ class _GameScreenState extends State<GameScreen> {
                                       decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
-                                                color: Colors.white
-                                                    .withOpacity(0.8),
+                                                color:
+                                                    controller.status.value ==
+                                                            ''
+                                                        ? Colors.white
+                                                            .withOpacity(0.8)
+                                                        : Colors.transparent,
                                                 blurRadius: 50,
                                                 spreadRadius: 1,
                                                 offset: const Offset(0, 3))
@@ -218,7 +212,7 @@ class _GameScreenState extends State<GameScreen> {
                                       decoration: BoxDecoration(
                                           color: Colors.transparent,
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(10),
                                           image: DecorationImage(
                                               image: AssetImage(controller
                                                   .yourCard.value.image!),
@@ -249,7 +243,7 @@ class _GameScreenState extends State<GameScreen> {
                                             image: AssetImage(controller
                                                 .yourCard.value.image!)),
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                   ),

@@ -46,49 +46,4 @@ class SettingController extends GetxController {
     slave.remove(Singleton.instance.slave.value);
     soldier.remove(Singleton.instance.soldier.value);
   }
-
-  final isTapKing = false.obs;
-  final isTapSoldier = false.obs;
-  final isTapSalve = false.obs;
-  final isTapMap = false.obs;
-  final isTapBack = false.obs;
-  void tapKing() {
-    isTapKing.value = true;
-    isTapSalve.value = false;
-    isTapSoldier.value = false;
-    isTapBack.value = false;
-    isTapMap.value = false;
-  }
-
-  void tapSalve() {
-    isTapKing.value = false;
-    isTapSalve.value = true;
-    isTapSoldier.value = false;
-    isTapBack.value = false;
-    isTapMap.value = false;
-  }
-
-  void tapSoldier() {
-    isTapKing.value = false;
-    isTapSalve.value = false;
-    isTapSoldier.value = true;
-    isTapBack.value = false;
-    isTapMap.value = false;
-  }
-
-  void tapBack() {
-    isTapKing.value = false;
-    isTapSalve.value = false;
-    isTapSoldier.value = false;
-    isTapBack.value = true;
-    isTapMap.value = false;
-  }
-
-  void tapMap() {
-    isTapKing.value = false;
-    isTapSalve.value = false;
-    isTapSoldier.value = true;
-    isTapBack.value = false;
-    isTapMap.value = true;
-  }
 }

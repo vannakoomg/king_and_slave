@@ -14,13 +14,22 @@ class RoomController extends GetxController {
   final roomId = ''.obs;
   final roomPassword = ''.obs;
   final isWorngPassword = false.obs;
+  final isDisbleButtonOk = true.obs;
+  final isloadingCreateroom = false.obs;
   void createRoom() {
+    if (roomNameTextEditController.value.text == "") {
+      isDisbleButtonOk.value = true;
+    } else {
+      isDisbleButtonOk.value = false;
+    }
     isCreateRoom.value = true;
   }
 
   void submit(int type) async {
+    isloadingCreateroom.value = true;
     final docuser = FirebaseFirestore.instance.collection("room").doc();
     final room = RoomModel(
+      createDate: DateTime.now().toString(),
       type: type,
       id: docuser.id,
       name: roomNameTextEditController.value.text,
@@ -39,8 +48,10 @@ class RoomController extends GetxController {
           status: ''),
     );
     final json = room.toJson();
-    await docuser.set(json);
-    Get.to(() => GameScreen(id: docuser.id, you: type));
+    await docuser.set(json).then((value) => {
+          isloadingCreateroom.value = false,
+          Get.to(() => GameScreen(id: docuser.id, you: type))
+        });
     isCreateRoom.value = false;
     roomNameTextEditController.value = TextEditingController();
     passwordTextEditController.value = TextEditingController();

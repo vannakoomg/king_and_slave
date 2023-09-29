@@ -316,24 +316,32 @@ class Controller extends GetxController {
     });
   }
 
-  void ontapSword() {
-    sword.value = false;
-    final play =
-        FirebaseFirestore.instance.collection('room').doc(roomId.value);
-    if (gamePlay.value == false) {
-      Get.back();
-      play.delete();
-    } else {
-      if (type.value == 0) {
-        play.update({
-          "king.status": "lose",
-        });
+  void ontapSword02() {
+    if (isStart.value || showLoading.value) {
+      sword.value = false;
+      final play =
+          FirebaseFirestore.instance.collection('room').doc(roomId.value);
+      if (gamePlay.value == false) {
+        Get.back();
+        play.delete();
       } else {
-        play.update({
-          "slave.status": "lose",
-        });
+        if (type.value == 0) {
+          play.update({
+            "king.status": "lose",
+          });
+        } else {
+          play.update({
+            "slave.status": "lose",
+          });
+        }
+        Get.back();
       }
-      Get.back();
+    }
+  }
+
+  void ontapSword01() {
+    if (isStart.value || showLoading.value) {
+      sword.value = !sword.value;
     }
   }
 }

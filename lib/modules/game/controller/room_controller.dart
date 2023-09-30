@@ -1,5 +1,6 @@
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,14 +16,42 @@ class RoomController extends GetxController {
   final roomPassword = ''.obs;
   final isWorngPassword = false.obs;
   final isDisbleButtonOk = true.obs;
+  final isDisbleButtomJoin = true.obs;
   final isloadingCreateroom = false.obs;
   void createRoom() {
-    if (roomNameTextEditController.value.text == "") {
-      isDisbleButtonOk.value = true;
+    if (Singleton.instance.life.value <= 0) {
+      debugPrint("You have no life more");
     } else {
-      isDisbleButtonOk.value = false;
+      if (roomNameTextEditController.value.text == "") {
+        isDisbleButtonOk.value = true;
+      } else {
+        isDisbleButtonOk.value = false;
+      }
+      isCreateRoom.value = true;
     }
-    isCreateRoom.value = true;
+  }
+
+  void onTapRoom({required List<RoomModel> roomList, required int type}) {
+    if (Singleton.instance.life.value <= 0) {
+      debugPrint("you have no life ");
+    } else {
+      for (int i = 0; i < roomList.length; ++i) {
+        if (roomList[i].password != '') {
+          roomId.value = roomList[i].id!;
+          roomPassword.value = roomList[i].password!;
+          isenterPassword.value = true;
+        } else {
+          final play = FirebaseFirestore.instance
+              .collection('room')
+              .doc(roomList[i].id!);
+          play.update({"slave.index": -1}).then((value) => {
+                Get.to(
+                  () => GameScreen(id: roomList[i].id!, you: type),
+                )
+              });
+        }
+      }
+    }
   }
 
   void submit(int type) async {
@@ -58,8 +87,6 @@ class RoomController extends GetxController {
   }
 
   void join() {
-    debugPrint(
-        "${roomPassword.value}, ${enterPasswordTextEditController.value.text}");
     if (roomPassword.value == enterPasswordTextEditController.value.text) {
       debugPrint("nice brother");
       final play =

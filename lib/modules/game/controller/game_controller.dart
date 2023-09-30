@@ -6,6 +6,7 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/game_model.dart';
 
@@ -101,11 +102,19 @@ class Controller extends GetxController {
   }
 
   Timer? timer;
+  void removelife() async {
+    final SharedPreferences obj = await SharedPreferences.getInstance();
+    int life = obj.getInt('life')!;
+    obj.setInt('life', life - 1);
+    Singleton.instance.life.value = obj.getInt('life')!;
+    debugPrint("life in game = ${obj.getInt('life')}");
+  }
 
-  void onPlaying() {
+  void checkTime() {
     if (status.value == "") {
-      timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) {
-        if (isStart.value && time.value > 0) {
+      timer = Timer.periodic(const Duration(milliseconds: 1000),
+          (Timer timer) async {
+        if (isStart.value && time.value > 0 && status.value == "") {
           time.value--;
           if (time.value == 0) {
             final play =
@@ -127,58 +136,61 @@ class Controller extends GetxController {
   }
 
   void listionGamePaly(RoomModel roomModel) {
-    if (roomModel.slave!.index == -2) {
-      showLoading.value = true;
-    } else {
-      showLoading.value = false;
-    }
-    if (roomModel.slave!.index == -1 &&
-        roomModel.king!.index == -1 &&
-        roomModel.king!.status == '' &&
-        roomModel.slave!.status == '') {
-      letStart.value = true;
-      Future.delayed(const Duration(milliseconds: 5500), () {
-        letStart.value = false;
-        isStart.value = true;
-        isShowTime.value = true;
-        gamePlay.value = true;
-      });
-    }
-    if (roomModel.king!.status != '' || roomModel.slave!.status != '') {
-      if (roomModel.slave!.status == "lose" &&
-          roomModel.king!.status == "lose") {
-        isStart.value = false;
-        sword.value = false;
-        status.value = "you_surrender";
+    if (status.value == '') {
+      if (roomModel.slave!.index == -2) {
+        showLoading.value = true;
       } else {
-        if ((type.value == 0 && roomModel.slave!.status == "lose")) {
-          status.value = 'enemy_surrender';
-          isStart.value = false;
-          sword.value = false;
-        }
-        if (type.value == 1 && roomModel.king!.status == "lose") {
-          status.value = 'enemy_surrender';
-          isStart.value = false;
-          sword.value = false;
-        }
+        showLoading.value = false;
       }
-    } else {
-      if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
-        if (roomModel.slave!.length == roomModel.king!.length) {
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            endGame(roomModel.id!);
-          });
-        }
-        if (type.value == 0) {
-          if (roomModel.slave!.turn == true) {
-            enmey(
-              roomModel.slave!.index!,
-              roomModel.slave!.card!,
-            );
-          }
+      if (roomModel.slave!.index == -1 &&
+          roomModel.king!.index == -1 &&
+          roomModel.king!.status == '' &&
+          roomModel.slave!.status == '') {
+        letStart.value = true;
+        Future.delayed(const Duration(milliseconds: 5500), () {
+          letStart.value = false;
+          isStart.value = true;
+          isShowTime.value = true;
+          gamePlay.value = true;
+        });
+      }
+      if (roomModel.king!.status != '' || roomModel.slave!.status != '') {
+        if (roomModel.slave!.status == "lose" &&
+            roomModel.king!.status == "lose") {
+          isStart.value = false;
+          sword.value = false;
+          status.value = "you_surrender";
         } else {
-          if (roomModel.king!.turn == true) {
-            enmey(roomModel.king!.index!, roomModel.king!.card!);
+          if ((type.value == 0 && roomModel.slave!.status == "lose")) {
+            status.value = 'enemy_surrender';
+            isStart.value = false;
+            sword.value = false;
+          }
+          if (type.value == 1 && roomModel.king!.status == "lose") {
+            status.value = 'enemy_surrender';
+            isStart.value = false;
+            sword.value = false;
+          }
+        }
+        removelife();
+      } else {
+        if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
+          if (roomModel.slave!.length == roomModel.king!.length) {
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              endGame(roomModel.id!);
+            });
+          }
+          if (type.value == 0) {
+            if (roomModel.slave!.turn == true) {
+              enmey(
+                roomModel.slave!.index!,
+                roomModel.slave!.card!,
+              );
+            }
+          } else {
+            if (roomModel.king!.turn == true) {
+              enmey(roomModel.king!.index!, roomModel.king!.card!);
+            }
           }
         }
       }
@@ -298,8 +310,10 @@ class Controller extends GetxController {
               enemyCard.value.name == "slave")) {
         status.value = "win";
         isStart.value = true;
+        debugPrint("kakkkk ${status.value}");
+        removelife();
       } else if (yourCard.value.name == enemyCard.value.name) {
-        status.value = "drou";
+        status.value = "equal";
         isStart.value = false;
         Future.delayed(const Duration(milliseconds: 1000), () {
           status.value = "";
@@ -308,6 +322,9 @@ class Controller extends GetxController {
       } else {
         isStart.value = true;
         status.value = "lose";
+        debugPrint("kakkkk ${status.value}");
+
+        removelife();
       }
       isPlaying.value = false;
       showEnemy.value = false;

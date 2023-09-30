@@ -1,6 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
+import '../../../utils/controller/singleton.dart';
+
 class LetStart extends StatelessWidget {
   const LetStart({super.key});
 
@@ -15,25 +17,25 @@ class LetStart extends StatelessWidget {
           pause: const Duration(milliseconds: 10),
           totalRepeatCount: 1,
           animatedTexts: [
-            ScaleAnimatedText('3',
+            ScaleAnimatedText('${Singleton.instance.languages.value.number3}',
                 duration: const Duration(milliseconds: 1200),
                 textStyle: const TextStyle(
                     color: Colors.white,
                     fontSize: 50,
                     fontWeight: FontWeight.w500)),
-            ScaleAnimatedText('2',
+            ScaleAnimatedText('${Singleton.instance.languages.value.number2}',
                 duration: const Duration(milliseconds: 1200),
                 textStyle: const TextStyle(
                     color: Colors.white,
                     fontSize: 50,
                     fontWeight: FontWeight.w500)),
-            ScaleAnimatedText('1',
+            ScaleAnimatedText('${Singleton.instance.languages.value.number1}',
                 duration: const Duration(milliseconds: 1200),
                 textStyle: const TextStyle(
                     color: Colors.white,
                     fontSize: 50,
                     fontWeight: FontWeight.w500)),
-            ColorizeAnimatedText('GO',
+            ColorizeAnimatedText('${Singleton.instance.languages.value.letsGo}',
                 speed: const Duration(milliseconds: 1500),
                 textStyle:
                     const TextStyle(fontSize: 50, fontWeight: FontWeight.w500),

@@ -1,3 +1,4 @@
+import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -19,8 +20,8 @@ class Customloading extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            const Text(
-              "wait",
+            Text(
+              "${Singleton.instance.languages.value.wait}",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,

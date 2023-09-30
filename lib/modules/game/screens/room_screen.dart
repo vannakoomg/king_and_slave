@@ -2,6 +2,8 @@ import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:animation_aba/modules/game/screens/room_style.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
+import 'package:animation_aba/utils/models/landuage_model.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,7 +43,9 @@ class _GameRoomScreenState extends State<RoomScreen> {
                         ? Image.asset("assets/map/mongkot.png")
                         : Image.asset("assets/map/hat.png"),
                     Text(
-                      yourType == 0 ? "K I N G" : "S L A V E",
+                      yourType == 0
+                          ? "${Singleton.instance.languages.value.king}"
+                          : "${Singleton.instance.languages.value.slave}",
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25,
@@ -71,29 +75,37 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                   return snapshots.data![i].slave!.index == -2
                                       ? GestureDetector(
                                           onTap: () {
-                                            if (snapshots.data![i].password !=
-                                                '') {
-                                              controller.roomId.value =
-                                                  snapshots.data![i].id!;
-                                              controller.roomPassword.value =
-                                                  snapshots.data![i].password!;
-                                              controller.isenterPassword.value =
-                                                  true;
+                                            if (Singleton.instance.life.value >
+                                                0) {
+                                              if (snapshots.data![i].password !=
+                                                  '') {
+                                                controller.roomId.value =
+                                                    snapshots.data![i].id!;
+                                                controller.roomPassword.value =
+                                                    snapshots
+                                                        .data![i].password!;
+                                                controller.isenterPassword
+                                                    .value = true;
+                                              } else {
+                                                final play = FirebaseFirestore
+                                                    .instance
+                                                    .collection('room')
+                                                    .doc(
+                                                        snapshots.data![i].id!);
+                                                play.update({
+                                                  "slave.index": -1
+                                                }).then((value) => {
+                                                      Get.to(
+                                                        () => GameScreen(
+                                                            id: snapshots
+                                                                .data![i].id!,
+                                                            you: yourType),
+                                                      )
+                                                    });
+                                              }
                                             } else {
-                                              final play = FirebaseFirestore
-                                                  .instance
-                                                  .collection('room')
-                                                  .doc(snapshots.data![i].id!);
-                                              play.update({
-                                                "slave.index": -1
-                                              }).then((value) => {
-                                                    Get.to(
-                                                      () => GameScreen(
-                                                          id: snapshots
-                                                              .data![i].id!,
-                                                          you: yourType),
-                                                    )
-                                                  });
+                                              debugPrint(
+                                                  "You have no life more ");
                                             }
                                           },
                                           child: Container(
@@ -160,9 +172,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                         }),
                     GestureDetector(
                       onTap: () {
-                        debugPrint("kkkkk ${controller.isCreateRoom.value}");
                         controller.createRoom();
-                        controller.isCreateRoom.value = true;
                       },
                       child: Container(
                         margin: const EdgeInsets.only(
@@ -181,10 +191,10 @@ class _GameRoomScreenState extends State<RoomScreen> {
                             ),
                           ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "C R E A T E",
-                            style: TextStyle(
+                            "${Singleton.instance.languages.value.create}",
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
@@ -228,7 +238,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               CustomTextfile(
                                 controller:
                                     controller.roomNameTextEditController.value,
-                                hintText: 'Room Name',
+                                hintText:
+                                    '${Singleton.instance.languages.value.roomName}',
                                 onchanged: (value) {
                                   if (value == '') {
                                     controller.isDisbleButtonOk.value = true;
@@ -243,7 +254,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               CustomTextfile(
                                 controller:
                                     controller.passwordTextEditController.value,
-                                hintText: 'Password',
+                                hintText:
+                                    '${Singleton.instance.languages.value.password}',
                                 textInputType: TextInputType.number,
                               ),
                               const SizedBox(
@@ -251,7 +263,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               ),
                               controller.isloadingCreateroom.value == false
                                   ? CustomBotton(
-                                      title: "OK",
+                                      title:
+                                          "${Singleton.instance.languages.value.ok}",
                                       ontap: () {
                                         controller.isDisbleButtonOk.value =
                                             true;
@@ -303,37 +316,35 @@ class _GameRoomScreenState extends State<RoomScreen> {
                             CustomTextfile(
                               controller: controller
                                   .enterPasswordTextEditController.value,
-                              hintText: 'Enter Password',
+                              hintText:
+                                  '${Singleton.instance.languages.value.password}',
                               textInputType: TextInputType.number,
                               onchanged: (value) {
                                 controller.isWorngPassword.value = false;
+                                if (value == '') {
+                                  controller.isDisbleButtomJoin.value = true;
+                                } else {
+                                  controller.isDisbleButtomJoin.value = false;
+                                }
                               },
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "wrong password",
+                                "${Singleton.instance.languages.value.wrongPassword}",
                                 style: TextStyle(
                                     color: controller.isWorngPassword.value
                                         ? Colors.white
                                         : Colors.transparent),
                               ),
                             ),
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
                             CustomBotton(
-                              title: "JOIN",
+                              title:
+                                  "${Singleton.instance.languages.value.join}",
                               ontap: () {
                                 controller.join();
                               },
-                              isdisble: controller
-                                          .enterPasswordTextEditController
-                                          .value
-                                          .text ==
-                                      ''
-                                  ? true
-                                  : false,
+                              isdisble: controller.isDisbleButtomJoin.value,
                             ),
                           ],
                         ),

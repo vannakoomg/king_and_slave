@@ -37,9 +37,9 @@ class _SettingScreenState extends State<SettingScreen> {
               Get.back();
             },
           ),
-          title: const Text(
-            "ការកំណត់",
-            style: TextStyle(
+          title: Text(
+            "${Singleton.instance.languages.value.setting}",
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 24,

@@ -10,5 +10,6 @@ class Singleton extends GetxController {
   final king = ''.obs;
   final slave = ''.obs;
   final soldier = ''.obs;
-  final languages = LanguageModel().obs;
+  final languages = LanguagesModel().obs;
+  final life = 0.obs;
 }

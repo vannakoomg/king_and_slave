@@ -1,16 +1,9 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:ffi';
-
-import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/landuage_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SlashScreen extends StatefulWidget {
   const SlashScreen({super.key});
@@ -23,23 +16,26 @@ class _SlashScreenState extends State<SlashScreen> {
   final controller = Get.put(SlashScreenController());
   @override
   void initState() {
-    controller.getiamge();
-    FirebaseFirestore.instance
-        .collection("languages")
-        .doc("kh")
-        .get()
-        .then((value) {
-      Singleton.instance.languages.value =
-          LanguageModel.fromJson(value.data()!);
-      debugPrint("lane ${Singleton.instance.languages.value.password}");
-    });
+    controller.setLife();
+    controller.setupLanguages().then((value) => {
+          debugPrint("language : $value"),
+          FirebaseFirestore.instance
+              .collection("languages")
+              .doc(value)
+              .get()
+              .then((value) {
+            Singleton.instance.languages.value =
+                LanguagesModel.fromJson(value.data()!);
+            controller.getiamge();
+          })
+        });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // controller.time.value = DateTime.now().hour;
-    debugPrint(DateFormat('h:mm a').format(DateTime.now()));
+    controller.time.value = DateTime.now().hour;
     return Scaffold(
       body: Center(
         child: Container(

@@ -1,56 +1,104 @@
-class LanguageModel {
-  String? create;
-  String? introductionDetail;
-  String? join;
+class LanguagesModel {
+  String? enemySerrender;
   String? king;
-  String? law;
-  String? name;
+  String? letsGo;
+  String? next;
+  String? ok;
   String? password;
-  String? setting;
   String? slave;
-  String? soldier;
   String? surrender;
+  String? wait;
+  String? weEqual;
+  String? youLose;
+  String? youSurrender;
+  String? youWin;
+  String? number1;
+  String? number2;
+  String? number3;
+  String? join;
+  String? create;
+  String? roomName;
+  String? wrongPassword;
+  String? introduction;
+  String? introductionDetail;
+  String? setting;
 
-  LanguageModel(
-      {this.create,
-      this.introductionDetail,
-      this.join,
+  LanguagesModel(
+      {this.enemySerrender,
       this.king,
-      this.law,
-      this.name,
+      this.letsGo,
+      this.next,
+      this.ok,
       this.password,
-      this.setting,
       this.slave,
-      this.soldier,
-      this.surrender});
+      this.surrender,
+      this.wait,
+      this.weEqual,
+      this.youLose,
+      this.youSurrender,
+      this.youWin,
+      this.number1,
+      this.number2,
+      this.number3,
+      this.join,
+      this.create,
+      this.roomName,
+      this.wrongPassword,
+      this.introduction,
+      this.introductionDetail,
+      this.setting});
 
-  LanguageModel.fromJson(Map<String, dynamic> json) {
-    create = json['create'];
-    introductionDetail = json['introduction_detail'];
-    join = json['join'];
+  LanguagesModel.fromJson(Map<String, dynamic> json) {
+    enemySerrender = json['enemy_serrender'];
     king = json['king'];
-    law = json['law'];
-    name = json['name'];
+    letsGo = json['lets_go'];
+    next = json['next'];
+    ok = json['ok'];
     password = json['password'];
-    setting = json['setting'];
     slave = json['slave'];
-    soldier = json['soldier'];
     surrender = json['surrender'];
+    wait = json['wait'];
+    weEqual = json['we_equal'];
+    youLose = json['you_lose'];
+    youSurrender = json['you_surrender'];
+    youWin = json['you_win'];
+    number1 = json['number1'];
+    number2 = json['number2'];
+    number3 = json['number3'];
+    join = json['join'];
+    create = json['create'];
+    roomName = json['room_name'];
+    wrongPassword = json['wrong_password'];
+    introduction = json['introduction'];
+    introductionDetail = json['introduction_detail'];
+    setting = json['setting'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['create'] = create;
-    data['introduction_detail'] = introductionDetail;
-    data['join'] = join;
+    data['enemy_serrender'] = enemySerrender;
     data['king'] = king;
-    data['law'] = law;
-    data['name'] = name;
+    data['lets_go'] = letsGo;
+    data['next'] = next;
+    data['ok'] = ok;
     data['password'] = password;
-    data['setting'] = setting;
     data['slave'] = slave;
-    data['soldier'] = soldier;
     data['surrender'] = surrender;
+    data['wait'] = wait;
+    data['we_equal'] = weEqual;
+    data['you_lose'] = youLose;
+    data['you_surrender'] = youSurrender;
+    data['you_win'] = youWin;
+    data['number1'] = number1;
+    data['number2'] = number2;
+    data['number3'] = number3;
+    data['join'] = join;
+    data['create'] = create;
+    data['room_name'] = roomName;
+    data['wrong_password'] = wrongPassword;
+    data['introduction'] = introduction;
+    data['introduction_detail'] = introductionDetail;
+    data['setting'] = setting;
     return data;
   }
 }

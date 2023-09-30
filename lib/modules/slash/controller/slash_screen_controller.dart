@@ -1,7 +1,10 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SlashScreenController extends GetxController {
@@ -27,7 +30,46 @@ class SlashScreenController extends GetxController {
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
       Singleton.instance.slave.value = obj.getString('slave')!;
-      // Get.to(const HomeScreen());
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        Get.to(const HomeScreen());
+      });
+    }
+  }
+
+  Future<String> setupLanguages() async {
+    final SharedPreferences obj = await SharedPreferences.getInstance();
+    if (obj.getString('language') == null) {
+      await obj.setString('language', 'kh');
+      return "kh";
+    } else {
+      return obj.getString("language")!;
+    }
+  }
+
+  Future setLife() async {
+    debugPrint("life life ");
+    final SharedPreferences obj = await SharedPreferences.getInstance();
+    if (obj.getInt('life') == null) {
+      await obj.setInt('life', 5);
+      await obj.setString(
+          'date', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      Singleton.instance.life.value = 5;
+    } else {
+      debugPrint(
+          "life = ${obj.getString("date")} ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
+      if (obj.getString("date") ==
+          DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+        Singleton.instance.life.value = obj.getInt("life")!;
+        debugPrint("kakkkk ${Singleton.instance.life.value}");
+      } else {
+        Singleton.instance.life.value = 5;
+        await obj.setString(
+            'date', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        await obj.setInt('life', 5);
+
+        debugPrint(
+            "kakkkk ${Singleton.instance.life.value} ${obj.getInt('life')} ${obj.getString('date')}");
+      }
     }
   }
 

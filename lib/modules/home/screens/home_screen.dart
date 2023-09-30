@@ -1,115 +1,127 @@
+import 'dart:ffi';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/models/landuage_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint("time ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
     final controller = Get.put(HomeController());
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         body: Obx(() => Stack(
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                      // image: DecorationImage(
-                      //   image: AssetImage("assets/background/1.png"),
-                      //   fit: BoxFit.fitHeight,
-                      // ),
-                      ),
+                SizedBox(
                   height: double.infinity,
                   width: double.infinity,
                   child: Column(children: [
                     Expanded(
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: GestureDetector(
+                      child: Stack(children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                child: GestureDetector(
+                              onTap: () async {
+                                // final SharedPreferences obj =
+                                //     await SharedPreferences.getInstance();
+                                // obj.setString('language', "en").then((value) {
+                                //   FirebaseFirestore.instance
+                                //       .collection("languages")
+                                //       .doc("en")
+                                //       .get()
+                                //       .then((value) {
+                                //     Singleton.instance.languages.value =
+                                //         LanguagesModel.fromJson(value.data()!);
+                                //   });
+                                // });
+
+                                controller.sword01.value = false;
+                                controller.sword02.value = false;
+                                Get.to(() => const RoomScreen(), arguments: 0);
+                              },
+                              child: Container(
+                                color: Colors.black,
+                              ),
+                            )),
+                            Expanded(
+                              child: GestureDetector(
                                 onTap: () {
                                   controller.sword01.value = false;
                                   controller.sword02.value = false;
                                   Get.to(
                                     () => const RoomScreen(),
-                                    arguments: 0,
+                                    arguments: 1,
                                   );
                                 },
                                 child: Container(
+                                  color: Colors.pink,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        AnimatedPositioned(
+                          duration: const Duration(milliseconds: 2000),
+                          curve: Curves.easeOutCirc,
+                          left: controller.sword01.value ? -30 : -135,
+                          top: 160,
+                          child: Container(
+                            height: 50,
+                            width: 200,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/sword/1.png'),
+                                  fit: BoxFit.fitWidth),
+                            ),
+                            child: Row(children: [
+                              GestureDetector(
+                                onTap: () {
+                                  controller.sword01.value = false;
+                                  controller.sword02.value = false;
+                                  controller.introduction.value = true;
+                                },
+                                child: Container(
+                                  width: 125,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text(
+                                    "${Singleton.instance.languages.value.introduction}",
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  controller.sword11();
+                                },
+                                child: Container(
+                                  width: 75,
+                                  height: 50,
                                   color: Colors.transparent,
                                 ),
-                              )),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    controller.sword01.value = false;
-                                    controller.sword02.value = false;
-                                    Get.to(
-                                      () => const RoomScreen(),
-                                      arguments: 1,
-                                    );
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                  ),
-                                ),
                               )
-                            ],
+                            ]),
                           ),
-                          AnimatedPositioned(
-                            duration: const Duration(milliseconds: 2000),
-                            curve: Curves.easeOutCirc,
-                            left: controller.sword01.value ? -30 : -135,
-                            top: 160,
-                            child: Container(
-                              height: 50,
-                              width: 200,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('assets/sword/1.png'),
-                                    fit: BoxFit.fitWidth),
-                              ),
-                              child: Row(children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.sword01.value = false;
-                                    controller.sword02.value = false;
-                                    controller.introduction.value = true;
-                                  },
-                                  child: Container(
-                                    width: 125,
-                                    height: 50,
-                                    color: Colors.transparent,
-                                    child: const Center(
-                                        child: Text(
-                                      "khmer",
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.sword11();
-                                  },
-                                  child: Container(
-                                    width: 75,
-                                    height: 50,
-                                    color: Colors.transparent,
-                                  ),
-                                )
-                              ]),
-                            ),
-                          ),
-                          AnimatedPositioned(
+                        ),
+                        AnimatedPositioned(
                             duration: const Duration(milliseconds: 1000),
                             curve: Curves.easeOutCirc,
                             left: controller.sword02.value ? -30 : -135,
@@ -136,11 +148,6 @@ class HomeScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () async {
                                     controller.sword22();
-                                    // final player = AudioPlayer();
-                                    // Duration? playyy = await player
-                                    //     .setUrl("assets/audios/1.mp3");
-                                    // player
-                                    //     .play(); // Play without waiting for completion
                                   },
                                   child: Container(
                                     width: 75,
@@ -149,13 +156,41 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 )
                               ]),
-                            ),
-                          ),
-                        ],
-                      ),
+                            )),
+                      ]),
                     ),
                   ]),
                 ),
+                Positioned(
+                    top: MediaQuery.of(context).padding.top + 20,
+                    left: 10,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: Row(
+                        children: [
+                          for (int i = 0;
+                              i < Singleton.instance.life.value;
+                              ++i)
+                            const Icon(
+                              Icons.favorite_rounded,
+                              color: Colors.pink,
+                              size: 30,
+                            ),
+                          const Spacer(),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {},
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          )
+                        ],
+                      ),
+                    )),
                 if (controller.introduction.value)
                   GestureDetector(
                     onTap: () {
@@ -193,17 +228,8 @@ class HomeScreen extends StatelessWidget {
                                               pause: const Duration(
                                                   milliseconds: 1),
                                               animatedTexts: [
-                                                TyperAnimatedText('''
-យើងៗម្មាក់អាចជ្រើសរើសចង់ក្លាចជាស្ដេចរឺទារសដោយចិត្តអែង 
-អង្គទាសករ​​​ មាន ទាហាន ៤​នាក់ ទាសករ ១នាក់
-អង្គស្ដេច​​​​​​ មាន​​​​​​ ទាហាន ៤នាក់​ ស្ដេច ១នាក់
-សន្លឹកបៀរទាំងអស់ត្រូវបានតម្រៀបដោយចៃដន្យ
---- ការលេង ---
-១​​​​​​​ សន្លឹកបៀរស្ដេច​​ឈ្មះសន្លឹកបៀរ​​ទាហាន
-២ សន្លឹកបៀរទាហានឈ្នះសន្លឹកបៀរទាសករ
-៣ សន្លឹកបៀរទាសករឈ្នះសន្លឹកបៀរស្ដេច
-៤ សន្លឹកបៀរដូចគ្នាស្មើរគ្នា
-ក្នុងការចោរសន្លឹកបៀរក្មុងមួយសន្លឹកមានរយះពេល ២​នាទី​ បើមិនបានចោរស្មើនឹងចាញ់''',
+                                                TyperAnimatedText(
+                                                    '''${Singleton.instance.languages.value.introductionDetail}''',
                                                     textStyle: TextStyle(
                                                         color: Colors.white
                                                             .withOpacity(0.9),

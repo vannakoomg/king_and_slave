@@ -27,7 +27,7 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     controller.type.value = widget.you;
     controller.roomId.value = widget.id.toString();
-    controller.onPlaying();
+    controller.checkTime();
     super.initState();
   }
 
@@ -283,8 +283,8 @@ class _GameScreenState extends State<GameScreen> {
                                   child: Center(
                                       child: Text(
                                     controller.gamePlay.value
-                                        ? "Sarender"
-                                        : "Next",
+                                        ? "${Singleton.instance.languages.value.surrender}"
+                                        : "${Singleton.instance.languages.value.next}",
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,

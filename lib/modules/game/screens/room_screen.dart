@@ -3,7 +3,6 @@ import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:animation_aba/modules/game/screens/room_style.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:animation_aba/utils/models/landuage_model.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -184,9 +183,9 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.pink.withOpacity(0.5),
-                              spreadRadius: 15,
-                              blurRadius: 40,
+                              color: Colors.pink.withOpacity(0.3),
+                              spreadRadius: 10,
+                              blurRadius: 20,
                               offset: const Offset(0, 2),
                             ),
                           ],

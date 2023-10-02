@@ -19,9 +19,12 @@ class LanguagesModel {
   String? create;
   String? roomName;
   String? wrongPassword;
-  String? introduction;
-  String? introductionDetail;
   String? setting;
+  String? customize;
+  String? language;
+  String? sound;
+  String? law;
+  String? lawDetail;
 
   LanguagesModel(
       {this.enemySerrender,
@@ -44,9 +47,12 @@ class LanguagesModel {
       this.create,
       this.roomName,
       this.wrongPassword,
-      this.introduction,
-      this.introductionDetail,
-      this.setting});
+      this.setting,
+      this.customize,
+      this.language,
+      this.sound,
+      this.law,
+      this.lawDetail});
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
     enemySerrender = json['enemy_serrender'];
@@ -69,9 +75,12 @@ class LanguagesModel {
     create = json['create'];
     roomName = json['room_name'];
     wrongPassword = json['wrong_password'];
-    introduction = json['introduction'];
-    introductionDetail = json['introduction_detail'];
     setting = json['setting'];
+    customize = json['customize'];
+    language = json['language'];
+    sound = json['sound'];
+    law = json['law'];
+    lawDetail = json['law_detail'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,9 +105,12 @@ class LanguagesModel {
     data['create'] = create;
     data['room_name'] = roomName;
     data['wrong_password'] = wrongPassword;
-    data['introduction'] = introduction;
-    data['introduction_detail'] = introductionDetail;
     data['setting'] = setting;
+    data['customize'] = customize;
+    data['language'] = language;
+    data['sound'] = sound;
+    data['law'] = law;
+    data['law_detail'] = lawDetail;
     return data;
   }
 }

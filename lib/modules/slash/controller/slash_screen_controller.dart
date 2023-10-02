@@ -40,8 +40,11 @@ class SlashScreenController extends GetxController {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('language') == null) {
       await obj.setString('language', 'kh');
+      Singleton.instance.lang.value = obj.getString("language")!;
+
       return "kh";
     } else {
+      Singleton.instance.lang.value = obj.getString("language")!;
       return obj.getString("language")!;
     }
   }
@@ -70,6 +73,8 @@ class SlashScreenController extends GetxController {
         debugPrint(
             "kakkkk ${Singleton.instance.life.value} ${obj.getInt('life')} ${obj.getString('date')}");
       }
+      Singleton.instance.life.value = 5;
+      await obj.setInt('life', 5);
     }
   }
 

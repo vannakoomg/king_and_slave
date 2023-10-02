@@ -258,7 +258,7 @@ class _GameScreenState extends State<GameScreen> {
                         AnimatedPositioned(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease,
-                          left: controller.sword.value ? -40 : -155,
+                          left: controller.sword.value ? -40 : -125,
                           top: h / 2 - 30,
                           child: Container(
                             decoration: const BoxDecoration(
@@ -267,8 +267,8 @@ class _GameScreenState extends State<GameScreen> {
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
-                            height: 60,
-                            width: 240,
+                            height: 40,
+                            width: 180,
                             child: Row(children: [
                               GestureDetector(
                                 onTap: () {
@@ -277,7 +277,7 @@ class _GameScreenState extends State<GameScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.only(
                                       bottom: 5, left: 40),
-                                  width: 140,
+                                  width: 120,
                                   height: 60,
                                   color: Colors.transparent,
                                   child: Center(
@@ -297,7 +297,7 @@ class _GameScreenState extends State<GameScreen> {
                                   controller.ontapSword01();
                                 },
                                 child: Container(
-                                  width: 80,
+                                  width: 60,
                                   height: 50,
                                   color: Colors.transparent,
                                 ),

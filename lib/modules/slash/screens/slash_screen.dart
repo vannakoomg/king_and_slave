@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/landuage_model.dart';
@@ -14,6 +16,7 @@ class SlashScreen extends StatefulWidget {
 
 class _SlashScreenState extends State<SlashScreen> {
   final controller = Get.put(SlashScreenController());
+  String image = 'assets/background/${Random().nextInt(5) + 1}.png';
   @override
   void initState() {
     controller.setLife();
@@ -57,8 +60,8 @@ class _SlashScreenState extends State<SlashScreen> {
                           offset: Offset(controller.sadow(), 0))
                     ],
                     shape: BoxShape.circle,
-                    image: const DecorationImage(
-                      image: AssetImage("assets/background/1.png"),
+                    image: DecorationImage(
+                      image: AssetImage(image),
                     )),
               ),
             ],

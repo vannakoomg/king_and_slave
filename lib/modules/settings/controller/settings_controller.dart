@@ -46,4 +46,24 @@ class SettingController extends GetxController {
     slave.remove(Singleton.instance.slave.value);
     soldier.remove(Singleton.instance.soldier.value);
   }
+
+  final isLaw = false.obs;
+  final issetting = true.obs;
+  final isShowSetting = true.obs;
+  final isShowLaw = false.obs;
+  void ontapLaw() {
+    issetting.value = false;
+    isShowLaw.value = true;
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      isShowSetting.value = false;
+    });
+  }
+
+  void ontapBackLaw() {
+    isLaw.value = false;
+    isShowSetting.value = true;
+    Future.delayed(const Duration(milliseconds: 50), () {
+      issetting.value = true;
+    });
+  }
 }

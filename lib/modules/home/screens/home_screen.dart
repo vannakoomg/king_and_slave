@@ -1,17 +1,9 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
-import 'package:animation_aba/modules/game/screens/room_style.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
-import 'package:animation_aba/modules/home/screens/favorite.dart';
-import 'package:animation_aba/modules/settings/screens/customize_screen.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../utils/models/landuage_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -71,18 +63,16 @@ class HomeScreen extends StatelessWidget {
                           for (int i = 0;
                               i < Singleton.instance.life.value;
                               ++i)
-                            Container(
-                              margin: const EdgeInsets.only(right: 8),
-                              child: CustomPaint(
-                                size: Size(30, (30).toDouble()),
-                                painter: RPSCustomPainter(),
-                              ),
+                            const Icon(
+                              Icons.favorite,
+                              size: 30,
+                              color: Colors.pink,
                             ),
                           const Spacer(),
                           IconButton(
                             icon: const Icon(
                               Icons.settings,
-                              color: Colors.white,
+                              color: Colors.black,
                               size: 30,
                             ),
                             onPressed: () {

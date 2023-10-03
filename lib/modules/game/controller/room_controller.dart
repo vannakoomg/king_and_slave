@@ -18,9 +18,11 @@ class RoomController extends GetxController {
   final isDisbleButtonOk = true.obs;
   final isDisbleButtomJoin = true.obs;
   final isloadingCreateroom = false.obs;
+  final isNoMoreLife = false.obs;
   void createRoom() {
     if (Singleton.instance.life.value <= 0) {
       debugPrint("You have no life more");
+      isNoMoreLife.value = true;
     } else {
       if (roomNameTextEditController.value.text == "") {
         isDisbleButtonOk.value = true;

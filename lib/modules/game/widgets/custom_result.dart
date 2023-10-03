@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CustomResult extends StatefulWidget {
@@ -37,32 +40,56 @@ class _CustomResultState extends State<CustomResult> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color.fromARGB(255, 246, 208, 15)
-                          .withOpacity(0.5),
+                      color: widget.status == "lose" ||
+                              widget.status == "you_surrender"
+                          ? const Color.fromARGB(255, 229, 50, 26)
+                              .withOpacity(0.5)
+                          : widget.status == "enemy_surrender" ||
+                                  widget.status == "win"
+                              ? const Color.fromARGB(255, 216, 43, 101)
+                              : const Color.fromARGB(255, 220, 202, 202),
                       spreadRadius: 100,
-                      blurRadius: 60,
+                      blurRadius: 80,
                       offset: const Offset(0, 2), // changes position of shadow
                     ),
                   ],
                 ),
               ),
             ),
-            Center(
-                child: Text(
-              widget.status == "enemy_surrender"
-                  ? "${Singleton.instance.languages.value.enemySerrender}"
-                  : widget.status == "you_surrender"
-                      ? "${Singleton.instance.languages.value.youSurrender}"
-                      : widget.status == "win"
-                          ? "${Singleton.instance.languages.value.youWin}"
-                          : widget.status == "lose"
-                              ? "${Singleton.instance.languages.value.youLose}"
-                              : "${Singleton.instance.languages.value.weEqual}",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
-            )),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.status == "enemy_surrender"
+                        ? "${Singleton.instance.languages.value.enemySerrender}"
+                        : widget.status == "you_surrender"
+                            ? "${Singleton.instance.languages.value.youSurrender}"
+                            : widget.status == "win"
+                                ? "${Singleton.instance.languages.value.youWin}"
+                                : widget.status == "lose"
+                                    ? "${Singleton.instance.languages.value.youLose}"
+                                    : "${Singleton.instance.languages.value.weEqual}",
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24),
+                  ),
+                  SvgPicture.asset(
+                    widget.status == "lose" || widget.status == "you_surrender"
+                        ? "assets/lose/${Random().nextInt(4) + 1}.svg"
+                        : widget.status == "enemy_surrender" ||
+                                widget.status == "win"
+                            ? "assets/win/${Random().nextInt(4) + 1}.svg"
+                            : "assets/equal/${Random().nextInt(4) + 1}.svg",
+                    height: 130,
+                    width: 130,
+                  ),
+                ],
+              ),
+            ),
             Positioned(
               bottom: 0,
               child: Container(

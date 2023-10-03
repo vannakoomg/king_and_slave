@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
@@ -7,6 +9,7 @@ import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -26,7 +29,6 @@ class _GameRoomScreenState extends State<RoomScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     controller.type.value = yourType;
-    debugPrint("dfdsf ${controller.type.value}");
     return Scaffold(
         backgroundColor: Colors.black,
         body: Obx(
@@ -115,11 +117,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width,
-                                                  40
-                                                  // (MediaQuery.of(context).size.width *
-                                                  //         0.125)
-                                                  //     .toDouble(),
-                                                  ),
+                                                  40),
                                               painter: RoomStyle(),
                                               child: Container(
                                                 padding: const EdgeInsets.only(
@@ -350,6 +348,69 @@ class _GameRoomScreenState extends State<RoomScreen> {
                       ),
                     ),
                   ),
+                ),
+              if (controller.isNoMoreLife.value)
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  height: height,
+                  width: width,
+                  child: Center(
+                      child: Container(
+                    height: 300,
+                    width: width / (3 / 2),
+                    decoration: BoxDecoration(
+                        color: const Color(0xffffc4d6),
+                        borderRadius: BorderRadius.circular(70)),
+                    child: Column(children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "No More Life",
+                        style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.pink,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const Spacer(),
+                      SvgPicture.asset(
+                        "assets/noLife/${Random().nextInt(3) + 1}.svg",
+                        height: 120,
+                        width: 120,
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Next day you will get x5",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xffff5d8f),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const Spacer(),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.ondemand_video_rounded,
+                            color: Color(0xffff5d8f),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "x5",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xffff5d8f),
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ]),
+                  )),
                 )
             ],
           )),

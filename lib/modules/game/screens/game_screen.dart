@@ -276,7 +276,7 @@ class _GameScreenState extends State<GameScreen> {
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.only(
-                                      bottom: 5, left: 40),
+                                      bottom: 5, left: 40, top: 5),
                                   width: 120,
                                   height: 60,
                                   color: Colors.transparent,
@@ -286,7 +286,7 @@ class _GameScreenState extends State<GameScreen> {
                                         ? "${Singleton.instance.languages.value.surrender}"
                                         : "${Singleton.instance.languages.value.next}",
                                     style: const TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 11,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                   )),

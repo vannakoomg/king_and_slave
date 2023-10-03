@@ -38,13 +38,11 @@ class LetStart extends StatelessWidget {
             ColorizeAnimatedText('${Singleton.instance.languages.value.letsGo}',
                 speed: const Duration(milliseconds: 1500),
                 textStyle:
-                    const TextStyle(fontSize: 50, fontWeight: FontWeight.w500),
+                    const TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
                 colors: [
                   const Color(0xffff99ac),
                   const Color(0xffff85a1),
                   const Color(0xffff5c8a),
-                  const Color(0xffff0a54),
-                  const Color(0xff8093f1),
                 ]),
           ],
         ),

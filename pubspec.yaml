@@ -50,4 +50,8 @@ flutter:
     - assets/sword/
     - assets/shield/
     - assets/setting/
+    - assets/win/
+    - assets/lose/
+    - assets/noLife/
+    - assets/equal/
 

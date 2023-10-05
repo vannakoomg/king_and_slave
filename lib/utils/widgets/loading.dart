@@ -22,7 +22,7 @@ class Customloading extends StatelessWidget {
             ),
             Text(
               "${Singleton.instance.languages.value.wait}",
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.w400),

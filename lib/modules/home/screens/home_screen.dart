@@ -4,13 +4,51 @@ import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final controller = Get.put(HomeController());
+
+  @override
+  void initState() {
+    initBannerAd();
+    debugPrint("ddd'");
+    super.initState();
+  }
+
+  BannerAd? bannerad;
+  var adUnit = "ca-app-pub-3940256099942544/6300978111";
+
+  initBannerAd() {
+    setState(() {
+      bannerad = BannerAd(
+        size: AdSize.largeBanner,
+        adUnitId: adUnit,
+        listener: BannerAdListener(
+          onAdLoaded: (value) {
+            controller.isShowAdMob.value = false;
+            debugPrint("khmer sl khmer ");
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+            debugPrint(" error44444 $error");
+          },
+        ),
+        request: const AdRequest(),
+      );
+      bannerad!.load();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -88,6 +126,20 @@ class HomeScreen extends StatelessWidget {
                       ),
                     )),
                 if (controller.isSetting.value) const SettingScreen(),
+                // if (controller.isShowAdMob.value)
+                //   bannerad == null
+                //       ? Container(
+                //           height: 40,
+                //           width: 40,
+                //           color: Colors.red,
+                //         )
+                //       : Container(
+                //           color: Colors.red,
+                //           width: double.infinity,
+                //           child: AdWidget(
+                //             ad: bannerad!,
+                //           ),
+                //         )
               ],
             )),
       ),

@@ -6,6 +6,7 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/game_model.dart';
@@ -39,8 +40,8 @@ class Controller extends GetxController {
   final isStart = false.obs;
   final isShowTime = false.obs;
   final gamePlay = false.obs;
-  final yourWin = false.obs;
   final status = "".obs;
+  final isShowAdMob = false.obs;
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
     screenWight.value = w;
@@ -323,7 +324,6 @@ class Controller extends GetxController {
         isStart.value = true;
         status.value = "lose";
         debugPrint("kakkkk ${status.value}");
-
         removelife();
       }
       isPlaying.value = false;
@@ -351,7 +351,11 @@ class Controller extends GetxController {
             "slave.status": "lose",
           });
         }
-        Get.back();
+        interstitialAd!.show().then((value) {
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            Get.back();
+          });
+        });
       }
     }
   }
@@ -360,5 +364,28 @@ class Controller extends GetxController {
     if (isStart.value || showLoading.value) {
       sword.value = !sword.value;
     }
+  }
+
+  InterstitialAd? interstitialAd;
+
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              // _moveToHome();
+            },
+          );
+
+          interstitialAd = ad;
+        },
+        onAdFailedToLoad: (err) {
+          debugPrint('Failed to load an interstitial ad: ${err.message}');
+        },
+      ),
+    );
   }
 }

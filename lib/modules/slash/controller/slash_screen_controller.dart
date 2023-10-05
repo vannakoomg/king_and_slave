@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:math';
+
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +14,24 @@ class SlashScreenController extends GetxController {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('king') == null) {
       debugPrint("not yet login ");
-      await obj.setString('king', "assets/king/1.png");
-      await obj.setString('slave', "assets/slave/1.png");
-      await obj.setString('soldier', "assets/soldier/1.png");
-      await obj.setString('map', "assets/map/1.png");
+      await obj.setString('king', "assets/king/${Random().nextInt(3) + 1}.png");
+      await obj.setString(
+          'slave', "assets/slave/${Random().nextInt(3) + 1}.png");
+      await obj.setString(
+          'soldier', "assets/soldier/${Random().nextInt(3) + 1}.png");
       await obj.setString('back', "assets/back/1.png");
       Singleton.instance.back.value = obj.getString('back')!;
-      Singleton.instance.map.value = obj.getString('map')!;
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
-      debugPrint(Singleton.instance.soldier.value);
       Singleton.instance.slave.value = obj.getString('slave')!;
-      Get.to(const HomeScreen());
+      Get.to(() => const HomeScreen());
     } else {
       Singleton.instance.back.value = obj.getString('back')!;
-      Singleton.instance.map.value = obj.getString('map')!;
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
       Singleton.instance.slave.value = obj.getString('slave')!;
       Future.delayed(const Duration(milliseconds: 2000), () {
-        Get.to(const HomeScreen());
+        Get.to(() => const HomeScreen());
       });
     }
   }
@@ -41,7 +41,6 @@ class SlashScreenController extends GetxController {
     if (obj.getString('language') == null) {
       await obj.setString('language', 'kh');
       Singleton.instance.lang.value = obj.getString("language")!;
-
       return "kh";
     } else {
       Singleton.instance.lang.value = obj.getString("language")!;
@@ -63,18 +62,15 @@ class SlashScreenController extends GetxController {
       if (obj.getString("date") ==
           DateFormat('yyyy-MM-dd').format(DateTime.now())) {
         Singleton.instance.life.value = obj.getInt("life")!;
-        debugPrint("kakkkk ${Singleton.instance.life.value}");
+        debugPrint("the same  ${Singleton.instance.life.value}");
       } else {
         Singleton.instance.life.value = 5;
         await obj.setString(
             'date', DateFormat('yyyy-MM-dd').format(DateTime.now()));
         await obj.setInt('life', 5);
-
         debugPrint(
-            "kakkkk ${Singleton.instance.life.value} ${obj.getInt('life')} ${obj.getString('date')}");
+            "uuuuuuuuu ${Singleton.instance.life.value} ${obj.getInt('life')} ${obj.getString('date')}");
       }
-      Singleton.instance.life.value = 5;
-      await obj.setInt('life', 5);
     }
   }
 

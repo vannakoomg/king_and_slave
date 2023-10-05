@@ -2,27 +2,26 @@ import 'dart:math';
 
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 
 class CustomResult extends StatefulWidget {
   final String status;
   final String roomId;
-  const CustomResult({super.key, required this.status, required this.roomId});
+  final Function ontap;
+  const CustomResult(
+      {super.key,
+      required this.status,
+      required this.roomId,
+      required this.ontap});
 
   @override
   State<CustomResult> createState() => _CustomResultState();
 }
 
-int i = 0;
-
 class _CustomResultState extends State<CustomResult> {
   @override
   Widget build(BuildContext context) {
-    i++;
-    debugPrint("khmer sl khmer ${widget.status} $i");
     return Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -46,8 +45,9 @@ class _CustomResultState extends State<CustomResult> {
                               .withOpacity(0.5)
                           : widget.status == "enemy_surrender" ||
                                   widget.status == "win"
-                              ? const Color.fromARGB(255, 216, 43, 101)
-                              : const Color.fromARGB(255, 220, 202, 202),
+                              ? const Color.fromARGB(255, 238, 85, 136)
+                              : const Color.fromARGB(255, 220, 202, 202)
+                                  .withOpacity(0.5),
                       spreadRadius: 100,
                       blurRadius: 80,
                       offset: const Offset(0, 2), // changes position of shadow
@@ -101,7 +101,7 @@ class _CustomResultState extends State<CustomResult> {
                       color: const Color.fromARGB(255, 17, 17, 16)
                           .withOpacity(0.9),
                       spreadRadius: 100,
-                      blurRadius: 40,
+                      blurRadius: 30,
                       offset: const Offset(0, 2), // changes position of shadow
                     ),
                   ],
@@ -116,19 +116,12 @@ class _CustomResultState extends State<CustomResult> {
                     width: MediaQuery.of(context).size.width,
                     child: Center(
                       child: CustomBotton(
-                          title: "${Singleton.instance.languages.value.next}",
-                          ontap: () {
-                            final play = FirebaseFirestore.instance
-                                .collection('room')
-                                .doc(widget.roomId);
-                            if (widget.status == "enemy_surrender") {
-                              Get.back();
-                              play.delete();
-                            } else {
-                              Get.back();
-                            }
-                          },
-                          isdisble: false),
+                        title: "${Singleton.instance.languages.value.next}",
+                        ontap: () {
+                          widget.ontap();
+                        },
+                        isdisble: false,
+                      ),
                     )),
               )
           ],

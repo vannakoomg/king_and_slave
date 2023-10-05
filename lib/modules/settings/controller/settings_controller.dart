@@ -41,7 +41,6 @@ class SettingController extends GetxController {
   final setting = [].obs;
   void setImage() {
     back.remove(Singleton.instance.back.value);
-    map.remove(Singleton.instance.map.value);
     king.remove(Singleton.instance.king.value);
     slave.remove(Singleton.instance.slave.value);
     soldier.remove(Singleton.instance.soldier.value);

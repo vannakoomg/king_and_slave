@@ -4,6 +4,8 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomController extends GetxController {
   final type = 0.obs;
@@ -88,7 +90,7 @@ class RoomController extends GetxController {
     passwordTextEditController.value = TextEditingController();
   }
 
-  void join() {
+  Future join() async {
     if (roomPassword.value == enterPasswordTextEditController.value.text) {
       debugPrint("nice brother");
       final play =
@@ -96,10 +98,47 @@ class RoomController extends GetxController {
       play.update({"slave.index": -1}).then((value) => {
             Get.to(
               () => GameScreen(id: roomId.value, you: type.value),
-            )
+            ),
+            isenterPassword.value = false,
           });
     } else {
       isWorngPassword.value = true;
     }
+  }
+
+  RewardedAd? rewardedAd;
+  final reward = "ca-app-pub-3940256099942544/5224354917".obs;
+  void loadRewardedAd() {
+    RewardedAd.load(
+      adUnitId: reward.value,
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              rewardedAd = null;
+              loadRewardedAd();
+            },
+          );
+          rewardedAd = ad;
+        },
+        onAdFailedToLoad: (err) async {
+          debugPrint('failed to load a rewarded ad: ${err.message}');
+        },
+      ),
+    );
+  }
+
+  void viewAds() {
+    rewardedAd?.show(
+      onUserEarnedReward: (_, reward) async {
+        debugPrint("value KHmer khmer ${reward.amount}");
+        final SharedPreferences obj = await SharedPreferences.getInstance();
+        await obj.setInt('life', 5);
+        Singleton.instance.life.value = 5;
+        isNoMoreLife.value = false;
+      },
+    );
   }
 }

@@ -6,7 +6,6 @@ class Singleton extends GetxController {
   Singleton._();
   static Singleton get instance => _instance ??= Singleton._();
   final back = ''.obs;
-  final map = ''.obs;
   final king = ''.obs;
   final slave = ''.obs;
   final soldier = ''.obs;

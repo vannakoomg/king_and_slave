@@ -19,12 +19,17 @@ class LanguagesModel {
   String? create;
   String? roomName;
   String? wrongPassword;
+  String? introduction;
+  String? introductionDetail;
   String? setting;
   String? customize;
-  String? language;
-  String? sound;
   String? law;
   String? lawDetail;
+  String? sound;
+  String? language;
+  String? noLife;
+  String? nextDayYouGetX5life;
+  String? x5;
 
   LanguagesModel(
       {this.enemySerrender,
@@ -47,12 +52,17 @@ class LanguagesModel {
       this.create,
       this.roomName,
       this.wrongPassword,
+      this.introduction,
+      this.introductionDetail,
       this.setting,
       this.customize,
-      this.language,
-      this.sound,
       this.law,
-      this.lawDetail});
+      this.lawDetail,
+      this.sound,
+      this.language,
+      this.noLife,
+      this.nextDayYouGetX5life,
+      this.x5});
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
     enemySerrender = json['enemy_serrender'];
@@ -75,12 +85,17 @@ class LanguagesModel {
     create = json['create'];
     roomName = json['room_name'];
     wrongPassword = json['wrong_password'];
+    introduction = json['introduction'];
+    introductionDetail = json['introduction_detail'];
     setting = json['setting'];
     customize = json['customize'];
-    language = json['language'];
-    sound = json['sound'];
     law = json['law'];
     lawDetail = json['law_detail'];
+    sound = json['sound'];
+    language = json['language'];
+    noLife = json['no_life'];
+    nextDayYouGetX5life = json['next_day_you_get_x5life'];
+    x5 = json['x5'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,12 +120,17 @@ class LanguagesModel {
     data['create'] = create;
     data['room_name'] = roomName;
     data['wrong_password'] = wrongPassword;
+    data['introduction'] = introduction;
+    data['introduction_detail'] = introductionDetail;
     data['setting'] = setting;
     data['customize'] = customize;
-    data['language'] = language;
-    data['sound'] = sound;
     data['law'] = law;
     data['law_detail'] = lawDetail;
+    data['sound'] = sound;
+    data['language'] = language;
+    data['no_life'] = noLife;
+    data['next_day_you_get_x5life'] = nextDayYouGetX5life;
+    data['x5'] = x5;
     return data;
   }
 }

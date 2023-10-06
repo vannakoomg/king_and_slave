@@ -77,86 +77,112 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 itemCount: snapshots.data!.length,
                                 itemBuilder: (context, i) {
                                   return snapshots.data![i].slave!.index == -2
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            if (Singleton.instance.life.value >
-                                                0) {
-                                              if (snapshots.data![i].password !=
-                                                  '') {
-                                                controller.roomId.value =
-                                                    snapshots.data![i].id!;
-                                                controller.roomPassword.value =
-                                                    snapshots
-                                                        .data![i].password!;
-                                                controller.isenterPassword
-                                                    .value = true;
-                                              } else {
-                                                final play = FirebaseFirestore
-                                                    .instance
-                                                    .collection('room')
-                                                    .doc(
-                                                        snapshots.data![i].id!);
-                                                play.update({
-                                                  "slave.index": -1
-                                                }).then((value) => {
-                                                      Get.to(
-                                                        () => GameScreen(
-                                                            id: snapshots
-                                                                .data![i].id!,
-                                                            you: yourType),
-                                                      )
-                                                    });
-                                              }
-                                            } else {
-                                              debugPrint(
-                                                  "You have no life more ");
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, right: 5, left: 5),
-                                            child: CustomPaint(
-                                              size: Size(
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  40),
-                                              painter: RoomStyle(),
+                                      ? (yourType == 0 &&
+                                                  snapshots.data![i].type ==
+                                                      1) ||
+                                              (yourType == 1 &&
+                                                  snapshots.data![i].type == 0)
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                if (Singleton
+                                                        .instance.life.value >
+                                                    0) {
+                                                  if (snapshots
+                                                          .data![i].password !=
+                                                      '') {
+                                                    controller.roomId.value =
+                                                        snapshots.data![i].id!;
+                                                    controller.roomPassword
+                                                            .value =
+                                                        snapshots
+                                                            .data![i].password!;
+                                                    controller.isenterPassword
+                                                        .value = true;
+                                                  } else {
+                                                    final play =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection('room')
+                                                            .doc(snapshots
+                                                                .data![i].id!);
+                                                    play.update({
+                                                      "slave.index": -1
+                                                    }).then((value) => {
+                                                          Get.to(
+                                                            () => GameScreen(
+                                                                id: snapshots
+                                                                    .data![i]
+                                                                    .id!,
+                                                                you: yourType),
+                                                          )
+                                                        });
+                                                  }
+                                                } else {
+                                                  debugPrint(
+                                                      "You have no life more ");
+                                                }
+                                              },
                                               child: Container(
                                                 padding: const EdgeInsets.only(
-                                                    left: 30, right: 30),
-                                                height: 45,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        "${snapshots.data![i].name}",
-                                                        style: TextStyle(
-                                                            color: Colors.white
-                                                                .withOpacity(
-                                                                    0.7),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 16,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis),
-                                                      ),
+                                                    top: 10, right: 5, left: 5),
+                                                child: CustomPaint(
+                                                  size: Size(
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .width,
+                                                      50),
+                                                  painter: RoomStyle(),
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.1,
+                                                        right: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.1),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.1,
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${snapshots.data![i].name}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.7),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 16,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                          ),
+                                                        ),
+                                                        if (snapshots.data![i]
+                                                                .password !=
+                                                            '')
+                                                          Image.asset(
+                                                            "assets/shield/2.png",
+                                                            width: 30,
+                                                            height: 30,
+                                                          )
+                                                      ],
                                                     ),
-                                                    if (snapshots.data![i]
-                                                            .password !=
-                                                        '')
-                                                      Image.asset(
-                                                        "assets/shield/2.png",
-                                                        width: 30,
-                                                        height: 30,
-                                                      )
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        )
+                                            )
+                                          : const SizedBox()
                                       : const SizedBox();
                                 },
                               ),

@@ -54,7 +54,8 @@ class DefaultFirebaseOptions {
     appId: '1:507455187511:android:b8996259e1d6440c782db2',
     messagingSenderId: '507455187511',
     projectId: 'king-and-slave',
-    databaseURL: 'https://king-and-slave-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://king-and-slave-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'king-and-slave.appspot.com',
   );
 
@@ -63,8 +64,9 @@ class DefaultFirebaseOptions {
     appId: '1:507455187511:ios:b715574b1af26189782db2',
     messagingSenderId: '507455187511',
     projectId: 'king-and-slave',
-    databaseURL: 'https://king-and-slave-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://king-and-slave-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'king-and-slave.appspot.com',
-    iosBundleId: 'com.example.animationAba',
+    iosBundleId: 'com.king.and.slave',
   );
 }

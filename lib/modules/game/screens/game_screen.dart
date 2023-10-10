@@ -8,6 +8,7 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../models/game_model.dart';
@@ -119,24 +120,26 @@ class _GameScreenState extends State<GameScreen> {
                                               height: 0.2 * w + 0.2 * w / 3,
                                               width: 0.2 * w,
                                               decoration: BoxDecoration(
-                                                  color: Colors.transparent,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        color: Colors.white
-                                                            .withOpacity(0.8),
-                                                        blurRadius: 50,
-                                                        spreadRadius: 1,
-                                                        offset:
-                                                            const Offset(0, 3))
-                                                  ],
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                    controller.openEnemy.value
-                                                        ? "${controller.enemyCard.value.image}"
-                                                        : "${Singleton.instance.back}",
-                                                  )),
-                                                  borderRadius:
-                                                      BorderRadius.circular(0)),
+                                                color: Colors.transparent,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.white
+                                                          .withOpacity(0.8),
+                                                      blurRadius: 50,
+                                                      spreadRadius: 1,
+                                                      offset:
+                                                          const Offset(0, 3))
+                                                ],
+                                              ),
+                                              child: controller.openEnemy.value
+                                                  ? SvgPicture.asset(
+                                                      "${controller.enemyCard.value.image}",
+                                                      fit: BoxFit.fitHeight,
+                                                    )
+                                                  : Image.asset(
+                                                      "${Singleton.instance.back}",
+                                                      fit: BoxFit.fitHeight,
+                                                    ),
                                             ));
                                       },
                                     ),
@@ -185,25 +188,25 @@ class _GameScreenState extends State<GameScreen> {
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.only(
-                                            right: 5, left: 5),
+                                            right: 4, left: 4),
                                         height: 0.2 * w + 0.2 * w / 3,
                                         width: 0.2 * w,
                                         clipBehavior: Clip.antiAlias,
                                         decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.white
-                                                      .withOpacity(0.8),
-                                                  blurRadius: 50,
-                                                  spreadRadius: 1,
-                                                  offset: const Offset(0, 3))
-                                            ],
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    "${controller.listYourCard[e.key].image}"),
-                                                fit: BoxFit.fitHeight),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.white
+                                                    .withOpacity(0.8),
+                                                blurRadius: 50,
+                                                spreadRadius: 1,
+                                                offset: const Offset(0, 3))
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                            "${controller.listYourCard[e.key].image}",
+                                            fit: BoxFit.fill),
                                       ),
                                     ),
                                   );
@@ -219,14 +222,15 @@ class _GameScreenState extends State<GameScreen> {
                                             right: 5, left: 5),
                                         height: 0.2 * w + 0.2 * w / 3,
                                         width: 0.2 * w,
+                                        clipBehavior: Clip.antiAlias,
                                         decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                                image: AssetImage(controller
-                                                    .yourCard.value.image!),
-                                                fit: BoxFit.fitHeight)),
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                            controller.yourCard.value.image!,
+                                            fit: BoxFit.fill),
                                       ),
                                     ),
                                   ),
@@ -236,6 +240,7 @@ class _GameScreenState extends State<GameScreen> {
                                     left: controller.newPostion.value.x,
                                     child: GestureDetector(
                                       child: Container(
+                                        clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.only(
                                             right: 5, left: 5),
                                         height: 0.2 * w + 0.2 * w / 3,
@@ -249,13 +254,13 @@ class _GameScreenState extends State<GameScreen> {
                                                 spreadRadius: 1,
                                                 offset: const Offset(0, 3))
                                           ],
-                                          image: DecorationImage(
-                                              image: AssetImage(controller
-                                                  .yourCard.value.image!)),
                                           color: Colors.transparent,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
+                                        child: SvgPicture.asset(
+                                            controller.yourCard.value.image!,
+                                            fit: BoxFit.fill),
                                       ),
                                     ),
                                   ),
@@ -270,49 +275,52 @@ class _GameScreenState extends State<GameScreen> {
                             curve: Curves.ease,
                             left: controller.sword.value ? -40 : -125,
                             top: h / 2 - 30,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/sword/2.png"),
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
+                            child: SizedBox(
                               height: 40,
                               width: 180,
-                              child: Row(children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.ontapSword02();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 5, left: 40, top: 5),
-                                    width: 120,
-                                    height: 60,
-                                    color: Colors.transparent,
-                                    child: Center(
-                                        child: Text(
-                                      controller.gamePlay.value
-                                          ? "${Singleton.instance.languages.value.surrender}"
-                                          : "${Singleton.instance.languages.value.next}",
-                                      style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    )),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.ontapSword01();
-                                  },
-                                  child: Container(
-                                    width: 60,
+                              child: Stack(
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/sword/1.svg",
                                     height: 50,
-                                    color: Colors.transparent,
+                                    width: 140,
                                   ),
-                                )
-                              ]),
+                                  Row(children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller.ontapSword02();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 5, left: 40, top: 0),
+                                        width: 120,
+                                        height: 60,
+                                        color: Colors.transparent,
+                                        child: Center(
+                                            child: Text(
+                                          controller.gamePlay.value
+                                              ? "${Singleton.instance.languages.value.surrender}"
+                                              : "${Singleton.instance.languages.value.next}",
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black),
+                                        )),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller.ontapSword01();
+                                      },
+                                      child: Container(
+                                        width: 60,
+                                        height: 50,
+                                        color: Colors.transparent,
+                                      ),
+                                    )
+                                  ]),
+                                ],
+                              ),
                             ),
                           ),
                           if (controller.letStart.value == true)

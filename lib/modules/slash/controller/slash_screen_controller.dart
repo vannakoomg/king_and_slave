@@ -13,12 +13,11 @@ class SlashScreenController extends GetxController {
   void getiamge() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('king') == null) {
-      debugPrint("not yet login ");
-      await obj.setString('king', "assets/king/${Random().nextInt(3) + 1}.png");
+      await obj.setString('king', "assets/king/${Random().nextInt(3) + 1}.svg");
       await obj.setString(
-          'slave', "assets/slave/${Random().nextInt(3) + 1}.png");
+          'slave', "assets/slave/${Random().nextInt(3) + 1}.svg");
       await obj.setString(
-          'soldier', "assets/soldier/${Random().nextInt(3) + 1}.png");
+          'soldier', "assets/soldier/${Random().nextInt(3) + 1}.svg");
       await obj.setString('back', "assets/back/1.png");
       Singleton.instance.back.value = obj.getString('back')!;
       Singleton.instance.king.value = obj.getString('king')!;

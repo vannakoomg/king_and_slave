@@ -249,13 +249,18 @@ class SettingScreen extends StatelessWidget {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Image.asset(
-                                            Singleton.instance.lang.value ==
-                                                    "kh"
-                                                ? "assets/setting/1.png"
-                                                : "assets/setting/2.png",
-                                            height: 25,
-                                            width: 25,
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5),
+                                            child: SvgPicture.asset(
+                                              Singleton.instance.lang.value ==
+                                                      "kh"
+                                                  ? "assets/setting/1.svg"
+                                                  : "assets/setting/2.svg",
+                                              height: 18,
+                                              width: 30,
+                                              fit: BoxFit.cover,
+                                            ),
                                           )
                                         ],
                                       ),

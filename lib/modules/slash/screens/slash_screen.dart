@@ -5,6 +5,7 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/landuage_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class SlashScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class SlashScreen extends StatefulWidget {
 
 class _SlashScreenState extends State<SlashScreen> {
   final controller = Get.put(SlashScreenController());
-  String image = 'assets/background/${Random().nextInt(5) + 1}.png';
+  String image = 'assets/background/${Random().nextInt(5) + 1}.svg';
   @override
   void initState() {
     controller.setLife();
@@ -49,20 +50,23 @@ class _SlashScreenState extends State<SlashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                clipBehavior: Clip.antiAlias,
                 height: MediaQuery.of(context).size.width / 2,
                 width: MediaQuery.of(context).size.width / 2,
                 decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: controller.sadowColor(),
-                          blurRadius: 30,
-                          spreadRadius: 6,
-                          offset: Offset(controller.sadow(), 0))
-                    ],
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage(image),
-                    )),
+                  boxShadow: [
+                    BoxShadow(
+                        color: controller.sadowColor(),
+                        blurRadius: 30,
+                        spreadRadius: 6,
+                        offset: Offset(controller.sadow(), 0))
+                  ],
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(
+                  image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ],
           ),

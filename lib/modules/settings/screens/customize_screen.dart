@@ -1,6 +1,7 @@
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -84,7 +85,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         offset: const Offset(0, 3))
                                   ],
                                 ),
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   Singleton.instance.king.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -116,7 +117,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Image.asset(
+                                          child: SvgPicture.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),
@@ -147,7 +148,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                   ],
                                   color: Colors.transparent,
                                 ),
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   Singleton.instance.soldier.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -183,7 +184,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Image.asset(
+                                          child: SvgPicture.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),
@@ -214,7 +215,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         offset: const Offset(0, 3))
                                   ],
                                 ),
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   Singleton.instance.slave.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -246,7 +247,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Image.asset(
+                                          child: SvgPicture.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),
@@ -278,7 +279,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         offset: const Offset(0, 3))
                                   ],
                                 ),
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   Singleton.instance.back.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -310,7 +311,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Image.asset(
+                                          child: SvgPicture.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),

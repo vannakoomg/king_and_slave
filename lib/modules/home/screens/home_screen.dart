@@ -2,7 +2,6 @@ import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -26,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   BannerAd? bannerad;
   var adUnit = "ca-app-pub-3940256099942544/6300978111";
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  // static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   initBannerAd() {
     setState(() {

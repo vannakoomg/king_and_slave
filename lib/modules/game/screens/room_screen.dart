@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:animation_aba/main.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
@@ -8,6 +11,7 @@ import 'package:animation_aba/utils/widgets/custom_no_life.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -38,14 +42,23 @@ class _GameRoomScreenState extends State<RoomScreen> {
           () => SafeArea(
               child: Stack(
             children: [
+              IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 33,
+                    color: Colors.white,
+                  )),
               SizedBox(
                 height: height,
                 width: width,
                 child: Column(
                   children: [
                     yourType == 0
-                        ? Image.asset("assets/map/mongkot.png")
-                        : Image.asset("assets/map/hat.png"),
+                        ? SvgPicture.asset("assets/map/mongkot.svg")
+                        : SvgPicture.asset("assets/map/hat.svg"),
                     Text(
                       yourType == 0
                           ? "${Singleton.instance.languages.value.king}"
@@ -171,11 +184,19 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                         if (snapshots.data![i]
                                                                 .password !=
                                                             '')
-                                                          Image.asset(
-                                                            "assets/shield/2.png",
-                                                            width: 30,
-                                                            height: 30,
-                                                          )
+                                                          yourType == 0
+                                                              ? SvgPicture
+                                                                  .asset(
+                                                                  "assets/shield/2.svg",
+                                                                  width: 20,
+                                                                  height: 30,
+                                                                )
+                                                              : SvgPicture
+                                                                  .asset(
+                                                                  "assets/shield/1.svg",
+                                                                  width: 20,
+                                                                  height: 30,
+                                                                )
                                                       ],
                                                     ),
                                                   ),
@@ -251,16 +272,21 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           child: Column(
                             children: [
                               yourType == 0
-                                  ? Image.asset(
-                                      "assets/map/mongkot.png",
-                                      height: 70,
-                                      width: 70,
+                                  ? SvgPicture.asset(
+                                      "assets/map/mongkot.svg",
+                                      height: 50,
+                                      color: Colors.white,
+                                      width: 50,
                                     )
-                                  : Image.asset(
-                                      "assets/map/hat.png",
-                                      height: 70,
-                                      width: 70,
+                                  : SvgPicture.asset(
+                                      "assets/map/hat.svg",
+                                      height: 50,
+                                      color: Colors.white,
+                                      width: 50,
                                     ),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               CustomTextfile(
                                 controller:
                                     controller.roomNameTextEditController.value,
@@ -292,6 +318,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                       title:
                                           "${Singleton.instance.languages.value.ok}",
                                       ontap: () {
+                                        unFocus(context);
                                         controller.isDisbleButtonOk.value =
                                             true;
                                         controller.submit(yourType);
@@ -386,7 +413,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                   ontap: () {
                     controller.isNoMoreLife.value = false;
                   },
-                )
+                ),
             ],
           )),
         ));

@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'modules/slash/screens/slash_screen.dart';
 
@@ -18,18 +17,29 @@ void main() async {
   runApp(const MyApp());
 }
 
+void unFocus(BuildContext context) {
+  final FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+    FocusManager.instance.primaryFocus!.unfocus();
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
+    return GestureDetector(
+      onTap: () {
+        unFocus(context);
+      },
+      child: GetMaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true,
+        ),
+        home: const SlashScreen(),
       ),
-      home: const SlashScreen(),
     );
   }
 }

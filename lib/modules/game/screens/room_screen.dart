@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/main.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
@@ -57,8 +58,14 @@ class _GameRoomScreenState extends State<RoomScreen> {
                 child: Column(
                   children: [
                     yourType == 0
-                        ? SvgPicture.asset("assets/map/mongkot.svg")
-                        : SvgPicture.asset("assets/map/hat.svg"),
+                        ? SvgPicture.asset(
+                            "assets/map/mongkot.svg",
+                            color: AppColor.primary,
+                          )
+                        : SvgPicture.asset(
+                            "assets/map/hat.svg",
+                            color: AppColor.primary,
+                          ),
                     Text(
                       yourType == 0
                           ? "${Singleton.instance.languages.value.king}"
@@ -82,7 +89,10 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           if (snapshots.hasError) {
                             return const Expanded(
                                 child: Center(
-                              child: Text("Error Data "),
+                              child: Text(
+                                "Error Data",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ));
                           } else if (snapshots.hasData) {
                             return Expanded(
@@ -209,10 +219,10 @@ class _GameRoomScreenState extends State<RoomScreen> {
                               ),
                             );
                           } else {
-                            return const Expanded(
+                            return Expanded(
                               child: Center(
                                   child: CircularProgressIndicator(
-                                color: Colors.red,
+                                color: AppColor.primary,
                               )),
                             );
                           }
@@ -231,7 +241,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.pink.withOpacity(0.3),
+                              color: AppColor.primary.withOpacity(0.3),
                               spreadRadius: 10,
                               blurRadius: 20,
                               offset: const Offset(0, 2),
@@ -327,7 +337,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                           controller.isDisbleButtonOk.value,
                                     )
                                   : LoadingAnimationWidget.staggeredDotsWave(
-                                      color: Colors.pink, size: 28),
+                                      color: AppColor.primary, size: 28),
                             ],
                           ),
                         ),

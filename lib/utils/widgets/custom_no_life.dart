@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,9 +40,9 @@ class CustomNoLife extends StatelessWidget {
                     ),
                     Text(
                       "${Singleton.instance.languages.value.noLife}",
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 28,
-                          color: Colors.pink,
+                          color: AppColor.primary,
                           fontWeight: FontWeight.w600),
                     ),
                     const Spacer(),
@@ -68,12 +69,12 @@ class CustomNoLife extends StatelessWidget {
                         height: 40,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.pink,
+                                color: AppColor.primary,
                                 spreadRadius: 3,
                                 blurRadius: 10,
-                                offset: Offset(0, 2),
+                                offset: const Offset(0, 2),
                               ),
                             ],
                             borderRadius: BorderRadius.circular(30)),
@@ -110,13 +111,13 @@ class CustomNoLife extends StatelessWidget {
               right: 10,
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.pink, width: 2),
+                    border: Border.all(color: AppColor.primary, width: 2),
                     color: const Color(0xffffc4d6),
                     shape: BoxShape.circle),
-                child: const Center(
+                child: Center(
                   child: Icon(
                     Icons.close,
-                    color: Colors.pink,
+                    color: AppColor.primary,
                     size: 30,
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/modules/settings/screens/customize_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
@@ -29,7 +30,6 @@ class SettingScreen extends StatelessWidget {
                     color: Colors.black,
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    // margin: const EdgeInsets.only(bottom: 40),
                     padding: const EdgeInsets.only(
                         left: 40, right: 40, top: 60, bottom: 20),
                     child: SingleChildScrollView(
@@ -48,9 +48,6 @@ class SettingScreen extends StatelessWidget {
                               "${Singleton.instance.languages.value.law}",
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 25),
-                            ),
-                            const SizedBox(
-                              height: 10,
                             ),
                             const SizedBox(
                               height: 20,
@@ -94,21 +91,24 @@ class SettingScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  alignment: Alignment.centerRight,
-                                  child: const Icon(
+                                  margin: const EdgeInsets.only(
+                                    top: 50,
+                                  ),
+                                  alignment: Alignment.topRight,
+                                  child: Icon(
                                     Icons.close_rounded,
                                     size: 30,
-                                    color: Colors.pink,
+                                    color: AppColor.primary,
                                   ),
                                 ),
+                                const Spacer(),
                                 Text(
                                   "${Singleton.instance.languages.value.setting}",
                                   style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
+                                      color: Colors.white.withOpacity(0.8),
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -152,7 +152,6 @@ class SettingScreen extends StatelessWidget {
                                         MediaQuery.of(context).size.width, 20),
                                     painter: RoomStyle(),
                                     child: SizedBox(
-                                      // padding: const EdgeInsets.only(left: 30, right: 30),
                                       height: 40,
                                       child: Center(
                                         child: Text(
@@ -175,28 +174,31 @@ class SettingScreen extends StatelessWidget {
                                   size: Size(
                                       MediaQuery.of(context).size.width, 20),
                                   painter: RoomStyle(),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 30, right: 20),
-                                    height: 40,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          Singleton
-                                              .instance.languages.value.sound!,
-                                          style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                            fontSize: 15,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 30, right: 20),
+                                      height: 40,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            Singleton.instance.languages.value
+                                                .sound!,
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 15,
+                                            ),
                                           ),
-                                        ),
-                                        const Icon(
-                                          Icons.music_note,
-                                          color: Colors.white,
-                                        )
-                                      ],
+                                          const Icon(
+                                            Icons.music_note,
+                                            color: Colors.white,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -267,6 +269,7 @@ class SettingScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                const Spacer(),
                                 const SizedBox(
                                   height: 40,
                                 ),

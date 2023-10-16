@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
 
 class RoomStyle extends CustomPainter {
@@ -25,7 +26,7 @@ class RoomStyle extends CustomPainter {
     // Layer 1
 
     Paint paintStroke0 = Paint()
-      ..color = const Color.fromARGB(255, 193, 3, 101)
+      ..color = AppColor.primary
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round

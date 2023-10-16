@@ -53,11 +53,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    // decoration: const BoxDecoration(
-                    //   //   image: DecorationImage(
-                    //   // image: AssetImage("assets/background/setting.png"),
-                    //   // fit: BoxFit.fitHeight,
-                    // )),
                     margin: const EdgeInsets.only(left: 0, right: 5),
                     width: double.infinity,
                     child: SingleChildScrollView(
@@ -279,7 +274,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         offset: const Offset(0, 3))
                                   ],
                                 ),
-                                child: SvgPicture.asset(
+                                child: Image.asset(
                                   Singleton.instance.back.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -311,7 +306,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: SvgPicture.asset(
+                                          child: Image.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),
@@ -321,6 +316,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                   ).toList())),
                             ],
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          )
                         ],
                       ),
                     ),

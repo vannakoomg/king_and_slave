@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
 
 class CustomBotton extends StatelessWidget {
@@ -28,7 +29,8 @@ class CustomBotton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color: isdisble ? Colors.white : Colors.pink.withOpacity(0.5),
+                color:
+                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.5),
                 spreadRadius: isdisble ? 1 : 10,
                 blurRadius: isdisble ? 30 : 30,
                 offset: const Offset(0, 2),

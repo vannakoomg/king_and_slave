@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,9 @@ class SlashScreenController extends GetxController {
 
   Color night() {
     if (time.value < 7 || time.value >= 19) return Colors.black;
-    if (time.value >= 7 && time.value < 19) return Colors.white;
+    if (time.value >= 7 && time.value < 19) {
+      return AppColor.primary.withOpacity(0.7);
+    }
     return Colors.red;
   }
 

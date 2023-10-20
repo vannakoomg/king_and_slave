@@ -43,29 +43,32 @@ class _GameRoomScreenState extends State<RoomScreen> {
           () => SafeArea(
               child: Stack(
             children: [
-              IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 33,
-                    color: Colors.white,
-                  )),
-              SizedBox(
+              Positioned(
+                top: 40,
+                left: 10,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 33,
+                      color: Colors.white,
+                    )),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
                 height: height,
                 width: width,
                 child: Column(
                   children: [
-                    yourType == 0
-                        ? SvgPicture.asset(
-                            "assets/map/mongkot.svg",
-                            color: AppColor.primary,
-                          )
-                        : SvgPicture.asset(
-                            "assets/map/hat.svg",
-                            color: AppColor.primary,
-                          ),
+                    SvgPicture.asset(
+                      yourType == 0
+                          ? "assets/map/mongkot.svg"
+                          : "assets/map/hat.svg",
+                      color: AppColor.primary,
+                      height: 60,
+                    ),
                     Text(
                       yourType == 0
                           ? "${Singleton.instance.languages.value.king}"
@@ -241,7 +244,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColor.primary.withOpacity(0.3),
+                              color: AppColor.primary.withOpacity(0.5),
                               spreadRadius: 10,
                               blurRadius: 20,
                               offset: const Offset(0, 2),
@@ -366,15 +369,15 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             yourType == 0
-                                ? Image.asset(
-                                    "assets/map/mongkot.png",
-                                    height: 70,
-                                    width: 70,
+                                ? SvgPicture.asset(
+                                    "assets/map/mongkot.svg",
+                                    height: 60,
+                                    width: 60,
                                   )
-                                : Image.asset(
-                                    "assets/map/hat.png",
-                                    height: 70,
-                                    width: 70,
+                                : SvgPicture.asset(
+                                    "assets/map/hat.svg",
+                                    height: 60,
+                                    width: 60,
                                   ),
                             CustomTextfile(
                               controller: controller

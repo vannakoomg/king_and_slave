@@ -158,10 +158,10 @@ class _GameScreenState extends State<GameScreen> {
                                         .map((e) {
                                   return AnimatedPositioned(
                                     duration: Duration(
-                                        milliseconds:
-                                            controller.istouchCard.value
-                                                ? 0
-                                                : 500),
+                                      milliseconds: controller.istouchCard.value
+                                          ? 0
+                                          : 500,
+                                    ),
                                     bottom:
                                         controller.positionYourCard[e.key].y,
                                     left: controller.positionYourCard[e.key].x,
@@ -195,14 +195,14 @@ class _GameScreenState extends State<GameScreen> {
                                         decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
-                                                color: Colors.white
-                                                    .withOpacity(0.8),
+                                                color:
+                                                    Colors.white.withOpacity(0),
                                                 blurRadius: 50,
                                                 spreadRadius: 1,
                                                 offset: const Offset(0, 3))
                                           ],
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                              BorderRadius.circular(0),
                                         ),
                                         child: SvgPicture.asset(
                                             "${controller.listYourCard[e.key].image}",

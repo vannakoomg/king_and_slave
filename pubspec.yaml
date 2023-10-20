@@ -25,6 +25,12 @@ dependencies:
   intl: ^0.18.1
   google_mobile_ads: ^3.0.0
   device_info_plus: ^9.0.3
+  flutter_native_splash: ^2.3.4
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#000000"
+  image: assets/background/slash.png
 
 
 

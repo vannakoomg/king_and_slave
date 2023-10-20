@@ -83,7 +83,7 @@ class _CustomResultState extends State<CustomResult> {
                         : widget.status == "enemy_surrender" ||
                                 widget.status == "win"
                             ? "assets/win/${Random().nextInt(4) + 1}.svg"
-                            : "assets/equal/${Random().nextInt(4) + 1}.svg",
+                            : "assets/equal/${Random().nextInt(3) + 1}.svg",
                     height: 130,
                     width: 130,
                   ),

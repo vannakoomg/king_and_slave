@@ -5,7 +5,6 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/landuage_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class SlashScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class _SlashScreenState extends State<SlashScreen> {
   String image = 'assets/background/${Random().nextInt(5) + 1}.svg';
   @override
   void initState() {
+    debugPrint("language :");
     controller.setLife();
     controller.setupLanguages().then((value) => {
           debugPrint("language : $value"),
@@ -33,45 +33,44 @@ class _SlashScreenState extends State<SlashScreen> {
             controller.getiamge();
           })
         });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     controller.time.value = DateTime.now().hour;
-    return Scaffold(
-      body: Center(
-        child: Container(
-          color: controller.night(),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                clipBehavior: Clip.antiAlias,
-                height: MediaQuery.of(context).size.width / 2,
-                width: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: controller.sadowColor(),
-                        blurRadius: 30,
-                        spreadRadius: 6,
-                        offset: Offset(controller.sadow(), 0))
-                  ],
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return const Scaffold(
+        // body: Center(
+        //   child: Container(
+        //     color: controller.night(),
+        //     width: double.infinity,
+        //     height: double.infinity,
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Container(
+        //           clipBehavior: Clip.antiAlias,
+        //           height: MediaQuery.of(context).size.width / 2,
+        //           width: MediaQuery.of(context).size.width / 2,
+        //           decoration: BoxDecoration(
+        //             boxShadow: [
+        //               BoxShadow(
+        //                   color: controller.sadowColor(),
+        //                   blurRadius: 30,
+        //                   spreadRadius: 6,
+        //                   offset: Offset(controller.sadow(), 0))
+        //             ],
+        //             shape: BoxShape.circle,
+        //           ),
+        //           child: SvgPicture.asset(
+        //             image,
+        //             fit: BoxFit.cover,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        );
   }
 }

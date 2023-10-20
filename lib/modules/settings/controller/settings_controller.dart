@@ -1,5 +1,8 @@
 import 'package:animation_aba/utils/controller/singleton.dart';
+import 'package:animation_aba/utils/models/landuage_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingController extends GetxController {
   final back = [
@@ -51,18 +54,44 @@ class SettingController extends GetxController {
   final isShowSetting = true.obs;
   final isShowLaw = false.obs;
   void ontapLaw() {
-    issetting.value = false;
-    isShowLaw.value = true;
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      isShowSetting.value = false;
-    });
+    if (isloadinglanguage.value == false) {
+      issetting.value = false;
+      isShowLaw.value = true;
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        isShowSetting.value = false;
+      });
+    }
   }
 
   void ontapBackLaw() {
     isLaw.value = false;
     isShowSetting.value = true;
-    Future.delayed(const Duration(milliseconds: 50), () {
+    Future.delayed(const Duration(milliseconds: 10), () {
       issetting.value = true;
+    });
+  }
+
+  final isloadinglanguage = false.obs;
+  Future<void> fetchLanguage() async {
+    isloadinglanguage.value = true;
+    final SharedPreferences obj = await SharedPreferences.getInstance();
+    if (Singleton.instance.lang.value == 'kh') {
+      Singleton.instance.lang.value = "en";
+      obj.setString("language", "en");
+    } else {
+      Singleton.instance.lang.value = "kh";
+      obj.setString("language", "kh");
+    }
+    FirebaseFirestore.instance
+        .collection("languages")
+        .doc(Singleton.instance.lang.value)
+        .get()
+        .then((value) {
+      isloadinglanguage.value = false;
+      Singleton.instance.languages.value =
+          LanguagesModel.fromJson(value.data()!);
+    }).onError((error, stackTrace) {
+      isloadinglanguage.value = false;
     });
   }
 }

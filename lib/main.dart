@@ -1,19 +1,35 @@
+import 'package:animation_aba/modules/home/screens/home_screen.dart';
+import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/local_storage.dart';
+import 'package:animation_aba/utils/models/landuage_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'modules/slash/screens/slash_screen.dart';
+final controller = Get.put(SlashScreenController());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  // RequestConfiguration requestion =
-  //     RequestConfiguration(testDeviceIds: ["33BE2250B43518CCDA7DE426D04EE231"]);
-  // MobileAds.instance.updateRequestConfiguration(requestion);
+  controller.setLife();
   await Firebase.initializeApp();
   await LocalStorage.init();
+  controller.setupLanguages().then((value) => {
+        FirebaseFirestore.instance
+            .collection("languages")
+            .doc(value)
+            .get()
+            .then((value) {
+          Singleton.instance.languages.value =
+              LanguagesModel.fromJson(value.data()!);
+          controller.getiamge();
+          FlutterNativeSplash.remove();
+        })
+      });
   runApp(const MyApp());
 }
 
@@ -38,7 +54,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: const SlashScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

@@ -61,24 +61,27 @@ class RoomController extends GetxController {
   void submit(int type) async {
     isloadingCreateroom.value = true;
     final docuser = FirebaseFirestore.instance.collection("room").doc();
+    debugPrint("value ${roomNameTextEditController.value.text.trim()}");
     final room = RoomModel(
       createDate: DateTime.now().toString(),
       type: type,
       id: docuser.id,
-      name: roomNameTextEditController.value.text,
-      password: passwordTextEditController.value.text,
+      name: roomNameTextEditController.value.text.trim(),
+      password: passwordTextEditController.value.text.trim(),
       king: King(
-          card: Cardmodel(image: "", name: ""),
-          index: -1,
-          length: -1,
-          turn: false,
-          status: ''),
+        card: Cardmodel(image: "", name: ""),
+        index: -1,
+        length: -1,
+        turn: false,
+        status: '',
+      ),
       slave: King(
-          card: Cardmodel(image: "", name: ""),
-          index: -2,
-          length: -1,
-          turn: false,
-          status: ''),
+        card: Cardmodel(image: "", name: ""),
+        index: -2,
+        length: -1,
+        turn: false,
+        status: '',
+      ),
     );
     final json = room.toJson();
     await docuser.set(json).then((value) => {

@@ -2,13 +2,11 @@ import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/modules/settings/screens/customize_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../../utils/models/landuage_model.dart';
 import '../../game/screens/room_style.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -53,7 +51,8 @@ class SettingScreen extends StatelessWidget {
                               height: 20,
                             ),
                             Text(
-                                '''${Singleton.instance.languages.value.lawDetail}''',
+                                Singleton.instance.languages.value.lawDetail!
+                                    .replaceAll(r'\n', '\n'),
                                 style: TextStyle(
                                     color: Colors.white.withOpacity(0.7),
                                     fontSize: 18)),
@@ -74,168 +73,155 @@ class SettingScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 1000),
                     curve: Curves.ease,
                     opacity: controller.issetting.value ? 1 : 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
+                    child: Container(
+                      color: Colors.black,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
                       child: Container(
-                        color: Colors.black,
+                        padding: const EdgeInsets.only(left: 30, right: 30),
                         height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 30, right: 30),
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width / (3 / 2.5),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(10),
+                        width: MediaQuery.of(context).size.width / (3 / 2.5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 50,
+                            ),
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                  Icons.close_rounded,
+                                  size: 30,
+                                  color: AppColor.primary,
+                                )),
                           ),
-                          child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    top: 50,
-                                  ),
-                                  alignment: Alignment.topRight,
-                                  child: Icon(
-                                    Icons.close_rounded,
-                                    size: 30,
-                                    color: AppColor.primary,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "${Singleton.instance.languages.value.setting}",
-                                  style: TextStyle(
-                                      color: Colors.white.withOpacity(0.8),
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(const CustomizeScreen());
-                                  },
-                                  child: CustomPaint(
-                                    size: Size(
-                                        MediaQuery.of(context).size.width, 20),
-                                    painter: RoomStyle(),
-                                    child: SizedBox(
-                                      // padding: const EdgeInsets.only(left: 30, right: 30),
-                                      height: 40,
-                                      child: Center(
-                                        child: Text(
-                                          Singleton.instance.languages.value
-                                              .customize!,
-                                          style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
+                          const Spacer(),
+                          Text(
+                            "${Singleton.instance.languages.value.setting}",
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (controller.isloadinglanguage.value == false) {
+                                Get.to(const CustomizeScreen());
+                              }
+                            },
+                            child: CustomPaint(
+                              size: Size(MediaQuery.of(context).size.width, 20),
+                              painter: RoomStyle(),
+                              child: SizedBox(
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    Singleton
+                                        .instance.languages.value.customize!,
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.ontapLaw();
-                                  },
-                                  child: CustomPaint(
-                                    size: Size(
-                                        MediaQuery.of(context).size.width, 20),
-                                    painter: RoomStyle(),
-                                    child: SizedBox(
-                                      height: 40,
-                                      child: Center(
-                                        child: Text(
-                                          Singleton
-                                              .instance.languages.value.law!,
-                                          style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.ontapLaw();
+                            },
+                            child: CustomPaint(
+                              size: Size(MediaQuery.of(context).size.width, 20),
+                              painter: RoomStyle(),
+                              child: SizedBox(
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    Singleton.instance.languages.value.law!,
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                CustomPaint(
-                                  size: Size(
-                                      MediaQuery.of(context).size.width, 20),
-                                  painter: RoomStyle(),
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 30, right: 20),
-                                      height: 40,
-                                      child: Row(
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // CustomPaint(
+                          //   size: Size(
+                          //       MediaQuery.of(context).size.width, 20),
+                          //   painter: RoomStyle(),
+                          //   child: GestureDetector(
+                          //     onTap: () {},
+                          //     child: Container(
+                          //       padding: const EdgeInsets.only(
+                          //           left: 30, right: 20),
+                          //       height: 40,
+                          //       child: Row(
+                          //         mainAxisAlignment:
+                          //             MainAxisAlignment.center,
+                          //         children: [
+                          //           Text(
+                          //             Singleton.instance.languages.value
+                          //                 .sound!,
+                          //             style: TextStyle(
+                          //               color:
+                          //                   Colors.white.withOpacity(0.7),
+                          //               fontSize: 15,
+                          //             ),
+                          //           ),
+                          //           const Icon(
+                          //             Icons.music_note,
+                          //             color: Colors.white,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          GestureDetector(
+                            onTap: () async {
+                              controller.fetchLanguage();
+                            },
+                            child: CustomPaint(
+                              size: Size(MediaQuery.of(context).size.width, 20),
+                              painter: RoomStyle(),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(left: 30, right: 30),
+                                height: 40,
+                                child: controller.isloadinglanguage.value
+                                    ? Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            Singleton.instance.languages.value
-                                                .sound!,
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          const Icon(
-                                            Icons.music_note,
+                                          LoadingAnimationWidget
+                                              .staggeredDotsWave(
                                             color: Colors.white,
-                                          )
+                                            size: 25,
+                                          ),
                                         ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    final SharedPreferences obj =
-                                        await SharedPreferences.getInstance();
-                                    if (Singleton.instance.lang.value == 'kh') {
-                                      Singleton.instance.lang.value = "en";
-                                      obj.setString("language", "en");
-                                    } else {
-                                      Singleton.instance.lang.value = "kh";
-                                      obj.setString("language", "kh");
-                                    }
-                                    debugPrint(Singleton.instance.lang.value);
-                                    FirebaseFirestore.instance
-                                        .collection("languages")
-                                        .doc(Singleton.instance.lang.value)
-                                        .get()
-                                        .then((value) {
-                                      Singleton.instance.languages.value =
-                                          LanguagesModel.fromJson(
-                                              value.data()!);
-                                    });
-                                  },
-                                  child: CustomPaint(
-                                    size: Size(
-                                        MediaQuery.of(context).size.width, 20),
-                                    painter: RoomStyle(),
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 30, right: 30),
-                                      height: 40,
-                                      child: Row(
+                                      )
+                                    : Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -266,15 +252,14 @@ class SettingScreen extends StatelessWidget {
                                           )
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                const Spacer(),
-                                const SizedBox(
-                                  height: 40,
-                                ),
-                              ]),
-                        ),
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                        ]),
                       ),
                     ),
                   ),

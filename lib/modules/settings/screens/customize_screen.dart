@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               Icons.arrow_back,
               color: Colors.white,
             ),
+            hoverColor: AppColor.primary,
             onPressed: () {
               Get.back();
             },

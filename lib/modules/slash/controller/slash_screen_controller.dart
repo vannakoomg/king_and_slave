@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SlashScreenController extends GetxController {
+  final isFirst = false.obs;
   void getiamge() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('king') == null) {
@@ -33,6 +34,11 @@ class SlashScreenController extends GetxController {
       Future.delayed(const Duration(milliseconds: 2000), () {
         Get.to(() => const HomeScreen());
       });
+    }
+    if (obj.getString('first') == null) {
+      isFirst.value = true;
+    } else {
+      isFirst.value = false;
     }
   }
 

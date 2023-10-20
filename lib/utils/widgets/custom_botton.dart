@@ -30,7 +30,7 @@ class CustomBotton extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color:
-                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.5),
+                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.8),
                 spreadRadius: isdisble ? 1 : 10,
                 blurRadius: isdisble ? 30 : 30,
                 offset: const Offset(0, 2),

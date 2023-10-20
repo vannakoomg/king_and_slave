@@ -30,7 +30,7 @@ flutter_native_splash:
   android: true
   ios: true
   color: "#000000"
-  image: assets/background/slash.png
+  image: assets/background/logo.png
 
 
 

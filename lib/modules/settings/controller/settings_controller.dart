@@ -6,11 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingController extends GetxController {
   final back = [
-    "assets/back/1.png",
-    "assets/back/2.png",
-    "assets/back/3.png",
-    "assets/back/4.png",
-    "assets/back/5.png",
+    "assets/back/1.svg",
+    "assets/back/2.svg",
+    "assets/back/3.svg",
+    "assets/back/4.svg",
+    "assets/back/5.svg",
   ].obs;
   final map = [
     "assets/map/1.svg",

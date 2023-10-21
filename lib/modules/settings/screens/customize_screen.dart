@@ -276,7 +276,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         offset: const Offset(0, 3))
                                   ],
                                 ),
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   Singleton.instance.back.value,
                                   fit: BoxFit.fill,
                                 ),
@@ -308,7 +308,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           decoration: const BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Image.asset(
+                                          child: SvgPicture.asset(
                                             e.value,
                                             fit: BoxFit.fill,
                                           ),

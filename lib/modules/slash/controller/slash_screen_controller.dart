@@ -19,7 +19,7 @@ class SlashScreenController extends GetxController {
           'slave', "assets/slave/${Random().nextInt(3) + 1}.svg");
       await obj.setString(
           'soldier', "assets/soldier/${Random().nextInt(3) + 1}.svg");
-      await obj.setString('back', "assets/back/1.png");
+      await obj.setString('back', "assets/back/4.svg");
       Singleton.instance.back.value = obj.getString('back')!;
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
@@ -29,20 +29,15 @@ class SlashScreenController extends GetxController {
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
       Singleton.instance.slave.value = obj.getString('slave')!;
-    }
-    if (obj.getString('first') == null) {
-      isFirst.value = true;
-    } else {
-      isFirst.value = false;
     }
   }
 
   Future<String> setupLanguages() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('language') == null) {
-      await obj.setString('language', 'kh');
+      await obj.setString('language', 'en');
       Singleton.instance.lang.value = obj.getString("language")!;
-      return "kh";
+      return "en";
     } else {
       Singleton.instance.lang.value = obj.getString("language")!;
       return obj.getString("language")!;

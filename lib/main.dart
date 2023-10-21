@@ -32,7 +32,7 @@ void main() async {
           Singleton.instance.languages.value =
               LanguagesModel.fromJson(value.data()!);
           controller.getiamge();
-          await Future.delayed(const Duration(milliseconds: 500), () {
+          await Future.delayed(const Duration(milliseconds: 1500), () {
             FlutterNativeSplash.remove();
           });
         })

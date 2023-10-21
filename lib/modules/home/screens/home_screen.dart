@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    controller.checkIsFirst();
     super.initState();
   }
 
@@ -133,23 +134,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if (slashScreencontroller.isFirst.value)
+              if (controller.isFirst.value)
                 Container(
                   color: Colors.black.withOpacity(0.9),
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
+                  padding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: MediaQuery.of(context).padding.top + 60),
                   child: SingleChildScrollView(
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "${Singleton.instance.languages.value.law}",
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 25),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Text(
                               Singleton.instance.languages.value.lawDetail!
@@ -167,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           CustomBotton(
                               title: "${Singleton.instance.languages.value.ok}",
                               ontap: () async {
-                                slashScreencontroller.isFirst.value = false;
+                                controller.isFirst.value = false;
                                 final SharedPreferences obj =
                                     await SharedPreferences.getInstance();
                                 obj.setString('first', 'have');

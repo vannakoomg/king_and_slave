@@ -87,7 +87,7 @@ class _GameScreenState extends State<GameScreen> {
                                       height: 0.2 * w + 0.2 * w / 3,
                                       width: 0.2 * w,
                                       color: Colors.transparent,
-                                      child: Image.asset(
+                                      child: SvgPicture.asset(
                                         "${Singleton.instance.back}",
                                         fit: BoxFit.fill,
                                       ),
@@ -139,7 +139,7 @@ class _GameScreenState extends State<GameScreen> {
                                                       "${controller.enemyCard.value.image}",
                                                       fit: BoxFit.fitHeight,
                                                     )
-                                                  : Image.asset(
+                                                  : SvgPicture.asset(
                                                       "${Singleton.instance.back}",
                                                       fit: BoxFit.fitHeight,
                                                     ),

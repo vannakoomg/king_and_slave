@@ -316,7 +316,7 @@ class Controller extends GetxController {
       } else if (yourCard.value.name == enemyCard.value.name) {
         status.value = "equal";
         isStart.value = false;
-        Future.delayed(const Duration(milliseconds: 3000), () {
+        Future.delayed(const Duration(milliseconds: 1500), () {
           status.value = "";
           isStart.value = true;
         });

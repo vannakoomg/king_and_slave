@@ -8,6 +8,7 @@ import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +28,8 @@ class _GameScreenState extends State<GameScreen> {
   final roomController = Get.put(RoomController());
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     controller.type.value = widget.you;
     controller.roomId.value = widget.id.toString();
     controller.checkTime();
@@ -327,11 +330,6 @@ class _GameScreenState extends State<GameScreen> {
                             const LetStart(),
                           if (controller.isShowTime.value)
                             CountTimte(time: controller.time.value),
-                          //  if (controller.yourWin.value)
-                          // CustomResult(
-                          //     status: "surrender",
-                          //     roomId: controller.roomId.value),
-
                           if (controller.status.value != "")
                             CustomResult(
                               status: controller.status.value,

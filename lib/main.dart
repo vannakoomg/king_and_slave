@@ -11,23 +11,30 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 final controller = Get.put(SlashScreenController());
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  controller.setLife();
+  WidgetsBinding.instance
+      .addObserver(LifecycleEventHandler(detachedCallBack: () async {
+    debugPrint("khmer sl khmer 01");
+  }, resumeCallBack: () async {
+    debugPrint("khmer sl khmer 02");
+  }));
   await Firebase.initializeApp();
   await LocalStorage.init();
+  await controller.setLife();
   controller.setupLanguages().then((value) => {
         FirebaseFirestore.instance
             .collection("languages")
             .doc(value)
             .get()
-            .then((value) {
+            .then((value) async {
           Singleton.instance.languages.value =
               LanguagesModel.fromJson(value.data()!);
           controller.getiamge();
-          FlutterNativeSplash.remove();
+          await Future.delayed(const Duration(milliseconds: 500), () {
+            FlutterNativeSplash.remove();
+          });
         })
       });
   runApp(const MyApp());
@@ -58,4 +65,51 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  LifecycleEventHandler(
+      {required this.resumeCallBack, required this.detachedCallBack});
+
+  final VoidCallback resumeCallBack;
+  final VoidCallback detachedCallBack;
+
+//  @override
+//  Future<bool> didPopRoute()
+
+//  @override
+//  void didHaveMemoryPressure
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        detachedCallBack();
+        break;
+      case AppLifecycleState.resumed:
+        resumeCallBack();
+        break;
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
+    }
+//     _log.finest('''
+// =============================================================
+//                $state
+// =============================================================
+// ''');
+  }
+
+//  @override
+//  void didChangeLocale(Locale locale)
+
+//  @override
+//  void didChangeTextScaleFactor()
+
+//  @override
+//  void didChangeMetrics();
+
+//  @override
+//  Future<bool> didPushRoute(String route)
 }

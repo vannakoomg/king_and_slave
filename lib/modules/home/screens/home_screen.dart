@@ -115,18 +115,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: 0,
                   right: 0,
                   child: SizedBox(
-                    height: 70,
-                    width: 70,
+                    height: 80,
+                    width: 80,
                     child: CustomPaint(
                       size: const Size(100, 100),
                       painter: Customsetting(),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 25, left: 20),
+                        padding: const EdgeInsets.only(top: 30, left: 20),
                         child: IconButton(
                           icon: const Icon(
                             Icons.settings,
                             color: Colors.black,
-                            size: 28,
+                            size: 30,
                           ),
                           onPressed: () {
                             Get.to(const SettingScreen(),

@@ -33,27 +33,47 @@ class _HomeScreenState extends State<HomeScreen> {
       onWillPop: () async => false,
       child: Scaffold(
         body: Obx(
-          () => SafeArea(
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: Column(children: [
-                    Expanded(
-                      child: Stack(children: [
-                        Row(
-                          children: [
-                            Expanded(
-                                child: GestureDetector(
-                              onTap: () async {
-                                Get.to(() => const RoomScreen(), arguments: 0);
+          () => Stack(
+            children: [
+              SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: Column(children: [
+                  Expanded(
+                    child: Stack(children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              child: GestureDetector(
+                            onTap: () async {
+                              Get.to(() => const RoomScreen(), arguments: 0);
+                            },
+                            child: Container(
+                              color: AppColor.primary,
+                              child: Center(
+                                  child: SvgPicture.asset(
+                                "assets/background/king.svg",
+                                height:
+                                    (MediaQuery.of(context).size.width / 2) *
+                                        0.8,
+                                width: (MediaQuery.of(context).size.width / 2) *
+                                    0.8,
+                              )),
+                            ),
+                          )),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  () => const RoomScreen(),
+                                  arguments: 1,
+                                );
                               },
                               child: Container(
-                                color: AppColor.primary,
+                                color: Colors.black,
                                 child: Center(
                                     child: SvgPicture.asset(
-                                  "assets/background/king.svg",
+                                  "assets/background/slave.svg",
                                   height:
                                       (MediaQuery.of(context).size.width / 2) *
                                           0.8,
@@ -62,128 +82,101 @@ class _HomeScreenState extends State<HomeScreen> {
                                           0.8,
                                 )),
                               ),
-                            )),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                    () => const RoomScreen(),
-                                    arguments: 1,
-                                  );
-                                },
-                                child: Container(
-                                  color: Colors.black,
-                                  child: Center(
-                                      child: SvgPicture.asset(
-                                    "assets/background/slave.svg",
-                                    height: (MediaQuery.of(context).size.width /
-                                            2) *
-                                        0.8,
-                                    width: (MediaQuery.of(context).size.width /
-                                            2) *
-                                        0.8,
-                                  )),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ]),
-                    ),
-                  ]),
-                ),
-                Positioned(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 10,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: Row(
-                        children: [
-                          for (int i = 0;
-                              i < Singleton.instance.life.value;
-                              ++i)
-                            const Icon(
-                              Icons.favorite,
-                              size: 30,
-                              color: Colors.black,
                             ),
+                          )
                         ],
                       ),
-                    )),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
+                    ]),
+                  ),
+                ]),
+              ),
+              Positioned(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 10,
                   child: SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: CustomPaint(
-                      size: const Size(100, 100),
-                      painter: Customsetting(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 30, left: 20),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        for (int i = 0; i < Singleton.instance.life.value; ++i)
+                          const Icon(
+                            Icons.favorite,
                             size: 30,
+                            color: Colors.black,
                           ),
-                          onPressed: () {
-                            Get.to(const SettingScreen(),
-                                transition: Transition.noTransition);
-                          },
+                      ],
+                    ),
+                  )),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: SizedBox(
+                  height: 80,
+                  width: 80,
+                  child: CustomPaint(
+                    size: const Size(100, 100),
+                    painter: Customsetting(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30, left: 20),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                          size: 30,
                         ),
+                        onPressed: () {
+                          Get.to(const SettingScreen(),
+                              transition: Transition.noTransition);
+                        },
                       ),
                     ),
                   ),
                 ),
-                if (slashScreencontroller.isFirst.value)
-                  Container(
-                    color: Colors.black.withOpacity(0.9),
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 40),
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "${Singleton.instance.languages.value.law}",
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 25),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                                Singleton.instance.languages.value.lawDetail!
-                                    .replaceAll(r'\n', '\n'),
-                                style: TextStyle(
-                                    color: Colors.white.withOpacity(0.7),
-                                    fontSize: 18)),
-                            SvgPicture.asset(
-                              "assets/setting/appsara.svg",
-                              height: 100,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            CustomBotton(
-                                title:
-                                    "${Singleton.instance.languages.value.ok}",
-                                ontap: () async {
-                                  slashScreencontroller.isFirst.value = false;
-                                  final SharedPreferences obj =
-                                      await SharedPreferences.getInstance();
-                                  obj.setString('first', 'have');
-                                },
-                                isdisble: false)
-                          ]),
-                    ),
+              ),
+              if (slashScreencontroller.isFirst.value)
+                Container(
+                  color: Colors.black.withOpacity(0.9),
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
+                  child: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${Singleton.instance.languages.value.law}",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 25),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                              Singleton.instance.languages.value.lawDetail!
+                                  .replaceAll(r'\n', '\n'),
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.7),
+                                  fontSize: 18)),
+                          SvgPicture.asset(
+                            "assets/setting/appsara.svg",
+                            height: 100,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          CustomBotton(
+                              title: "${Singleton.instance.languages.value.ok}",
+                              ontap: () async {
+                                slashScreencontroller.isFirst.value = false;
+                                final SharedPreferences obj =
+                                    await SharedPreferences.getInstance();
+                                obj.setString('first', 'have');
+                              },
+                              isdisble: false)
+                        ]),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),

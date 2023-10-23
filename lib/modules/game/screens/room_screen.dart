@@ -253,9 +253,11 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 } else {
                                   return Expanded(
                                     child: Center(
-                                        child: CircularProgressIndicator(
-                                      color: AppColor.primary,
-                                    )),
+                                      child: LoadingAnimationWidget
+                                          .staggeredDotsWave(
+                                              color: AppColor.primary,
+                                              size: 25),
+                                    ),
                                   );
                                 }
                               }),

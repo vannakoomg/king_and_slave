@@ -5,7 +5,7 @@ import 'package:animation_aba/modules/game/widgets/count_time.dart';
 import 'package:animation_aba/modules/game/widgets/custom_result.dart';
 import 'package:animation_aba/modules/game/widgets/letstart.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:animation_aba/utils/widgets/loading.dart';
+import 'package:animation_aba/utils/widgets/custom_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,12 +83,11 @@ class _GameScreenState extends State<GameScreen> {
                                     left: controller.positionEnemyCard[e.key].x,
                                     child: Container(
                                       padding: const EdgeInsets.only(
-                                          right: 5, left: 5),
+                                          right: 4, left: 4),
                                       height: 0.2 * w + 0.2 * w / 3,
                                       width: 0.2 * w,
-                                      color: Colors.transparent,
                                       child: SvgPicture.asset(
-                                        "${Singleton.instance.back}",
+                                        "assets/back/1.svg",
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -119,7 +118,7 @@ class _GameScreenState extends State<GameScreen> {
                                             alignment: Alignment.center,
                                             child: Container(
                                               padding: const EdgeInsets.only(
-                                                  right: 5, left: 5),
+                                                  right: 4, left: 4),
                                               height: 0.2 * w + 0.2 * w / 3,
                                               width: 0.2 * w,
                                               decoration: BoxDecoration(
@@ -137,11 +136,11 @@ class _GameScreenState extends State<GameScreen> {
                                               child: controller.openEnemy.value
                                                   ? SvgPicture.asset(
                                                       "${controller.enemyCard.value.image}",
-                                                      fit: BoxFit.fitHeight,
+                                                      fit: BoxFit.fill,
                                                     )
                                                   : SvgPicture.asset(
-                                                      "${Singleton.instance.back}",
-                                                      fit: BoxFit.fitHeight,
+                                                      "assets/back/1.svg",
+                                                      fit: BoxFit.fill,
                                                     ),
                                             ));
                                       },
@@ -198,8 +197,8 @@ class _GameScreenState extends State<GameScreen> {
                                         decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
-                                                color:
-                                                    Colors.white.withOpacity(0),
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
                                                 blurRadius: 50,
                                                 spreadRadius: 1,
                                                 offset: const Offset(0, 3))
@@ -226,11 +225,16 @@ class _GameScreenState extends State<GameScreen> {
                                         height: 0.2 * w + 0.2 * w / 3,
                                         width: 0.2 * w,
                                         clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
+                                        decoration: const BoxDecoration(
+                                            // boxShadow: [
+                                            //   BoxShadow(
+                                            //       color: Colors.white
+                                            //           .withOpacity(0.8),
+                                            //       blurRadius: 50,
+                                            //       spreadRadius: 1,
+                                            //       offset: const Offset(0, 3))
+                                            // ],
+                                            ),
                                         child: SvgPicture.asset(
                                             controller.yourCard.value.image!,
                                             fit: BoxFit.fill),
@@ -257,9 +261,6 @@ class _GameScreenState extends State<GameScreen> {
                                                 spreadRadius: 1,
                                                 offset: const Offset(0, 3))
                                           ],
-                                          color: Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
                                         ),
                                         child: SvgPicture.asset(
                                             controller.yourCard.value.image!,
@@ -270,14 +271,14 @@ class _GameScreenState extends State<GameScreen> {
                               ],
                             ),
                           ),
-                          // controller.showLoading.value == true
-                          //     ? const Customloading()
-                          //     : const SizedBox(),
+                          controller.showLoading.value == true
+                              ? const Customloading()
+                              : const SizedBox(),
                           AnimatedPositioned(
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.ease,
-                            left: controller.sword.value ? -40 : -125,
-                            top: h / 2 - 30,
+                            left: controller.sword.value ? -40 : -115,
+                            top: h / 2 - 20,
                             child: SizedBox(
                               height: 40,
                               width: 180,
@@ -285,7 +286,7 @@ class _GameScreenState extends State<GameScreen> {
                                 children: [
                                   SvgPicture.asset(
                                     "assets/sword/1.svg",
-                                    height: 50,
+                                    height: 60,
                                     width: 140,
                                   ),
                                   Row(children: [
@@ -358,7 +359,7 @@ class _GameScreenState extends State<GameScreen> {
                     ));
               } else {
                 return controller.status.value == ''
-                    ? const SizedBox()
+                    ? const Customloading()
                     : const SizedBox();
               }
             },

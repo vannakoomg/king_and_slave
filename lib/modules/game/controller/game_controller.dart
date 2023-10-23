@@ -42,7 +42,7 @@ class Controller extends GetxController {
   final gamePlay = false.obs;
   final status = "".obs;
   final isShowAdMob = false.obs;
-  final timeEnemy = 15.obs;
+  final timeEnemy = 120.obs;
   final ischeckEnemy = true.obs;
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
@@ -85,23 +85,23 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
-    // if (!isPlaying.value) {
-    istouchCard.value = true;
-    if (neww.x! < 0) {
-      neww.x = 00;
+    if (!isPlaying.value) {
+      istouchCard.value = true;
+      if (neww.x! < 0) {
+        neww.x = 00;
+      }
+      if (neww.x! > screenWight.value - screenWight.value * 0.2) {
+        neww.x = screenWight.value - screenWight.value * 0.2;
+      }
+      if (neww.y! < 0) {
+        neww.y = 0;
+      }
+      if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
+        neww.y = screenHigh.value / 2 - highOfCard.value + 5;
+      }
+      newPostion.value = neww;
+      positionYourCard[index] = neww;
     }
-    if (neww.x! > screenWight.value - screenWight.value * 0.2) {
-      neww.x = screenWight.value - screenWight.value * 0.2;
-    }
-    if (neww.y! < 0) {
-      neww.y = 0;
-    }
-    if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
-      neww.y = screenHigh.value / 2 - highOfCard.value + 5;
-    }
-    newPostion.value = neww;
-    positionYourCard[index] = neww;
-    // }
   }
 
   Timer? timer;
@@ -224,17 +224,18 @@ class Controller extends GetxController {
 
   void onVerticalDragEnd(int index) {
     debugPrint("value $type");
-    // if (!isPlaying.value) {
     if (positionYourCard[index].y! + 40 >
         screenHigh.value / 2 - highOfCard.value) {
       time.value = 120;
       isStart.value = false;
       newPostion.value = positionYourCard[index];
       isPlaying.value = true;
+      debugPrint("remove at $index");
       positionYourCard.removeAt(index);
       listYourCard.removeAt(index);
-      Future.delayed(const Duration(milliseconds: 50), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         positionYourCard.clear();
+        debugPrint(" romver kkkk$listYourCard");
         istouchCard.value = false;
         for (int i = 0; i < listYourCard.length; ++i) {
           positionYourCard.add(Postion(
@@ -278,18 +279,16 @@ class Controller extends GetxController {
       positionYourCard[index] = oldPostion.value;
       istouchCard.value = false;
     }
-    debugPrint("room id ${roomId.value}");
-    // }
   }
 
   void onVerticalDragStart(int i) {
     sword.value = false;
-    // if (!isPlaying.value) {
-    isPlaying.value = false;
-    oldPostion.value = positionYourCard[i];
-    index.value = i;
-    yourCard.value = listYourCard[i];
-    // }
+    if (!isPlaying.value) {
+      isPlaying.value = false;
+      oldPostion.value = positionYourCard[i];
+      index.value = i;
+      yourCard.value = listYourCard[i];
+    }
   }
 
   void enmey(int index, Cardmodel enmey) {
@@ -324,7 +323,7 @@ class Controller extends GetxController {
     rotate.value = 3.14;
     isStart.value = false;
     ischeckEnemy.value = true;
-    timeEnemy.value = 20;
+    timeEnemy.value = 120;
     time.value = 120;
     Future.delayed(const Duration(milliseconds: 1500), () {
       isStart.value = true;

@@ -270,9 +270,9 @@ class _GameScreenState extends State<GameScreen> {
                               ],
                             ),
                           ),
-                          controller.showLoading.value == true
-                              ? const Customloading()
-                              : const SizedBox(),
+                          // controller.showLoading.value == true
+                          //     ? const Customloading()
+                          //     : const SizedBox(),
                           AnimatedPositioned(
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.ease,
@@ -358,7 +358,7 @@ class _GameScreenState extends State<GameScreen> {
                     ));
               } else {
                 return controller.status.value == ''
-                    ? const Customloading()
+                    ? const SizedBox()
                     : const SizedBox();
               }
             },

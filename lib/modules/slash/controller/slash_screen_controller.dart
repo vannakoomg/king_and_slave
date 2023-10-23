@@ -68,8 +68,6 @@ class SlashScreenController extends GetxController {
         await obj.setString(
             'date', DateFormat('yyyy-MM-dd').format(DateTime.now()));
         await obj.setInt('life', 5);
-        debugPrint(
-            "uuuuuuuuu ${Singleton.instance.life.value} ${obj.getInt('life')} ${obj.getString('date')}");
       }
     }
   }

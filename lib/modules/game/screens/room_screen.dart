@@ -161,6 +161,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                   });
                                                         }
                                                       } else {
+                                                        controller.isNoMoreLife
+                                                            .value = true;
                                                         debugPrint(
                                                             "You have no life more ");
                                                       }

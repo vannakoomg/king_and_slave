@@ -15,11 +15,11 @@ class Customloading extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LoadingAnimationWidget.staggeredDotsWave(
-                color: Colors.white, size: 25),
-            const SizedBox(
-              width: 10,
-            ),
+            // LoadingAnimationWidget.staggeredDotsWave(
+            //     color: Colors.white, size: 25),
+            // const SizedBox(
+            //   width: 10,
+            // ),
             Text(
               "${Singleton.instance.languages.value.wait}",
               style: const TextStyle(
@@ -30,14 +30,14 @@ class Customloading extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            AnimatedRotation(
-              turns: 0.5,
-              duration: const Duration(minutes: 0),
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: Colors.white,
-                size: 25,
-              ),
-            )
+            // AnimatedRotation(
+            //   turns: 0.5,
+            //   duration: const Duration(minutes: 0),
+            //   child: LoadingAnimationWidget.staggeredDotsWave(
+            //     color: Colors.white,
+            //     size: 25,
+            //   ),
+            // )
           ],
         ),
       ),

@@ -42,6 +42,8 @@ class Controller extends GetxController {
   final gamePlay = false.obs;
   final status = "".obs;
   final isShowAdMob = false.obs;
+  final timeEnemy = 15.obs;
+  final ischeckEnemy = true.obs;
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
     screenWight.value = w;
@@ -83,23 +85,23 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
-    if (!isPlaying.value) {
-      istouchCard.value = true;
-      if (neww.x! < 0) {
-        neww.x = 00;
-      }
-      if (neww.x! > screenWight.value - screenWight.value * 0.2) {
-        neww.x = screenWight.value - screenWight.value * 0.2;
-      }
-      if (neww.y! < 0) {
-        neww.y = 0;
-      }
-      if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
-        neww.y = screenHigh.value / 2 - highOfCard.value + 5;
-      }
-      newPostion.value = neww;
-      positionYourCard[index] = neww;
+    // if (!isPlaying.value) {
+    istouchCard.value = true;
+    if (neww.x! < 0) {
+      neww.x = 00;
     }
+    if (neww.x! > screenWight.value - screenWight.value * 0.2) {
+      neww.x = screenWight.value - screenWight.value * 0.2;
+    }
+    if (neww.y! < 0) {
+      neww.y = 0;
+    }
+    if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
+      neww.y = screenHigh.value / 2 - highOfCard.value + 5;
+    }
+    newPostion.value = neww;
+    positionYourCard[index] = neww;
+    // }
   }
 
   Timer? timer;
@@ -115,11 +117,12 @@ class Controller extends GetxController {
     if (status.value == "") {
       timer = Timer.periodic(const Duration(milliseconds: 1000),
           (Timer timer) async {
+        final play =
+            FirebaseFirestore.instance.collection('room').doc(roomId.value);
         if (isStart.value && time.value > 0 && status.value == "") {
           time.value--;
+
           if (time.value == 0) {
-            final play =
-                FirebaseFirestore.instance.collection('room').doc(roomId.value);
             if (type.value == 0) {
               play.update({
                 "king.status": "lose",
@@ -130,6 +133,25 @@ class Controller extends GetxController {
               });
             }
             status.value = "you_surrender";
+          }
+        }
+        if (isStart.value && timeEnemy.value > 0 && status.value == "") {
+          if (ischeckEnemy.value) {
+            timeEnemy.value--;
+            debugPrint("enemey time ${timeEnemy.value}");
+          }
+          if (timeEnemy.value <= 0) {
+            debugPrint("eneme_surrender ");
+            if (type.value == 0) {
+              play.update({
+                "slave.status": "lose",
+              });
+            } else {
+              play.update({
+                "king.status": "lose",
+              });
+            }
+            status.value = "enemy_surrender";
           }
         }
       });
@@ -183,6 +205,7 @@ class Controller extends GetxController {
           }
           if (type.value == 0) {
             if (roomModel.slave!.turn == true) {
+              ischeckEnemy.value = false;
               enmey(
                 roomModel.slave!.index!,
                 roomModel.slave!.card!,
@@ -191,6 +214,7 @@ class Controller extends GetxController {
           } else {
             if (roomModel.king!.turn == true) {
               enmey(roomModel.king!.index!, roomModel.king!.card!);
+              ischeckEnemy.value = false;
             }
           }
         }
@@ -200,75 +224,72 @@ class Controller extends GetxController {
 
   void onVerticalDragEnd(int index) {
     debugPrint("value $type");
-    if (!isPlaying.value) {
-      if (positionYourCard[index].y! + 40 >
-          screenHigh.value / 2 - highOfCard.value) {
-        time.value = 120;
-        isStart.value = false;
-        newPostion.value = positionYourCard[index];
-        isPlaying.value = true;
-        positionYourCard.removeAt(index);
-        listYourCard.removeAt(index);
-        Future.delayed(const Duration(milliseconds: 50), () {
-          positionYourCard.clear();
-          istouchCard.value = false;
-          for (int i = 0; i < listYourCard.length; ++i) {
-            positionYourCard.add(Postion(
-                x: i * 0.2 * screenWight.value +
-                    (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
-                y: 10));
-          }
-        });
-        final play =
-            FirebaseFirestore.instance.collection('room').doc(roomId.value);
-        if (type.value == 0) {
-          play.update({
-            "king": {
-              "card": {
-                "image": yourCard.value.image,
-                "name": yourCard.value.name
-              },
-              "index": index,
-              "length": listYourCard.length,
-              "turn": true,
-              "status": ""
-            },
-            "slave.turn": false
-          });
-        } else {
-          play.update({
-            "slave": {
-              "card": {
-                "image": yourCard.value.image,
-                "name": yourCard.value.name
-              },
-              "index": index,
-              "length": listYourCard.length,
-              "turn": true,
-              "status": ""
-            },
-            "king.turn": false
-          });
-        }
-      } else {
-        //  positionYourCard[index] =
-        positionYourCard[index] = oldPostion.value;
+    // if (!isPlaying.value) {
+    if (positionYourCard[index].y! + 40 >
+        screenHigh.value / 2 - highOfCard.value) {
+      time.value = 120;
+      isStart.value = false;
+      newPostion.value = positionYourCard[index];
+      isPlaying.value = true;
+      positionYourCard.removeAt(index);
+      listYourCard.removeAt(index);
+      Future.delayed(const Duration(milliseconds: 50), () {
+        positionYourCard.clear();
         istouchCard.value = false;
-        // Future.delayed(const Duration(milliseconds: 1000), () {
-        // });
+        for (int i = 0; i < listYourCard.length; ++i) {
+          positionYourCard.add(Postion(
+              x: i * 0.2 * screenWight.value +
+                  (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
+              y: 10));
+        }
+      });
+      final play =
+          FirebaseFirestore.instance.collection('room').doc(roomId.value);
+      if (type.value == 0) {
+        play.update({
+          "king": {
+            "card": {
+              "image": yourCard.value.image,
+              "name": yourCard.value.name
+            },
+            "index": index,
+            "length": listYourCard.length,
+            "turn": true,
+            "status": ""
+          },
+          "slave.turn": false
+        });
+      } else {
+        play.update({
+          "slave": {
+            "card": {
+              "image": yourCard.value.image,
+              "name": yourCard.value.name
+            },
+            "index": index,
+            "length": listYourCard.length,
+            "turn": true,
+            "status": ""
+          },
+          "king.turn": false
+        });
       }
-      debugPrint("room id ${roomId.value}");
+    } else {
+      positionYourCard[index] = oldPostion.value;
+      istouchCard.value = false;
     }
+    debugPrint("room id ${roomId.value}");
+    // }
   }
 
   void onVerticalDragStart(int i) {
     sword.value = false;
-    if (!isPlaying.value) {
-      isPlaying.value = false;
-      oldPostion.value = positionYourCard[i];
-      index.value = i;
-      yourCard.value = listYourCard[i];
-    }
+    // if (!isPlaying.value) {
+    isPlaying.value = false;
+    oldPostion.value = positionYourCard[i];
+    index.value = i;
+    yourCard.value = listYourCard[i];
+    // }
   }
 
   void enmey(int index, Cardmodel enmey) {
@@ -302,6 +323,8 @@ class Controller extends GetxController {
   void endGame(String id) {
     rotate.value = 3.14;
     isStart.value = false;
+    ischeckEnemy.value = true;
+    timeEnemy.value = 20;
     time.value = 120;
     Future.delayed(const Duration(milliseconds: 1500), () {
       isStart.value = true;

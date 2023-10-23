@@ -1,4 +1,5 @@
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
+import 'package:animation_aba/modules/law/law.dart';
 import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/local_storage.dart';
@@ -31,10 +32,12 @@ void main() async {
             .then((value) async {
           Singleton.instance.languages.value =
               LanguagesModel.fromJson(value.data()!);
+          debugPrint(
+              "yyyyyyyy ${Singleton.instance.languages.value.lawDetail}");
           controller.getiamge();
-          await Future.delayed(const Duration(milliseconds: 1500), () {
-            FlutterNativeSplash.remove();
-          });
+          // await Future.delayed(const Duration(milliseconds: 1500), () {
+          FlutterNativeSplash.remove();
+          // });
         })
       });
   runApp(const MyApp());

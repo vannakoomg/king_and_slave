@@ -9,7 +9,7 @@ class HomeController extends GetxController {
   void checkIsFirst() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('first') == null) {
-      await Future.delayed(const Duration(milliseconds: 1000), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         isFirst.value = true;
       });
     } else {

@@ -20,11 +20,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
-  final slashScreencontroller = Get.put(SlashScreenController());
-
   @override
   void initState() {
-    controller.checkIsFirst();
+    debugPrint("tttttttttt${Singleton.instance.languages.value.lawDetail}");
+    debugPrint("tttttttttt${Singleton.instance.languages.value.law}");
     super.initState();
   }
 
@@ -134,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if (controller.isFirst.value)
+              if (controller.isFirst.value == true)
                 Container(
                   color: Colors.black.withOpacity(0.9),
                   height: MediaQuery.of(context).size.height,
@@ -144,42 +143,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       right: 20,
                       top: MediaQuery.of(context).padding.top + 60),
                   child: SingleChildScrollView(
-                    child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${Singleton.instance.languages.value.law}",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                              Singleton.instance.languages.value.lawDetail!
-                                  .replaceAll(r'\n', '\n'),
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(0.7),
-                                  fontSize: 18)),
-                          SvgPicture.asset(
-                            "assets/setting/appsara.svg",
-                            height: 100,
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          CustomBotton(
-                              title: "${Singleton.instance.languages.value.ok}",
-                              ontap: () async {
-                                controller.isFirst.value = false;
-                                final SharedPreferences obj =
-                                    await SharedPreferences.getInstance();
-                                obj.setString('first', 'have');
-                              },
-                              isdisble: false)
-                        ]),
+                    child: Column(children: [
+                      Text(
+                        "${Singleton.instance.languages.value.law}",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          Singleton.instance.languages.value.lawDetail!
+                              .replaceAll(r'\n', '\n'),
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(0.7),
+                              fontSize: 18)),
+                      SvgPicture.asset(
+                        "assets/setting/appsara.svg",
+                        height: 100,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      // CustomBotton(
+                      //     title: "${Singleton.instance.languages.value.ok}",
+                      //     ontap: () async {
+                      //       controller.isFirst.value = false;
+                      //       final SharedPreferences obj =
+                      //           await SharedPreferences.getInstance();
+                      //       obj.setString('first', 'have');
+                      //     },
+                      //     isdisble: false)
+                    ]),
                   ),
                 ),
             ],

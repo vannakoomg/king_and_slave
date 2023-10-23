@@ -2,7 +2,6 @@
 
 import 'dart:math';
 
-import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,6 +28,11 @@ class SlashScreenController extends GetxController {
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;
       Singleton.instance.slave.value = obj.getString('slave')!;
+    }
+    if (obj.getString('first') == null) {
+      isFirst.value = false;
+    } else {
+      isFirst.value = false;
     }
   }
 

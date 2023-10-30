@@ -9,7 +9,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyBntGsgNA0Jb1cXfjGv12vqg1-uhONq-8U",
+      appId: "1:71139392601:web:5215e0bc8a0a949eac0548",
+      messagingSenderId: "XXX",
+      projectId: "king-slave",
+    ),
+  );
   await LocalStorage.init();
   WidgetsBinding.instance
       .addObserver(LifecycleEventHandler(detachedCallBack: () async {

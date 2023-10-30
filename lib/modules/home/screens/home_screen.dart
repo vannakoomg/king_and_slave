@@ -6,12 +6,10 @@ import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/language_model.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
-import 'package:animation_aba/utils/widgets/custom_no_life.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -83,6 +83,7 @@ class Controller extends GetxController {
       you.removeAt(j);
       enemy.removeAt(k);
     }
+    // debugPrint("image kkkk ${listEnemyCard[0].image//}")
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
@@ -98,8 +99,8 @@ class Controller extends GetxController {
       if (neww.y! < 0) {
         neww.y = 0;
       }
-      if (neww.y! > screenHigh.value / 2 - highOfCard.value - 10) {
-        neww.y = screenHigh.value / 2 - highOfCard.value - 10;
+      if (neww.y! > screenHigh.value / 2 - highOfCard.value - 5) {
+        neww.y = screenHigh.value / 2 - highOfCard.value - 5;
       }
       newPostion.value = neww;
       positionYourCard[index] = neww;
@@ -314,7 +315,7 @@ class Controller extends GetxController {
     openEnemy.value = false;
     positionEnemyCard[index] = Postion(
         x: screenWight / 2 - screenWight / 5 / 2,
-        y: screenHigh / 2 - highOfCard.value + 5);
+        y: screenHigh / 2 - highOfCard.value - 5);
     Future.delayed(const Duration(milliseconds: 500), () {
       showEnemy.value = true;
       newPostionEnmey.value = positionEnemyCard[index];
@@ -392,11 +393,6 @@ class Controller extends GetxController {
             "slave.status": "lose",
           });
         }
-        // interstitialAd!.show().then((value) {
-        //   Future.delayed(const Duration(milliseconds: 1000), () {
-        //     Get.back();
-        //   });
-        // });
         Future.delayed(const Duration(milliseconds: 500), () {
           Get.back();
         });

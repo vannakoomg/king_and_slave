@@ -41,7 +41,7 @@ class HomeController extends GetxController {
           'slave', "assets/slave/${Random().nextInt(3) + 1}.svg");
       await obj.setString(
           'soldier', "assets/soldier/${Random().nextInt(3) + 1}.svg");
-      await obj.setString('back', "assets/back/4.svg");
+      await obj.setString('back', "assets/back/${Random().nextInt(3) + 1}.svg");
       Singleton.instance.back.value = obj.getString('back')!;
       Singleton.instance.king.value = obj.getString('king')!;
       Singleton.instance.soldier.value = obj.getString('soldier')!;

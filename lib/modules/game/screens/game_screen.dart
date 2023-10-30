@@ -39,6 +39,12 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
+  void dispose() {
+    controller.timer!.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height -
@@ -89,7 +95,7 @@ class _GameScreenState extends State<GameScreen> {
                                       height: 0.2 * w + 0.2 * w / 3,
                                       width: 0.2 * w,
                                       child: SvgPicture.asset(
-                                        "assets/back/1.svg",
+                                        "${Singleton.instance.back}",
                                         fit: BoxFit.fill,
                                       ),
                                     ),

@@ -98,8 +98,8 @@ class Controller extends GetxController {
       if (neww.y! < 0) {
         neww.y = 0;
       }
-      if (neww.y! > screenHigh.value / 2 - highOfCard.value + 5) {
-        neww.y = screenHigh.value / 2 - highOfCard.value + 5;
+      if (neww.y! > screenHigh.value / 2 - highOfCard.value - 10) {
+        neww.y = screenHigh.value / 2 - highOfCard.value - 10;
       }
       newPostion.value = neww;
       positionYourCard[index] = neww;

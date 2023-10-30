@@ -43,7 +43,7 @@ class _GameScreenState extends State<GameScreen> {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
-        20;
+        MediaQuery.of(context).padding.bottom;
     controller.setDefault(w, h, widget.you);
     return WillPopScope(
       onWillPop: () async => true,

@@ -150,7 +150,6 @@ class Controller extends GetxController {
             status.value = "you_surrender";
           }
         }
-
         if (timeEnemy.value > 0) {
           if (ischeckEnemy.value) {
             timeEnemy.value--;
@@ -393,10 +392,13 @@ class Controller extends GetxController {
             "slave.status": "lose",
           });
         }
-        interstitialAd!.show().then((value) {
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            Get.back();
-          });
+        // interstitialAd!.show().then((value) {
+        //   Future.delayed(const Duration(milliseconds: 1000), () {
+        //     Get.back();
+        //   });
+        // });
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Get.back();
         });
       }
     }

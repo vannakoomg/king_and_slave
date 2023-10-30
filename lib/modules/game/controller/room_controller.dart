@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
@@ -35,6 +37,24 @@ class RoomController extends GetxController {
     }
   }
 
+  Color randomColors() {
+    int i = Random().nextInt(3);
+    if (i == 0) {
+      return const Color(0xff2a9d8f);
+    } else if (i == 1) {
+      return const Color(0xfff4a261);
+    } else if (i == 2) {
+      return const Color(0xffe76f51);
+    } else {
+      return const Color(0xffe9c46a);
+    }
+  }
+
+  int randomNumber() {
+    int i = Random().nextInt(10) + 1;
+    return i != 4 ? i : Random().nextInt(3);
+  }
+
   void onTapRoom({required List<RoomModel> roomList, required int type}) {
     if (Singleton.instance.life.value <= 0) {
       debugPrint("you have no life ");
@@ -61,7 +81,6 @@ class RoomController extends GetxController {
   void submit(int type) async {
     isloadingCreateroom.value = true;
     final docuser = FirebaseFirestore.instance.collection("room").doc();
-    debugPrint("value ${roomNameTextEditController.value.text.trim()}");
     final room = RoomModel(
       createDate: DateTime.now().toString(),
       type: type,
@@ -95,7 +114,6 @@ class RoomController extends GetxController {
 
   Future join() async {
     if (roomPassword.value == enterPasswordTextEditController.value.text) {
-      debugPrint("nice brother");
       final play =
           FirebaseFirestore.instance.collection('room').doc(roomId.value);
       play.update({"slave.index": -1}).then((value) => {
@@ -110,7 +128,7 @@ class RoomController extends GetxController {
   }
 
   RewardedAd? rewardedAd;
-  final reward = "ca-app-pub-3940256099942544/5224354917".obs;
+  final reward = "ca-app-pub-3625881169262046/6426404050".obs;
   void loadRewardedAd() {
     RewardedAd.load(
       adUnitId: reward.value,

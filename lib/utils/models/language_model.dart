@@ -30,6 +30,12 @@ class LanguagesModel {
   String? noLife;
   String? nextDayYouGetX5life;
   String? x5;
+  String? feedback;
+  String? feedbackTitle;
+  String? enterFeedback;
+  String? thankforFeedback;
+  String? tellTrueAnswer;
+  String? question;
 
   LanguagesModel(
       {this.enemySerrender,
@@ -62,9 +68,17 @@ class LanguagesModel {
       this.language,
       this.noLife,
       this.nextDayYouGetX5life,
-      this.x5});
+      this.x5,
+      this.feedback,
+      this.feedbackTitle,
+      this.enterFeedback,
+      this.thankforFeedback,
+      this.question,
+      this.tellTrueAnswer});
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
+    tellTrueAnswer = json['tell_true_answer'];
+    question = json['question'];
     enemySerrender = json['enemy_serrender'];
     king = json['king'];
     letsGo = json['lets_go'];
@@ -96,10 +110,16 @@ class LanguagesModel {
     noLife = json['no_life'];
     nextDayYouGetX5life = json['next_day_you_get_x5life'];
     x5 = json['x5'];
+    feedback = json['feedback'];
+    feedbackTitle = json['feedback_title'];
+    enterFeedback = json['enter_feedback'];
+    thankforFeedback = json['thankfor_feedback'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['tell_true_answer'] = tellTrueAnswer;
+    data['question'] = question;
     data['enemy_serrender'] = enemySerrender;
     data['king'] = king;
     data['lets_go'] = letsGo;
@@ -131,6 +151,10 @@ class LanguagesModel {
     data['no_life'] = noLife;
     data['next_day_you_get_x5life'] = nextDayYouGetX5life;
     data['x5'] = x5;
+    data['feedback'] = feedback;
+    data['feedback_title'] = feedbackTitle;
+    data['enter_feedback'] = enterFeedback;
+    data['thankfor_feedback'] = thankforFeedback;
     return data;
   }
 }

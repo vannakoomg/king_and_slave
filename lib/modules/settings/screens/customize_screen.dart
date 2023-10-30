@@ -18,6 +18,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
 
   @override
   void initState() {
+    controller.imageShow.value = '';
     controller.setImage();
     super.initState();
   }
@@ -51,7 +52,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         ),
         body: Obx(
           () => SafeArea(
-            child: Column(
+            child: Stack(
               children: [
                 Expanded(
                   child: Container(
@@ -67,24 +68,30 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           Row(
                             children: [
                               const SizedBox(
-                                width: 40,
+                                width: 50,
                               ),
-                              Container(
-                                height: w / 7 + w / 7 / 2,
-                                width: w / 7,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.white.withOpacity(0.8),
-                                        blurRadius: 50,
-                                        spreadRadius: 1,
-                                        offset: const Offset(0, 3))
-                                  ],
-                                ),
-                                child: SvgPicture.asset(
-                                  Singleton.instance.king.value,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.imageShow.value =
+                                      Singleton.instance.king.value;
+                                },
+                                child: Container(
+                                  height: w / 7 + w / 7 / 2,
+                                  width: w / 7,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.white.withOpacity(0.8),
+                                          blurRadius: 50,
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 3))
+                                    ],
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Singleton.instance.king.value,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -132,22 +139,28 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                               const SizedBox(
                                 width: 30,
                               ),
-                              Container(
-                                height: w / 7 + w / 7 / 2,
-                                width: w / 7,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.white.withOpacity(0.8),
-                                        blurRadius: 50,
-                                        spreadRadius: 1,
-                                        offset: const Offset(0, 3))
-                                  ],
-                                  color: Colors.transparent,
-                                ),
-                                child: SvgPicture.asset(
-                                  Singleton.instance.soldier.value,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.imageShow.value =
+                                      Singleton.instance.soldier.value;
+                                },
+                                child: Container(
+                                  height: w / 7 + w / 7 / 2,
+                                  width: w / 7,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.white.withOpacity(0.8),
+                                          blurRadius: 50,
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 3))
+                                    ],
+                                    color: Colors.transparent,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Singleton.instance.soldier.value,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -197,24 +210,30 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           Row(
                             children: [
                               const SizedBox(
-                                width: 30,
+                                width: 50,
                               ),
-                              Container(
-                                height: w / 7 + w / 7 / 2,
-                                width: w / 7,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.white.withOpacity(0.8),
-                                        blurRadius: 50,
-                                        spreadRadius: 1,
-                                        offset: const Offset(0, 3))
-                                  ],
-                                ),
-                                child: SvgPicture.asset(
-                                  Singleton.instance.slave.value,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.imageShow.value =
+                                      Singleton.instance.slave.value;
+                                },
+                                child: Container(
+                                  height: w / 7 + w / 7 / 2,
+                                  width: w / 7,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.white.withOpacity(0.8),
+                                          blurRadius: 50,
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 3))
+                                    ],
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Singleton.instance.slave.value,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -260,25 +279,31 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           Row(
                             children: [
                               const SizedBox(
-                                width: 30,
+                                width: 70,
                               ),
-                              Container(
-                                height: w / 7 + w / 7 / 2,
-                                width: w / 7,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.white.withOpacity(0.9),
-                                        blurRadius: 50,
-                                        spreadRadius: 1,
-                                        offset: const Offset(0, 3))
-                                  ],
-                                ),
-                                child: SvgPicture.asset(
-                                  Singleton.instance.back.value,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.imageShow.value =
+                                      Singleton.instance.back.value;
+                                },
+                                child: Container(
+                                  height: w / 7 + w / 7 / 2,
+                                  width: w / 7,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.white.withOpacity(0.9),
+                                          blurRadius: 50,
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 3))
+                                    ],
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Singleton.instance.back.value,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -329,6 +354,22 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     ),
                   ),
                 ),
+                if (controller.imageShow.value != '')
+                  GestureDetector(
+                    onTap: () {
+                      controller.imageShow.value = '';
+                    },
+                    child: Container(
+                      color: Colors.black.withOpacity(0.9),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          controller.imageShow.value,
+                          height: MediaQuery.of(context).size.width * 0.8,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                        ),
+                      ),
+                    ),
+                  )
               ],
             ),
           ),

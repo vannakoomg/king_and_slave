@@ -65,7 +65,7 @@ class CustomNoLife extends StatelessWidget {
                         ontapVideo();
                       },
                       child: Container(
-                        width: 100,
+                        width: 120,
                         height: 40,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -81,10 +81,6 @@ class CustomNoLife extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.ondemand_video_rounded,
-                              color: Colors.black,
-                            ),
                             const SizedBox(
                               width: 5,
                             ),

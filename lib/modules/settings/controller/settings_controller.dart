@@ -1,10 +1,11 @@
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:animation_aba/utils/models/landuage_model.dart';
+import 'package:animation_aba/utils/models/language_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingController extends GetxController {
+  final imageShow = ''.obs;
   final back = [
     "assets/back/1.svg",
     "assets/back/2.svg",
@@ -49,25 +50,19 @@ class SettingController extends GetxController {
     soldier.remove(Singleton.instance.soldier.value);
   }
 
-  final isLaw = false.obs;
-  final issetting = true.obs;
-  final isShowSetting = true.obs;
   final isShowLaw = false.obs;
+  final isanimatedlaw = false.obs;
   void ontapLaw() {
-    if (isloadinglanguage.value == false) {
-      issetting.value = false;
-      isShowLaw.value = true;
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        isShowSetting.value = false;
-      });
-    }
+    isShowLaw.value = true;
+    Future.delayed(const Duration(milliseconds: 100), () {
+      isanimatedlaw.value = true;
+    });
   }
 
   void ontapBackLaw() {
-    isLaw.value = false;
-    isShowSetting.value = true;
-    Future.delayed(const Duration(milliseconds: 10), () {
-      issetting.value = true;
+    isanimatedlaw.value = false;
+    Future.delayed(const Duration(milliseconds: 400), () {
+      isShowLaw.value = false;
     });
   }
 

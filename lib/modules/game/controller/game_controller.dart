@@ -42,8 +42,9 @@ class Controller extends GetxController {
   final gamePlay = false.obs;
   final status = "".obs;
   final isShowAdMob = false.obs;
-  final timeEnemy = 120.obs;
+  final timeEnemy = 0.obs;
   final ischeckEnemy = true.obs;
+  final isRedLine = false.obs;
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
     screenWight.value = w;
@@ -62,7 +63,7 @@ class Controller extends GetxController {
     listEnemyCard.clear();
     for (int i = 0; i < 5; ++i) {
       positionYourCard.add(Postion(x: i * 0.2 * w, y: 10));
-      positionEnemyCard.add(Postion(x: i * 0.2 * w, y: 10));
+      positionEnemyCard.add(Postion(x: i * 0.2 * w, y: 0));
       int j = Random().nextInt(you.length);
       int k = Random().nextInt(enemy.length);
       listYourCard.add(Cardmodel(
@@ -86,6 +87,7 @@ class Controller extends GetxController {
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
     if (!isPlaying.value) {
+      // for get new posstion
       istouchCard.value = true;
       if (neww.x! < 0) {
         neww.x = 00;
@@ -101,6 +103,20 @@ class Controller extends GetxController {
       }
       newPostion.value = neww;
       positionYourCard[index] = neww;
+      // for show red line
+      positionYourCard[index].y! + 40 > screenHigh.value / 2 - highOfCard.value
+          ? isRedLine.value = true
+          : isRedLine.value = false;
+      // for change card posstion
+      // debugPrint("new pos ${newPostion.value.x}");
+      // if(newPostion.value.x>)
+      // for (int i = 0; i < 5; ++i) {
+      //   if (i != index) {
+      //     if (newPostion.value.x! > positionYourCard[i].x! + screenWight / 5) {
+      //       debugPrint("jjjjjjjjjjjj $i");
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -121,7 +137,6 @@ class Controller extends GetxController {
             FirebaseFirestore.instance.collection('room').doc(roomId.value);
         if (isStart.value && time.value > 0 && status.value == "") {
           time.value--;
-
           if (time.value == 0) {
             if (type.value == 0) {
               play.update({
@@ -135,10 +150,11 @@ class Controller extends GetxController {
             status.value = "you_surrender";
           }
         }
-        if (isStart.value && timeEnemy.value > 0 && status.value == "") {
+
+        if (timeEnemy.value > 0) {
           if (ischeckEnemy.value) {
             timeEnemy.value--;
-            debugPrint("enemey time ${timeEnemy.value}");
+            debugPrint("timegmae ${timeEnemy.value} ");
           }
           if (timeEnemy.value <= 0) {
             debugPrint("eneme_surrender ");
@@ -171,6 +187,7 @@ class Controller extends GetxController {
           roomModel.slave!.status == '') {
         letStart.value = true;
         Future.delayed(const Duration(milliseconds: 5500), () {
+          timeEnemy.value = 120;
           letStart.value = false;
           isStart.value = true;
           isShowTime.value = true;
@@ -223,67 +240,69 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragEnd(int index) {
-    debugPrint("value $type");
-    if (positionYourCard[index].y! + 40 >
-        screenHigh.value / 2 - highOfCard.value) {
-      time.value = 120;
-      isStart.value = false;
-      newPostion.value = positionYourCard[index];
-      isPlaying.value = true;
-      debugPrint("remove at $index");
-      positionYourCard.removeAt(index);
-      listYourCard.removeAt(index);
-      Future.delayed(const Duration(milliseconds: 100), () {
-        positionYourCard.clear();
-        debugPrint(" romver kkkk$listYourCard");
-        istouchCard.value = false;
-        for (int i = 0; i < listYourCard.length; ++i) {
-          positionYourCard.add(Postion(
-              x: i * 0.2 * screenWight.value +
-                  (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
-              y: 10));
+    if (isPlaying.value == false) {
+      if (positionYourCard[index].y! + 40 >
+          screenHigh.value / 2 - highOfCard.value) {
+        time.value = 120;
+        isStart.value = false;
+        newPostion.value = positionYourCard[index];
+        isPlaying.value = true;
+        debugPrint("remove at $index");
+        positionYourCard.removeAt(index);
+        listYourCard.removeAt(index);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          positionYourCard.clear();
+          debugPrint(" romver kkkk$listYourCard");
+          istouchCard.value = false;
+          for (int i = 0; i < listYourCard.length; ++i) {
+            positionYourCard.add(Postion(
+                x: i * 0.2 * screenWight.value +
+                    (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
+                y: 10));
+          }
+        });
+        final play =
+            FirebaseFirestore.instance.collection('room').doc(roomId.value);
+        if (type.value == 0) {
+          play.update({
+            "king": {
+              "card": {
+                "image": yourCard.value.image,
+                "name": yourCard.value.name
+              },
+              "index": index,
+              "length": listYourCard.length,
+              "turn": true,
+              "status": ""
+            },
+            "slave.turn": false
+          });
+        } else {
+          play.update({
+            "slave": {
+              "card": {
+                "image": yourCard.value.image,
+                "name": yourCard.value.name
+              },
+              "index": index,
+              "length": listYourCard.length,
+              "turn": true,
+              "status": ""
+            },
+            "king.turn": false
+          });
         }
-      });
-      final play =
-          FirebaseFirestore.instance.collection('room').doc(roomId.value);
-      if (type.value == 0) {
-        play.update({
-          "king": {
-            "card": {
-              "image": yourCard.value.image,
-              "name": yourCard.value.name
-            },
-            "index": index,
-            "length": listYourCard.length,
-            "turn": true,
-            "status": ""
-          },
-          "slave.turn": false
-        });
       } else {
-        play.update({
-          "slave": {
-            "card": {
-              "image": yourCard.value.image,
-              "name": yourCard.value.name
-            },
-            "index": index,
-            "length": listYourCard.length,
-            "turn": true,
-            "status": ""
-          },
-          "king.turn": false
-        });
+        positionYourCard[index] = oldPostion.value;
+        istouchCard.value = false;
       }
-    } else {
-      positionYourCard[index] = oldPostion.value;
-      istouchCard.value = false;
     }
   }
 
   void onVerticalDragStart(int i) {
     sword.value = false;
-    if (!isPlaying.value) {
+    debugPrint("isPlaying ${isPlaying.value}");
+    if (isPlaying.value == false) {
       isPlaying.value = false;
       oldPostion.value = positionYourCard[i];
       index.value = i;
@@ -296,7 +315,7 @@ class Controller extends GetxController {
     openEnemy.value = false;
     positionEnemyCard[index] = Postion(
         x: screenWight / 2 - screenWight / 5 / 2,
-        y: screenHigh / 2 - highOfCard.value - 15);
+        y: screenHigh / 2 - highOfCard.value + 5);
     Future.delayed(const Duration(milliseconds: 500), () {
       showEnemy.value = true;
       newPostionEnmey.value = positionEnemyCard[index];
@@ -311,7 +330,7 @@ class Controller extends GetxController {
             Postion(
               x: i * 0.2 * screenWight.value +
                   (5 - listEnemyCard.length) * 0.2 * screenWight.value / 2,
-              y: 10,
+              y: 0,
             ),
           );
         }
@@ -325,6 +344,7 @@ class Controller extends GetxController {
     ischeckEnemy.value = true;
     timeEnemy.value = 120;
     time.value = 120;
+    isRedLine.value = false;
     Future.delayed(const Duration(milliseconds: 1500), () {
       isStart.value = true;
       if ((yourCard.value.name == "king" && enemyCard.value.name != "slave") ||
@@ -392,7 +412,7 @@ class Controller extends GetxController {
 
   void loadInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: "ca-app-pub-3940256099942544/1033173712",
+      adUnitId: "ca-app-pub-3625881169262046/9283118792",
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {

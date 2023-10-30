@@ -1,5 +1,5 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
-
 import '../../modules/game/screens/room_style.dart';
 
 class CustomTextfile extends StatelessWidget {
@@ -7,10 +7,12 @@ class CustomTextfile extends StatelessWidget {
   final Function? onchanged;
   final String? hintText;
   final TextInputType textInputType;
+  final int maxLength;
   const CustomTextfile({
     super.key,
     required this.controller,
     this.onchanged,
+    this.maxLength = 1,
     this.textInputType = TextInputType.text,
     required this.hintText,
   });
@@ -18,24 +20,20 @@ class CustomTextfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(MediaQuery.of(context).size.width, 40
-          // (MediaQuery.of(context).size.width *
-          //         0.125)
-          //     .toDouble(),
-          ),
-      painter: RoomStyle(),
+      painter: TextfileStyle(),
       child: Container(
-        padding: const EdgeInsets.only(left: 30, right: 30),
-        // height: 45,
+        padding: const EdgeInsets.only(left: 40, right: 40),
         child: TextFormField(
           style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
           keyboardType: textInputType,
           controller: controller,
+          cursorColor: AppColor.primary,
           onChanged: (value) {
             onchanged == null ? () {} : onchanged!(value);
           },
           decoration: InputDecoration(
-              isDense: false,
+              contentPadding: const EdgeInsets.only(top: 8, bottom: 8),
+              isDense: true,
               border: InputBorder.none,
               hintText: "$hintText",
               hintStyle: TextStyle(

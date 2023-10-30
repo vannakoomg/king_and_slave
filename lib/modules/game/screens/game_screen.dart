@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/controller/game_controller.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
@@ -33,18 +34,19 @@ class _GameScreenState extends State<GameScreen> {
     controller.type.value = widget.you;
     controller.roomId.value = widget.id.toString();
     controller.checkTime();
-    controller.loadInterstitialAd();
+    // controller.loadInterstitialAd();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double h =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double h = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        20;
     controller.setDefault(w, h, widget.you);
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -184,7 +186,10 @@ class _GameScreenState extends State<GameScreen> {
                                             Postion(
                                               x: value.globalPosition.dx -
                                                   (0.2 * w / 2),
-                                              y: h - value.globalPosition.dy,
+                                              y: h -
+                                                  value.globalPosition.dy -
+                                                  (0.2 * w / 2) +
+                                                  20,
                                             ),
                                             e.key);
                                       },
@@ -194,18 +199,9 @@ class _GameScreenState extends State<GameScreen> {
                                         height: 0.2 * w + 0.2 * w / 3,
                                         width: 0.2 * w,
                                         clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                                blurRadius: 50,
-                                                spreadRadius: 1,
-                                                offset: const Offset(0, 3))
-                                          ],
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                        ),
+                                        decoration: const BoxDecoration(
+                                            // border: Border.all(color: Colors.red),
+                                            ),
                                         child: SvgPicture.asset(
                                             "${controller.listYourCard[e.key].image}",
                                             fit: BoxFit.fill),
@@ -278,7 +274,7 @@ class _GameScreenState extends State<GameScreen> {
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.ease,
                             left: controller.sword.value ? -40 : -115,
-                            top: h / 2 - 20,
+                            top: h / 2 - 9,
                             child: SizedBox(
                               height: 40,
                               width: 180,
@@ -339,21 +335,34 @@ class _GameScreenState extends State<GameScreen> {
                                 final play = FirebaseFirestore.instance
                                     .collection('room')
                                     .doc(controller.roomId.value);
-                                controller.interstitialAd!
-                                    .show()
-                                    .then((value) => {
-                                          Future.delayed(
-                                              const Duration(
-                                                  milliseconds: 1500), () {
-                                            Get.back();
-                                          })
-                                        });
+                                try {
+                                  controller.interstitialAd!
+                                      .show()
+                                      .then((value) => {
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 1500), () {
+                                              Get.back();
+                                            })
+                                          });
+                                } catch (e) {
+                                  Get.back();
+                                }
+
                                 if (controller.status.value ==
                                     "enemy_surrender") {
                                   play.delete();
                                 }
                               },
                             ),
+                          if (controller.isRedLine.value)
+                            Center(
+                              child: Container(
+                                height: 1,
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.red,
+                              ),
+                            )
                         ],
                       ),
                     ));

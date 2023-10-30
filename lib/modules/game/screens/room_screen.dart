@@ -8,6 +8,7 @@ import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:animation_aba/modules/game/screens/room_style.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
+import 'package:animation_aba/utils/widgets/custom_free5_life.dart';
 import 'package:animation_aba/utils/widgets/custom_no_life.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,7 +30,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
   final controller = Get.put(RoomController());
   @override
   void initState() {
-    controller.loadRewardedAd();
+    // controller.loadRewardedAd();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.initState();
@@ -347,7 +348,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                       },
                                     ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 20,
                                     ),
                                     CustomTextfile(
                                       controller: controller
@@ -462,7 +463,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                     if (controller.isNoMoreLife.value)
                       CustomNoLife(
                         ontapVideo: () {
-                          controller.viewAds();
+                          Get.to(const CustomFree5Life());
+                          controller.isNoMoreLife.value = false;
                         },
                         ontap: () {
                           controller.isNoMoreLife.value = false;

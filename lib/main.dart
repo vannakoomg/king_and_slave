@@ -1,45 +1,27 @@
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
-import 'package:animation_aba/modules/law/law.dart';
-import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
-import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/local_storage.dart';
-import 'package:animation_aba/utils/models/landuage_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-final controller = Get.put(SlashScreenController());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+  await Firebase.initializeApp();
+  await LocalStorage.init();
   WidgetsBinding.instance
       .addObserver(LifecycleEventHandler(detachedCallBack: () async {
     debugPrint("khmer sl khmer 01");
   }, resumeCallBack: () async {
     debugPrint("khmer sl khmer 02");
   }));
-  await Firebase.initializeApp();
-  await LocalStorage.init();
-  await controller.setLife();
-  controller.setupLanguages().then((value) => {
-        FirebaseFirestore.instance
-            .collection("languages")
-            .doc(value)
-            .get()
-            .then((value) async {
-          Singleton.instance.languages.value =
-              LanguagesModel.fromJson(value.data()!);
-          debugPrint(
-              "yyyyyyyy ${Singleton.instance.languages.value.lawDetail}");
-          controller.getiamge();
-          // await Future.delayed(const Duration(milliseconds: 1500), () {
-          FlutterNativeSplash.remove();
-          // });
-        })
-      });
+
+  await Future.delayed(const Duration(milliseconds: 1000), () {
+    FlutterNativeSplash.remove();
+  });
+
   runApp(const MyApp());
 }
 

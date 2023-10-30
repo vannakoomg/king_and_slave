@@ -1,4 +1,4 @@
-import 'package:animation_aba/utils/models/landuage_model.dart';
+import 'package:animation_aba/utils/models/language_model.dart';
 import 'package:get/get.dart';
 
 class Singleton extends GetxController {

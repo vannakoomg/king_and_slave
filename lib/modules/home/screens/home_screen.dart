@@ -3,9 +3,11 @@ import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/home/widgets/custom_setting.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
-import 'package:animation_aba/modules/slash/controller/slash_screen_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
+import 'package:animation_aba/utils/models/language_model.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
+import 'package:animation_aba/utils/widgets/custom_no_life.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -22,8 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
   @override
   void initState() {
-    debugPrint("tttttttttt${Singleton.instance.languages.value.lawDetail}");
-    debugPrint("tttttttttt${Singleton.instance.languages.value.law}");
+    controller.setLife();
+    controller.checkIsFirst();
+    controller.setupLanguages().then((value) => {
+          FirebaseFirestore.instance
+              .collection("languages")
+              .doc(value)
+              .get()
+              .then((value) async {
+            Singleton.instance.languages.value =
+                LanguagesModel.fromJson(value.data()!);
+            debugPrint("iiiii${Singleton.instance.languages}");
+            Future.delayed(const Duration(milliseconds: 50), () {
+              controller.isshowLaw.value = true;
+            });
+            controller.getiamge();
+          })
+        });
     super.initState();
   }
 
@@ -133,50 +150,57 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if (controller.isFirst.value == true)
-                Container(
-                  color: Colors.black.withOpacity(0.9),
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: MediaQuery.of(context).padding.top + 60),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      Text(
-                        "${Singleton.instance.languages.value.law}",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          Singleton.instance.languages.value.lawDetail!
-                              .replaceAll(r'\n', '\n'),
+              if (Singleton.instance.languages.value.lawDetail != null &&
+                  controller.isFirst.value)
+                AnimatedOpacity(
+                  curve: Curves.easeInOutCirc,
+                  opacity: controller.isshowLaw.value ? 1 : 0,
+                  duration: const Duration(milliseconds: 1000),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.9),
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: MediaQuery.of(context).padding.top + 60),
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        Text(
+                          "${Singleton.instance.languages.value.law}",
                           style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
-                              fontSize: 18)),
-                      SvgPicture.asset(
-                        "assets/setting/appsara.svg",
-                        height: 100,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      // CustomBotton(
-                      //     title: "${Singleton.instance.languages.value.ok}",
-                      //     ontap: () async {
-                      //       controller.isFirst.value = false;
-                      //       final SharedPreferences obj =
-                      //           await SharedPreferences.getInstance();
-                      //       obj.setString('first', 'have');
-                      //     },
-                      //     isdisble: false)
-                    ]),
+                            color: Colors.white.withOpacity(0.9),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                            Singleton.instance.languages.value.lawDetail!
+                                .replaceAll(r'\n', '\n'),
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 20)),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        SvgPicture.asset(
+                          "assets/setting/appsara.svg",
+                          height: 100,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        CustomBotton(
+                            title: "${Singleton.instance.languages.value.ok}",
+                            ontap: () async {
+                              controller.agress();
+                            },
+                            isdisble: false)
+                      ]),
+                    ),
                   ),
                 ),
             ],

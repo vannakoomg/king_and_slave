@@ -53,7 +53,7 @@ android {
         applicationId "com.king.and.slave"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 9
+        versionCode 10
         versionName flutterVersionName
         multiDexEnabled true
 

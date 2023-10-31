@@ -89,7 +89,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     ],
                                   ),
                                   child: SvgPicture.asset(
-                                    Singleton.instance.king.value,
+                                    "assets/slave/1.svg",
                                     fit: BoxFit.fill,
                                   ),
                                 ),

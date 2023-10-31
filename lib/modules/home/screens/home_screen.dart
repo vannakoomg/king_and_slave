@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 30,
                         ),
                         onPressed: () {
-                          Get.to(const SettingScreen(),
+                          Get.to(() => const SettingScreen(),
                               transition: Transition.noTransition);
                         },
                       ),

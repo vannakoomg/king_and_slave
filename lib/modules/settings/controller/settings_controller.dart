@@ -13,12 +13,6 @@ class SettingController extends GetxController {
     "assets/back/4.svg",
     "assets/back/5.svg",
   ].obs;
-  final map = [
-    "assets/map/1.svg",
-    "assets/map/1.svg",
-    "assets/map/1.svg",
-    "assets/map/1.svg",
-  ].obs;
   final king = [
     "assets/king/1.svg",
     "assets/king/2.svg",

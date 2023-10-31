@@ -150,7 +150,7 @@ class _GameScreenState extends State<GameScreen> {
                                                       fit: BoxFit.fill,
                                                     )
                                                   : SvgPicture.asset(
-                                                      "assets/back/1.svg",
+                                                      "${Singleton.instance.back}",
                                                       fit: BoxFit.fill,
                                                     ),
                                             ));

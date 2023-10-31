@@ -96,8 +96,15 @@ class Controller extends GetxController {
       if (neww.x! < 0) {
         neww.x = 00;
       }
-      if (neww.x! > screenWight.value - screenWight.value * 0.2) {
-        neww.x = screenWight.value - screenWight.value * 0.2;
+      // for big screen we
+      if (isBigScreen.value == true) {
+        if (neww.x! > screenWight.value * 2 - screenWight.value * 2 * 0.2) {
+          neww.x = screenWight.value * 2 - screenWight.value * 2 * 0.2;
+        }
+      } else {
+        if (neww.x! > screenWight.value - screenWight.value * 0.2) {
+          neww.x = screenWight.value - screenWight.value * 0.2;
+        }
       }
       if (neww.y! < 0) {
         neww.y = 0;
@@ -312,9 +319,13 @@ class Controller extends GetxController {
   void enmey(int index, Cardmodel enmey) {
     enemyCard.value = enmey;
     openEnemy.value = false;
-    positionEnemyCard[index] = Postion(
-        x: screenWight / 2 - screenWight / 5 / 2,
-        y: screenHigh / 2 - highOfCard.value - 5);
+    positionEnemyCard[index] = isBigScreen.value
+        ? Postion(
+            x: screenWight / 2 - screenWight / 5 / 2 + screenWight / 2,
+            y: screenHigh / 2 - highOfCard.value - 5)
+        : Postion(
+            x: screenWight / 2 - screenWight / 5 / 2,
+            y: screenHigh / 2 - highOfCard.value - 5);
     Future.delayed(const Duration(milliseconds: 500), () {
       showEnemy.value = true;
       newPostionEnmey.value = positionEnemyCard[index];
@@ -328,7 +339,8 @@ class Controller extends GetxController {
           positionEnemyCard.add(
             Postion(
               x: i * 0.2 * screenWight.value +
-                  (5 - listEnemyCard.length) * 0.2 * screenWight.value / 2,
+                  (5 - listEnemyCard.length) * 0.2 * screenWight.value / 2 +
+                  screenWight / 2,
               y: 0,
             ),
           );

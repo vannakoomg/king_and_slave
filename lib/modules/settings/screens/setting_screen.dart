@@ -122,7 +122,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   if (controller.isloadinglanguage.value ==
                                       false) {
-                                    Get.to(const CustomizeScreen());
+                                    Get.to(() => const CustomizeScreen());
                                   }
                                 },
                                 child: CustomPaint(

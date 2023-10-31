@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 AnimatedOpacity(
                   curve: Curves.easeInOutCirc,
                   opacity: controller.isshowLaw.value ? 1 : 0,
-                  duration: const Duration(milliseconds: 1000),
+                  duration: const Duration(milliseconds: 300),
                   child: Container(
                     color: Colors.black.withOpacity(0.9),
                     height: MediaQuery.of(context).size.height,
@@ -183,13 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 20)),
                         const SizedBox(
                           height: 20,
-                        ),
-                        SvgPicture.asset(
-                          "assets/setting/appsara.svg",
-                          height: 100,
-                        ),
-                        const SizedBox(
-                          height: 30,
                         ),
                         CustomBotton(
                             title: "${Singleton.instance.languages.value.ok}",

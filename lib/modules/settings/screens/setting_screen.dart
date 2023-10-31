@@ -252,42 +252,55 @@ class _SettingScreenState extends State<SettingScreen> {
                     controller.ontapBackLaw();
                   },
                   child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 400),
                     opacity: controller.isanimatedlaw.value ? 1 : 0,
-                    curve: Curves.easeIn,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.9),
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 60, bottom: 20),
-                      child: SingleChildScrollView(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${Singleton.instance.languages.value.law}",
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 25),
+                    curve: Curves.decelerate,
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: Colors.black.withOpacity(0.9),
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 40, bottom: 20),
+                          child: Center(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "${Singleton.instance.languages.value.law}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                      Singleton
+                                          .instance.languages.value.lawDetail!
+                                          .replaceAll(r'\n', '\n'),
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(0.7),
+                                          fontSize: 18)),
+                                  const SizedBox(
+                                    height: 40,
+                                  )
+                                ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                  Singleton.instance.languages.value.lawDetail!
-                                      .replaceAll(r'\n', '\n'),
-                                  style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 18)),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SvgPicture.asset(
-                                "assets/setting/appsara.svg",
-                                height: 130,
-                              ),
-                            ]),
-                      ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 40,
+                          bottom: 10,
+                          child: SvgPicture.asset(
+                            "assets/setting/appsara.svg",
+                            height: 100,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

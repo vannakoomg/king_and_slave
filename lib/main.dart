@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyBntGsgNA0Jb1cXfjGv12vqg1-uhONq-8U",
@@ -17,6 +19,7 @@ void main() async {
       projectId: "king-slave",
     ),
   );
+  setPathUrlStrategy();
   await LocalStorage.init();
   WidgetsBinding.instance
       .addObserver(LifecycleEventHandler(detachedCallBack: () async {

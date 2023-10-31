@@ -45,8 +45,10 @@ class Controller extends GetxController {
   final timeEnemy = 0.obs;
   final ischeckEnemy = true.obs;
   final isRedLine = false.obs;
-  void setDefault(double w, double h, int type) {
+  final isBigScreen = false.obs;
+  void setDefault(double w, double h, int type, bool isBig) {
     gamePlay.value = false;
+    isBigScreen.value = isBig;
     screenWight.value = w;
     screenHigh.value = h;
     List you = type == 0
@@ -62,8 +64,9 @@ class Controller extends GetxController {
     listYourCard.clear();
     listEnemyCard.clear();
     for (int i = 0; i < 5; ++i) {
-      positionYourCard.add(Postion(x: i * 0.2 * w, y: 10));
-      positionEnemyCard.add(Postion(x: i * 0.2 * w, y: 0));
+      double dx = isBig ? ((i * 0.2 * w) + w / 2) : (i * 0.2 * w);
+      positionYourCard.add(Postion(x: dx, y: 10));
+      positionEnemyCard.add(Postion(x: dx, y: 0));
       int j = Random().nextInt(you.length);
       int k = Random().nextInt(enemy.length);
       listYourCard.add(Cardmodel(
@@ -108,16 +111,6 @@ class Controller extends GetxController {
       positionYourCard[index].y! + 40 > screenHigh.value / 2 - highOfCard.value
           ? isRedLine.value = true
           : isRedLine.value = false;
-      // for change card posstion
-      // debugPrint("new pos ${newPostion.value.x}");
-      // if(newPostion.value.x>)
-      // for (int i = 0; i < 5; ++i) {
-      //   if (i != index) {
-      //     if (newPostion.value.x! > positionYourCard[i].x! + screenWight / 5) {
-      //       debugPrint("jjjjjjjjjjjj $i");
-      //     }
-      //   }
-      // }
     }
   }
 
@@ -256,8 +249,14 @@ class Controller extends GetxController {
           istouchCard.value = false;
           for (int i = 0; i < listYourCard.length; ++i) {
             positionYourCard.add(Postion(
-                x: i * 0.2 * screenWight.value +
-                    (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
+                x: isBigScreen.value
+                    ? ((i * 0.2 * screenWight.value + screenWight.value / 2) +
+                        (5 - listYourCard.length) * 0.2 * screenWight.value / 2)
+                    : (i * 0.2 * screenWight.value +
+                        (5 - listYourCard.length) *
+                            0.2 *
+                            screenWight.value /
+                            2),
                 y: 10));
           }
         });

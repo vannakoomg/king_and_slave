@@ -45,11 +45,14 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
+    double w = MediaQuery.of(context).size.width > 900
+        ? MediaQuery.of(context).size.width / 2
+        : MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
-    controller.setDefault(w, h, widget.you);
+    controller.setDefault(w, h, widget.you,
+        MediaQuery.of(context).size.width > 900 ? true : false);
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
@@ -70,8 +73,9 @@ class _GameScreenState extends State<GameScreen> {
                       },
                       child: Stack(
                         children: [
-                          SizedBox(
-                            width: w,
+                          Container(
+                            color: Colors.green,
+                            width: MediaQuery.of(context).size.width,
                             child: Stack(
                               children: [
                                 Stack(
@@ -157,7 +161,7 @@ class _GameScreenState extends State<GameScreen> {
                             ),
                           ),
                           SizedBox(
-                            width: w,
+                            width: MediaQuery.of(context).size.width,
                             child: Stack(
                               children: [
                                 Stack(

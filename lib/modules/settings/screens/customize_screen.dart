@@ -41,9 +41,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               Get.back();
             },
           ),
-          title: Text(
-            "${Singleton.instance.languages.value.customize}",
-            style: const TextStyle(
+          title: const Text(
+            "assets/back/1.svg",
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 24,

@@ -19,10 +19,15 @@ class CustomTextfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("iiiiiiiiiiii ${MediaQuery.of(context).size.width}");
     return CustomPaint(
       painter: TextfileStyle(),
       child: Container(
-        padding: const EdgeInsets.only(left: 40, right: 40),
+        width: MediaQuery.of(context).size.width > 900
+            ? 900
+            : MediaQuery.of(context).size.width,
+        height: 50,
+        padding: const EdgeInsets.only(left: 80, right: 40, top: 10),
         child: TextFormField(
           style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
           keyboardType: textInputType,

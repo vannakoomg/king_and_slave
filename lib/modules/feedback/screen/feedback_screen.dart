@@ -108,15 +108,15 @@ class FeedBackScreen extends StatelessWidget {
                                                   blurRadius: 80,
                                                   spreadRadius: 30),
                                             ]),
-                                        child: const Text(
-                                          "THANK YOU",
+                                        child: Text(
+                                          "${Singleton.instance.languages.value.thankforFeedback}",
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 25),
                                         ))),
                               ));
-                              Future.delayed(const Duration(milliseconds: 3000),
+                              Future.delayed(const Duration(milliseconds: 2000),
                                   () {
                                 Get.back();
                               });

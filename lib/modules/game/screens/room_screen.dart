@@ -62,7 +62,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           )),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 20),
+                      margin:
+                          const EdgeInsets.only(top: 20, left: 10, right: 10),
                       height: height,
                       width: width,
                       child: Column(
@@ -269,8 +270,8 @@ class _GameRoomScreenState extends State<RoomScreen> {
                             child: Container(
                               margin: const EdgeInsets.only(
                                   top: 10, bottom: 20, left: 5, right: 5),
-                              height: 50,
-                              width: 140,
+                              height: 45,
+                              width: 120,
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.9),
                                 borderRadius: BorderRadius.circular(30),
@@ -306,7 +307,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           duration: const Duration(milliseconds: 1000),
                           opacity: controller.isCreateRoom.value ? 1 : 0,
                           child: Container(
-                            color: Colors.black.withOpacity(0.85),
+                            color: Colors.black.withOpacity(0.92),
                             height: height,
                             width: width,
                             child: Center(
@@ -394,7 +395,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                           controller.isWorngPassword.value = false;
                         },
                         child: Container(
-                          color: Colors.black.withOpacity(0.9),
+                          color: Colors.black.withOpacity(0.92),
                           height: height,
                           width: width,
                           child: Center(

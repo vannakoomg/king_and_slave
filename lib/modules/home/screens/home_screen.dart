@@ -2,6 +2,7 @@ import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/home/widgets/custom_setting.dart';
+import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/language_model.dart';
@@ -10,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
+  final settingController = Get.put(SettingController());
   @override
   void initState() {
     controller.setLife();
@@ -154,43 +157,72 @@ class _HomeScreenState extends State<HomeScreen> {
                   curve: Curves.easeInOutCirc,
                   opacity: controller.isshowLaw.value ? 1 : 0,
                   duration: const Duration(milliseconds: 300),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.9),
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        top: MediaQuery.of(context).padding.top + 60),
-                    child: SingleChildScrollView(
-                      child: Column(children: [
-                        Text(
-                          "${Singleton.instance.languages.value.law}",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.agress();
+                    },
+                    child: Container(
+                      color: Colors.black.withOpacity(0.95),
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top + 20),
+                      child: Stack(
+                        children: [
+                          Container(
+                            color: Colors.black.withOpacity(0.9),
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 40, bottom: 10),
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "${Singleton.instance.languages.value.law}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                        Singleton
+                                            .instance.languages.value.lawDetail!
+                                            .replaceAll(r'\n', '\n'),
+                                        style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.7),
+                                            fontSize: 19)),
+                                    const SizedBox(
+                                      height: 40,
+                                    ),
+                                    const SizedBox(
+                                      height: 60,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            Singleton.instance.languages.value.lawDetail!
-                                .replaceAll(r'\n', '\n'),
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
-                                fontSize: 20)),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomBotton(
-                            title: "${Singleton.instance.languages.value.ok}",
-                            ontap: () async {
-                              controller.agress();
-                            },
-                            isdisble: false)
-                      ]),
+                          Positioned(
+                            right: 40,
+                            bottom: 20,
+                            child: GestureDetector(
+                              onTap: () async {
+                                settingController.fetchLanguage();
+                              },
+                              child: SvgPicture.asset(
+                                "assets/setting/appsara.svg",
+                                height: 110,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

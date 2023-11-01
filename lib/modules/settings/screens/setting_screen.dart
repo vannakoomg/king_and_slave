@@ -297,7 +297,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           bottom: 10,
                           child: SvgPicture.asset(
                             "assets/setting/appsara.svg",
-                            height: 100,
+                            height: 110,
                           ),
                         ),
                       ],

@@ -353,8 +353,7 @@ class Controller extends GetxController {
               enemyCard.value.name == "slave")) {
         status.value = "win";
         isStart.value = true;
-        debugPrint("kakkkk ${status.value}");
-        removelife();
+        // removelife();
       } else if (yourCard.value.name == enemyCard.value.name) {
         status.value = "equal";
         isStart.value = false;
@@ -365,7 +364,6 @@ class Controller extends GetxController {
       } else {
         isStart.value = true;
         status.value = "lose";
-        debugPrint("kakkkk ${status.value}");
         removelife();
       }
       isPlaying.value = false;

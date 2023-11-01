@@ -30,7 +30,6 @@ class _GameRoomScreenState extends State<RoomScreen> {
   final controller = Get.put(RoomController());
   @override
   void initState() {
-    // controller.loadRewardedAd();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.initState();
@@ -48,19 +47,6 @@ class _GameRoomScreenState extends State<RoomScreen> {
                 () => SafeArea(
                     child: Stack(
                   children: [
-                    Positioned(
-                      top: 40,
-                      left: 10,
-                      child: IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 33,
-                            color: Colors.white,
-                          )),
-                    ),
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       height: height,

@@ -56,6 +56,7 @@ class HomeController extends GetxController {
 
   Future<String> setupLanguages() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
+    obj.setStringList("333", []);
     if (obj.getString('language') == null) {
       await obj.setString('language', 'en');
       Singleton.instance.lang.value = obj.getString("language")!;

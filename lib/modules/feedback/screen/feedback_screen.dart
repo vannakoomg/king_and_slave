@@ -25,16 +25,6 @@ class FeedBackScreen extends StatelessWidget {
             ),
             leadingWidth: 40,
             centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                unFocus(context);
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.arrow_back_outlined,
-                color: Colors.white,
-              ),
-            ),
           ),
           body: Stack(
             children: [
@@ -75,6 +65,7 @@ class FeedBackScreen extends StatelessWidget {
                                         border: Border.all(
                                             width: 1, color: AppColor.primary)),
                                     child: CustomTextfield02(
+                                      autofocus: true,
                                       textStyle: const TextStyle(
                                           color: Colors.white, fontSize: 19),
                                       hintText: Singleton.instance.languages

@@ -54,7 +54,6 @@ class Controller extends GetxController {
     List you = type == 0
         ? ["king", "soldier", "soldier", "soldier", "soldier"]
         : ["slave", "soldier", "soldier", "soldier", "soldier"];
-
     List enemy = type == 0
         ? ["slave", "soldier", "soldier", "soldier", "soldier"]
         : ["king", "soldier", "soldier", "soldier", "soldier"];

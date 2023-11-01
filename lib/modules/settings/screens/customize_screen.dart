@@ -29,21 +29,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            hoverColor: AppColor.primary,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-          title: const Text(
-            "assets/back/1.svg",
-            style: TextStyle(
+          title: Text(
+            "${Singleton.instance.languages.value.customize}",
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 24,

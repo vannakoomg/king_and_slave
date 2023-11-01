@@ -1,4 +1,5 @@
 import 'package:animation_aba/modules/home/screens/home_screen.dart';
+import 'package:animation_aba/router/router.dart';
 import 'package:animation_aba/utils/local_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -50,14 +51,23 @@ class MyApp extends StatelessWidget {
       onTap: () {
         unFocus(context);
       },
-      child: GetMaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
+      child: MaterialApp.router(
+        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.routerDelegate,
+        routeInformationProvider: router.routeInformationProvider,
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
       ),
+      // GetMaterialApp(
+      //   title: 'Flutter Demo',
+      //   debugShowCheckedModeBanner: false,
+      //   theme: ThemeData(
+      //     useMaterial3: true,
+      //   ),
+      //   home: const HomeScreen(),
+      // ),
     );
   }
 }

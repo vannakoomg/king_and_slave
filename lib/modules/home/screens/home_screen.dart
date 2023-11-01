@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Expanded(
                               child: GestureDetector(
                             onTap: () async {
-                              Get.to(() => const RoomScreen(), arguments: 0);
+                              context.go('/room');
                             },
                             child: Container(
                               color: AppColor.primary,
@@ -140,8 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 30,
                         ),
                         onPressed: () {
-                          Get.to(() => const SettingScreen(),
-                              transition: Transition.noTransition);
+                          context.go("/setting");
+                          // Get.to(const SettingScreen(),
+                          //     transition: Transition.noTransition);
                         },
                       ),
                     ),

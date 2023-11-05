@@ -71,7 +71,9 @@ class RoomController extends GetxController {
           turn: false,
           status: '',
           message: '',
-          avatar: type == 0 ? Singleton.instance.avatar.value : ""),
+          profile: ProfileModel(
+              avatar: type == 0 ? Singleton.instance.avatar.value : "",
+              name: type == 0 ? Singleton.instance.nickName.value : '')),
       slave: King(
           card: Cardmodel(image: "", name: ""),
           index: -2,
@@ -79,7 +81,9 @@ class RoomController extends GetxController {
           turn: false,
           status: '',
           message: '',
-          avatar: type == 1 ? Singleton.instance.avatar.value : ""),
+          profile: ProfileModel(
+              avatar: type == 1 ? Singleton.instance.avatar.value : "",
+              name: type == 1 ? Singleton.instance.nickName.value : '')),
     );
     final json = room.toJson();
     await docuser.set(json).then((value) => {
@@ -96,9 +100,13 @@ class RoomController extends GetxController {
       final play =
           FirebaseFirestore.instance.collection('room').doc(roomId.value);
       if (type.value == 0) {
+        debugPrint("dddddd");
         play.update({
           "slave.index": -1,
-          "king.avatar": Singleton.instance.avatar.value
+          "king.profile": {
+            "avatar": Singleton.instance.avatar.value,
+            "name": Singleton.instance.nickName.value
+          }
         }).then((value) => {
               Get.to(
                 () => GameScreen(id: roomId.value, you: type.value),
@@ -106,7 +114,7 @@ class RoomController extends GetxController {
               isenterPassword.value = false,
             });
       } else {
-        play.update({"slave.avatar": Singleton.instance.avatar.value});
+        play.update({"slave.profile.avatar": Singleton.instance.avatar.value});
         play.update({"slave.index": -1}).then((value) => {
               Get.to(
                 () => GameScreen(id: roomId.value, you: type.value),

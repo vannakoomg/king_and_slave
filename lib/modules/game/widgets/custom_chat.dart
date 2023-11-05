@@ -79,7 +79,7 @@ class CustomChat extends StatelessWidget {
                     child: Center(
                         child: Text(
                       yourMessage,
-                      overflow: TextOverflow.clip,
+                      overflow: TextOverflow.ellipsis,
                     )),
                   ),
                 Container(

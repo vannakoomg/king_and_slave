@@ -44,12 +44,13 @@ class RoomModel {
 
 class King {
   Cardmodel? card;
+  ProfileModel? profile;
   int? index;
   int? length;
   bool? turn;
   String? status;
   String? message;
-  String? avatar;
+
   King(
       {this.card,
       this.index,
@@ -57,16 +58,17 @@ class King {
       this.turn,
       this.status,
       this.message,
-      this.avatar});
+      this.profile});
 
   King.fromJson(Map<String, dynamic> json) {
     card = json['card'] != null ? Cardmodel.fromJson(json['card']) : null;
+    profile =
+        json['profile'] != null ? ProfileModel.fromJson(json['profile']) : null;
     index = json['index'];
     length = json['length'];
     turn = json['turn'];
     status = json['status'];
     message = json['message'];
-    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,12 +76,14 @@ class King {
     if (card != null) {
       data['card'] = card!.toJson();
     }
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
+    }
     data['index'] = index;
     data['length'] = length;
     data['turn'] = turn;
     data['status'] = status;
     data['message'] = message;
-    data['avatar'] = avatar;
     return data;
   }
 }
@@ -98,6 +102,25 @@ class Cardmodel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['image'] = image;
+    data['name'] = name;
+    return data;
+  }
+}
+
+class ProfileModel {
+  String? avatar;
+  String? name;
+
+  ProfileModel({this.avatar, this.name});
+
+  ProfileModel.fromJson(Map<String, dynamic> json) {
+    avatar = json['avatar'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['avatar'] = avatar;
     data['name'] = name;
     return data;
   }

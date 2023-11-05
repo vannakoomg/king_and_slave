@@ -310,11 +310,15 @@ class Controller extends GetxController {
                 "image": yourCard.value.image,
                 "name": yourCard.value.name
               },
+              "profile": {
+                "avatar": Singleton.instance.avatar.value,
+                "name": Singleton.instance.nickName.value,
+              },
               "index": index,
               "length": listYourCard.length,
               "turn": true,
               "status": "",
-              "message": ""
+              "message": "",
             },
             "slave.turn": false
           });
@@ -324,6 +328,10 @@ class Controller extends GetxController {
               "card": {
                 "image": yourCard.value.image,
                 "name": yourCard.value.name
+              },
+              "profile": {
+                "avatar": Singleton.instance.avatar.value,
+                "name": Singleton.instance.nickName.value,
               },
               "index": index,
               "length": listYourCard.length,

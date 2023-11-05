@@ -376,14 +376,6 @@ class _GameScreenState extends State<GameScreen> {
                                   if (controller.letStart.value == true &&
                                       controller.isStart.value == false)
                                     const LetStart(),
-                                  if (controller.status.value != "")
-                                    CustomResult(
-                                      status: controller.status.value,
-                                      roomId: controller.roomId.value,
-                                      ontap: () {
-                                        Get.back();
-                                      },
-                                    ),
                                   if (controller.isRedLine.value)
                                     Center(
                                       child: Container(
@@ -424,8 +416,12 @@ class _GameScreenState extends State<GameScreen> {
                                   ),
                                   CustomChat(
                                     enemyAvatar: widget.you == 0
-                                        ? snapshots.data!.slave!.avatar ?? ''
-                                        : snapshots.data!.king!.avatar ?? '',
+                                        ? snapshots
+                                                .data!.slave!.profile!.avatar ??
+                                            ''
+                                        : snapshots
+                                                .data!.king!.profile!.avatar ??
+                                            '',
                                     enemyMessage: controller.enemyMessage.value,
                                     h: h,
                                     w: w,
@@ -437,6 +433,14 @@ class _GameScreenState extends State<GameScreen> {
                                   ),
                                   if (controller.isShowTime.value)
                                     CountTimte(time: controller.time.value),
+                                  if (controller.status.value != "")
+                                    CustomResult(
+                                      status: controller.status.value,
+                                      roomId: controller.roomId.value,
+                                      ontap: () {
+                                        Get.back();
+                                      },
+                                    ),
                                 ],
                               ),
                             ),

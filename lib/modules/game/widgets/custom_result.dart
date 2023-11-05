@@ -102,6 +102,25 @@ class CustomResult extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
               ),
             ),
+            Positioned(
+              top: 0,
+              child: Container(
+                height: 10,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 17, 17, 16)
+                          .withOpacity(0.9),
+                      spreadRadius: 90,
+                      blurRadius: 30,
+                      offset: const Offset(0, 2), // changes position of shadow
+                    ),
+                  ],
+                ),
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
             if (status != "equal")
               Positioned(
                 bottom: 10,

@@ -150,24 +150,33 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                       .data![i]
                                                                       .id!);
                                                           if (yourType == 0) {
-                                                            play
-                                                                .update({
+                                                            play.update({
                                                               "slave.index": -1,
-                                                              "king.avatar":
-                                                                  Singleton
-                                                                      .instance
-                                                                      .avatar
-                                                                      .value
+                                                              "king.profile": {
+                                                                "avatar":
+                                                                    Singleton
+                                                                        .instance
+                                                                        .avatar
+                                                                        .value,
+                                                                "name": Singleton
+                                                                    .instance
+                                                                    .nickName
+                                                                    .value
+                                                              }
                                                             }).then((value) => {
-                                                                      Get.to(
-                                                                        () => GameScreen(
-                                                                            id: snapshots.data![i].id!,
-                                                                            you: yourType),
-                                                                      )
-                                                                    });
+                                                                  Get.to(
+                                                                    () => GameScreen(
+                                                                        id: snapshots
+                                                                            .data![
+                                                                                i]
+                                                                            .id!,
+                                                                        you:
+                                                                            yourType),
+                                                                  )
+                                                                });
                                                           } else {
                                                             play.update({
-                                                              "slave.avatar":
+                                                              "slave.profile.avatar":
                                                                   Singleton
                                                                       .instance
                                                                       .avatar

@@ -48,7 +48,16 @@ class King {
   int? length;
   bool? turn;
   String? status;
-  King({this.card, this.index, this.length, this.turn, this.status});
+  String? message;
+  String? avatar;
+  King(
+      {this.card,
+      this.index,
+      this.length,
+      this.turn,
+      this.status,
+      this.message,
+      this.avatar});
 
   King.fromJson(Map<String, dynamic> json) {
     card = json['card'] != null ? Cardmodel.fromJson(json['card']) : null;
@@ -56,6 +65,8 @@ class King {
     length = json['length'];
     turn = json['turn'];
     status = json['status'];
+    message = json['message'];
+    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +78,8 @@ class King {
     data['length'] = length;
     data['turn'] = turn;
     data['status'] = status;
+    data['message'] = message;
+    data['avatar'] = avatar;
     return data;
   }
 }

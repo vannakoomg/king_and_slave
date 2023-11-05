@@ -8,10 +8,12 @@ class CustomTextfile extends StatelessWidget {
   final String? hintText;
   final TextInputType textInputType;
   final int maxLength;
+  final bool autofous;
   const CustomTextfile({
     super.key,
     required this.controller,
     this.onchanged,
+    this.autofous = false,
     this.maxLength = 1,
     this.textInputType = TextInputType.text,
     required this.hintText,
@@ -31,6 +33,7 @@ class CustomTextfile extends StatelessWidget {
           onChanged: (value) {
             onchanged == null ? () {} : onchanged!(value);
           },
+          autofocus: autofous,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(top: 8, bottom: 8),
               isDense: true,

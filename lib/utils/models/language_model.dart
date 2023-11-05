@@ -36,45 +36,52 @@ class LanguagesModel {
   String? thankforFeedback;
   String? tellTrueAnswer;
   String? question;
+  String? nickName;
+  String? updateProfile;
+  String? avatar;
 
-  LanguagesModel(
-      {this.enemySerrender,
-      this.king,
-      this.letsGo,
-      this.next,
-      this.ok,
-      this.password,
-      this.slave,
-      this.surrender,
-      this.wait,
-      this.weEqual,
-      this.youLose,
-      this.youSurrender,
-      this.youWin,
-      this.number1,
-      this.number2,
-      this.number3,
-      this.join,
-      this.create,
-      this.roomName,
-      this.wrongPassword,
-      this.introduction,
-      this.introductionDetail,
-      this.setting,
-      this.customize,
-      this.law,
-      this.lawDetail,
-      this.sound,
-      this.language,
-      this.noLife,
-      this.nextDayYouGetX5life,
-      this.x5,
-      this.feedback,
-      this.feedbackTitle,
-      this.enterFeedback,
-      this.thankforFeedback,
-      this.question,
-      this.tellTrueAnswer});
+  LanguagesModel({
+    this.enemySerrender,
+    this.king,
+    this.letsGo,
+    this.next,
+    this.ok,
+    this.password,
+    this.slave,
+    this.surrender,
+    this.wait,
+    this.weEqual,
+    this.youLose,
+    this.youSurrender,
+    this.youWin,
+    this.number1,
+    this.number2,
+    this.number3,
+    this.join,
+    this.create,
+    this.roomName,
+    this.wrongPassword,
+    this.introduction,
+    this.introductionDetail,
+    this.setting,
+    this.customize,
+    this.law,
+    this.lawDetail,
+    this.sound,
+    this.language,
+    this.noLife,
+    this.nextDayYouGetX5life,
+    this.x5,
+    this.feedback,
+    this.feedbackTitle,
+    this.enterFeedback,
+    this.thankforFeedback,
+    this.question,
+    this.tellTrueAnswer,
+    this.avatar,
+    this.nickName,
+    this.updateProfile,
+  });
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
     tellTrueAnswer = json['tell_true_answer'];
@@ -114,10 +121,16 @@ class LanguagesModel {
     feedbackTitle = json['feedback_title'];
     enterFeedback = json['enter_feedback'];
     thankforFeedback = json['thankfor_feedback'];
+    updateProfile = json['update_profile'];
+    nickName = json['nickname'];
+    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['update_profile'] = updateProfile;
+    data['nickname'] = nickName;
+    data['avatar'] = avatar;
     data['tell_true_answer'] = tellTrueAnswer;
     data['question'] = question;
     data['enemy_serrender'] = enemySerrender;

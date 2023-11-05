@@ -1,7 +1,7 @@
 import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
 
-class Customsetting extends CustomPainter {
+class SettingStyle extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Layer 1
@@ -9,41 +9,29 @@ class Customsetting extends CustomPainter {
     Paint paintFill0 = Paint()
       ..color = AppColor.primary
       ..style = PaintingStyle.fill
-      ..strokeWidth = 200
-      ..strokeCap = StrokeCap.round
+      ..strokeWidth = size.width * 0.01
+      ..strokeCap = StrokeCap.butt
       ..strokeJoin = StrokeJoin.miter;
 
     Path path_0 = Path();
-    path_0.moveTo(size.width * 0.0001500, size.height * 1.0241000);
-    path_0.quadraticBezierTo(size.width * 0.0253500, size.height * 0.6383000,
-        size.width * 0.1162000, size.height * 0.4951500);
-    path_0.cubicTo(
-        size.width * 0.2583000,
-        size.height * 0.4049000,
-        size.width * 0.4018500,
-        size.height * 0.4038500,
-        size.width * 0.4906000,
-        size.height * 0.3863500);
-    path_0.quadraticBezierTo(size.width * 0.5802000, size.height * 0.2523500,
-        size.width * 0.6938000, size.height * 0.1316500);
-    path_0.lineTo(size.width * 0.8962000, size.height * 0.0650000);
-    path_0.lineTo(size.width * 1.0336500, size.height * -0.0089500);
-    path_0.lineTo(size.width * 1.0241000, size.height * 1.0047000);
-    path_0.lineTo(size.width * 0.0001500, size.height * 1.0241000);
+    path_0.moveTo(size.width * -0.0197000, size.height * 0.9994000);
+    path_0.lineTo(size.width * 1.0233500, size.height * -0.0047000);
+    path_0.lineTo(size.width * 1.0095500, size.height * 1.0194000);
+    path_0.lineTo(size.width * -0.0197000, size.height * 0.9994000);
     path_0.close();
 
     canvas.drawPath(path_0, paintFill0);
 
     // Layer 1
 
-    Paint paintStroke0 = Paint()
-      // ..color = Colors.pink
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.miter;
+    // Paint paintStroke0 = Paint()
+    //   ..color = const Color.fromARGB(255, 33, 150, 243)
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeWidth = size.width * 0.01
+    //   ..strokeCap = StrokeCap.butt
+    //   ..strokeJoin = StrokeJoin.miter;
 
-    canvas.drawPath(path_0, paintStroke0);
+    // canvas.drawPath(path_0, paintStroke0);
   }
 
   @override

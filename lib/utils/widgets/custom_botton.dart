@@ -5,10 +5,14 @@ class CustomBotton extends StatelessWidget {
   final String title;
   final Function ontap;
   final bool isdisble;
+  final double h;
+  final double w;
 
   const CustomBotton(
       {super.key,
       required this.title,
+      this.h = 40,
+      this.w = 100,
       required this.ontap,
       required this.isdisble});
 
@@ -22,17 +26,17 @@ class CustomBotton extends StatelessWidget {
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          height: 40,
-          width: 100,
+          height: h,
+          width: w,
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
                 color:
-                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.8),
+                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.7),
                 spreadRadius: isdisble ? 1 : 10,
-                blurRadius: isdisble ? 30 : 30,
+                blurRadius: isdisble ? 25 : 25,
                 offset: const Offset(0, 2),
               ),
             ],

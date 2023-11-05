@@ -77,7 +77,6 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
         resumeCallBack();
         break;
       case AppLifecycleState.hidden:
-      // TODO: Handle this case.
     }
 //     _log.finest('''
 // =============================================================

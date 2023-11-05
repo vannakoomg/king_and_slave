@@ -149,24 +149,45 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                   .doc(snapshots
                                                                       .data![i]
                                                                       .id!);
-                                                          play
-                                                              .update({
-                                                            "slave.index": -1
-                                                          }).then((value) => {
-                                                                    Get.to(
-                                                                      () => GameScreen(
-                                                                          id: snapshots
-                                                                              .data![i]
-                                                                              .id!,
-                                                                          you: yourType),
-                                                                    )
-                                                                  });
+                                                          if (yourType == 0) {
+                                                            play
+                                                                .update({
+                                                              "slave.index": -1,
+                                                              "king.avatar":
+                                                                  Singleton
+                                                                      .instance
+                                                                      .avatar
+                                                                      .value
+                                                            }).then((value) => {
+                                                                      Get.to(
+                                                                        () => GameScreen(
+                                                                            id: snapshots.data![i].id!,
+                                                                            you: yourType),
+                                                                      )
+                                                                    });
+                                                          } else {
+                                                            play.update({
+                                                              "slave.avatar":
+                                                                  Singleton
+                                                                      .instance
+                                                                      .avatar
+                                                                      .value
+                                                            });
+                                                            play
+                                                                .update({
+                                                              "slave.index": -1
+                                                            }).then((value) => {
+                                                                      Get.to(
+                                                                        () => GameScreen(
+                                                                            id: snapshots.data![i].id!,
+                                                                            you: yourType),
+                                                                      )
+                                                                    });
+                                                          }
                                                         }
                                                       } else {
                                                         controller.isNoMoreLife
                                                             .value = true;
-                                                        debugPrint(
-                                                            "You have no life more ");
                                                       }
                                                     },
                                                     child: Container(

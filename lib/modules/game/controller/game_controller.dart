@@ -45,6 +45,13 @@ class Controller extends GetxController {
   final timeEnemy = 0.obs;
   final ischeckEnemy = true.obs;
   final isRedLine = false.obs;
+  final enemyMessage = ''.obs;
+  final yourMessage = ''.obs;
+  final isEnemyMessage = false.obs;
+  final isYourMessage = false.obs;
+  final isChat = false.obs;
+  final chatTextController = TextEditingController().obs;
+  final chatText = ''.obs;
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
     screenWight.value = w;
@@ -83,7 +90,6 @@ class Controller extends GetxController {
       you.removeAt(j);
       enemy.removeAt(k);
     }
-    // debugPrint("image kkkk ${listEnemyCard[0].image//}")
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
@@ -104,20 +110,9 @@ class Controller extends GetxController {
       }
       newPostion.value = neww;
       positionYourCard[index] = neww;
-      // for show red line
       positionYourCard[index].y! + 40 > screenHigh.value / 2 - highOfCard.value
           ? isRedLine.value = true
           : isRedLine.value = false;
-      // for change card posstion
-      // debugPrint("new pos ${newPostion.value.x}");
-      // if(newPostion.value.x>)
-      // for (int i = 0; i < 5; ++i) {
-      //   if (i != index) {
-      //     if (newPostion.value.x! > positionYourCard[i].x! + screenWight / 5) {
-      //       debugPrint("jjjjjjjjjjjj $i");
-      //     }
-      //   }
-      // }
     }
   }
 
@@ -172,6 +167,10 @@ class Controller extends GetxController {
         }
       });
     }
+  }
+
+  void ontapChat() {
+    isChat.value = true;
   }
 
   void listionGamePaly(RoomModel roomModel) {
@@ -236,7 +235,48 @@ class Controller extends GetxController {
           }
         }
       }
+      if (type.value == 0) {
+        if (roomModel.slave!.message != '' &&
+            roomModel.slave!.message != enemyMessage.value) {
+          enemyMessage.value = roomModel.slave!.message!;
+          isEnemyMessage.value = true;
+          Future.delayed(const Duration(milliseconds: 4000), () {
+            isEnemyMessage.value = false;
+          });
+        }
+      } else {
+        if (roomModel.king!.message != '' &&
+            roomModel.king!.message != enemyMessage.value) {
+          enemyMessage.value = roomModel.king!.message!;
+          isEnemyMessage.value = true;
+          Future.delayed(const Duration(milliseconds: 4000), () {
+            isEnemyMessage.value = false;
+          });
+        }
+      }
     }
+  }
+
+  void sendMessage() {
+    final play =
+        FirebaseFirestore.instance.collection('room').doc(roomId.value);
+    if (type.value == 0) {
+      play.update({
+        "king.message": chatText.value,
+      });
+    } else {
+      play.update({
+        "slave.message": chatText.value,
+      });
+    }
+    isChat.value = false;
+    yourMessage.value = chatText.value;
+    isYourMessage.value = true;
+    chatText.value = '';
+    chatTextController.value = TextEditingController();
+    Future.delayed(const Duration(milliseconds: 4000), () {
+      isYourMessage.value = false;
+    });
   }
 
   void onVerticalDragEnd(int index) {
@@ -273,7 +313,8 @@ class Controller extends GetxController {
               "index": index,
               "length": listYourCard.length,
               "turn": true,
-              "status": ""
+              "status": "",
+              "message": ""
             },
             "slave.turn": false
           });
@@ -287,7 +328,8 @@ class Controller extends GetxController {
               "index": index,
               "length": listYourCard.length,
               "turn": true,
-              "status": ""
+              "status": "",
+              "message": ""
             },
             "king.turn": false
           });
@@ -353,9 +395,10 @@ class Controller extends GetxController {
               enemyCard.value.name == "slave")) {
         status.value = "win";
         isStart.value = true;
-        // removelife();
+        removelife();
       } else if (yourCard.value.name == enemyCard.value.name) {
         status.value = "equal";
+        debugPrint("status 1 : ${status.value}");
         isStart.value = false;
         Future.delayed(const Duration(milliseconds: 1500), () {
           status.value = "";

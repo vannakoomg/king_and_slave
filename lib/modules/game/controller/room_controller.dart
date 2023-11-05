@@ -55,29 +55,6 @@ class RoomController extends GetxController {
     return i != 4 ? i : Random().nextInt(3);
   }
 
-  void onTapRoom({required List<RoomModel> roomList, required int type}) {
-    if (Singleton.instance.life.value <= 0) {
-      debugPrint("you have no life ");
-    } else {
-      for (int i = 0; i < roomList.length; ++i) {
-        if (roomList[i].password != '') {
-          roomId.value = roomList[i].id!;
-          roomPassword.value = roomList[i].password!;
-          isenterPassword.value = true;
-        } else {
-          final play = FirebaseFirestore.instance
-              .collection('room')
-              .doc(roomList[i].id!);
-          play.update({"slave.index": -1}).then((value) => {
-                Get.to(
-                  () => GameScreen(id: roomList[i].id!, you: type),
-                )
-              });
-        }
-      }
-    }
-  }
-
   void submit(int type) async {
     isloadingCreateroom.value = true;
     final docuser = FirebaseFirestore.instance.collection("room").doc();
@@ -88,19 +65,21 @@ class RoomController extends GetxController {
       name: roomNameTextEditController.value.text.trim(),
       password: passwordTextEditController.value.text.trim(),
       king: King(
-        card: Cardmodel(image: "", name: ""),
-        index: -1,
-        length: -1,
-        turn: false,
-        status: '',
-      ),
+          card: Cardmodel(image: "", name: ""),
+          index: -1,
+          length: -1,
+          turn: false,
+          status: '',
+          message: '',
+          avatar: type == 0 ? Singleton.instance.avatar.value : ""),
       slave: King(
-        card: Cardmodel(image: "", name: ""),
-        index: -2,
-        length: -1,
-        turn: false,
-        status: '',
-      ),
+          card: Cardmodel(image: "", name: ""),
+          index: -2,
+          length: -1,
+          turn: false,
+          status: '',
+          message: '',
+          avatar: type == 1 ? Singleton.instance.avatar.value : ""),
     );
     final json = room.toJson();
     await docuser.set(json).then((value) => {
@@ -116,12 +95,25 @@ class RoomController extends GetxController {
     if (roomPassword.value == enterPasswordTextEditController.value.text) {
       final play =
           FirebaseFirestore.instance.collection('room').doc(roomId.value);
-      play.update({"slave.index": -1}).then((value) => {
-            Get.to(
-              () => GameScreen(id: roomId.value, you: type.value),
-            ),
-            isenterPassword.value = false,
-          });
+      if (type.value == 0) {
+        play.update({
+          "slave.index": -1,
+          "king.avatar": Singleton.instance.avatar.value
+        }).then((value) => {
+              Get.to(
+                () => GameScreen(id: roomId.value, you: type.value),
+              ),
+              isenterPassword.value = false,
+            });
+      } else {
+        play.update({"slave.avatar": Singleton.instance.avatar.value});
+        play.update({"slave.index": -1}).then((value) => {
+              Get.to(
+                () => GameScreen(id: roomId.value, you: type.value),
+              ),
+              isenterPassword.value = false,
+            });
+      }
     } else {
       isWorngPassword.value = true;
     }

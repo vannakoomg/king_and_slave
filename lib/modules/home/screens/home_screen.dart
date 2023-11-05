@@ -1,17 +1,17 @@
 import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
+import 'package:animation_aba/modules/home/screens/create_profile.dart';
+import 'package:animation_aba/modules/home/screens/edit_profile.dart';
 import 'package:animation_aba/modules/home/widgets/custom_setting.dart';
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/models/language_model.dart';
-import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,10 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
               .then((value) async {
             Singleton.instance.languages.value =
                 LanguagesModel.fromJson(value.data()!);
-            debugPrint("iiiii${Singleton.instance.languages}");
-            Future.delayed(const Duration(milliseconds: 50), () {
-              controller.isshowLaw.value = true;
-            });
             controller.getiamge();
           })
         });
@@ -69,14 +65,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               color: AppColor.primary,
                               child: Center(
-                                  child: SvgPicture.asset(
-                                "assets/background/king.svg",
-                                height:
-                                    (MediaQuery.of(context).size.width / 2) *
-                                        0.8,
-                                width: (MediaQuery.of(context).size.width / 2) *
-                                    0.8,
-                              )),
+                                child: SvgPicture.asset(
+                                  "assets/background/king.svg",
+                                  height:
+                                      (MediaQuery.of(context).size.width / 2) *
+                                          0.8,
+                                  width:
+                                      (MediaQuery.of(context).size.width / 2) *
+                                          0.8,
+                                ),
+                              ),
                             ),
                           )),
                           Expanded(
@@ -90,15 +88,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 color: Colors.black,
                                 child: Center(
-                                    child: SvgPicture.asset(
-                                  "assets/background/slave.svg",
-                                  height:
-                                      (MediaQuery.of(context).size.width / 2) *
-                                          0.8,
-                                  width:
-                                      (MediaQuery.of(context).size.width / 2) *
-                                          0.8,
-                                )),
+                                  child: SvgPicture.asset(
+                                    "assets/background/slave.svg",
+                                    height: (MediaQuery.of(context).size.width /
+                                            2) *
+                                        0.8,
+                                    width: (MediaQuery.of(context).size.width /
+                                            2) *
+                                        0.8,
+                                  ),
+                                ),
                               ),
                             ),
                           )
@@ -113,15 +112,69 @@ class _HomeScreenState extends State<HomeScreen> {
                   left: 10,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 50,
+                    height: 60,
                     child: Row(
                       children: [
-                        for (int i = 0; i < Singleton.instance.life.value; ++i)
-                          const Icon(
-                            Icons.favorite,
-                            size: 30,
-                            color: Colors.black,
+                        GestureDetector(
+                          onTap: () {
+                            controller.editPrifile.value =
+                                Singleton.instance.avatar.value;
+                            debugPrint("");
+                            controller.imageEdit.clear();
+                            controller.imageEdit
+                                .addAll(controller.imagePrifile);
+                            controller.imageEdit
+                                .remove(controller.editPrifile.value);
+                            Get.to(const EditProfileScreen(),
+                                transition: Transition.noTransition);
+                          },
+                          child: Container(
+                            clipBehavior: Clip.antiAlias,
+                            height: 45,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black,
+                                border: Border.all(
+                                  color: Colors.black,
+                                )),
+                            width: 45,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: SvgPicture.asset(
+                                Singleton.instance.avatar.value,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                for (int i = 0;
+                                    i < Singleton.instance.life.value;
+                                    ++i)
+                                  const Icon(
+                                    Icons.favorite,
+                                    size: 22,
+                                    color: Colors.black,
+                                  ),
+                              ],
+                            ),
+                            Text(
+                              Singleton.instance.nickName.value,
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   )),
@@ -133,9 +186,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 80,
                   child: CustomPaint(
                     size: const Size(100, 100),
-                    painter: Customsetting(),
+                    painter: SettingStyle(),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 20),
+                      padding: const EdgeInsets.only(top: 30, left: 30),
                       child: IconButton(
                         icon: const Icon(
                           Icons.settings,
@@ -151,8 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              if (Singleton.instance.languages.value.lawDetail != null &&
-                  controller.isFirst.value)
+              if (controller.isshowLaw.value)
                 AnimatedOpacity(
                   curve: Curves.easeInOutCirc,
                   opacity: controller.isshowLaw.value ? 1 : 0,
@@ -226,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+              if (controller.isFirst.value) const ProfielScreen(),
             ],
           ),
         ),

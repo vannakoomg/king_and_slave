@@ -5,7 +5,7 @@ import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomResult extends StatefulWidget {
+class CustomResult extends StatelessWidget {
   final String status;
   final String roomId;
   final Function ontap;
@@ -16,12 +16,8 @@ class CustomResult extends StatefulWidget {
       required this.ontap});
 
   @override
-  State<CustomResult> createState() => _CustomResultState();
-}
-
-class _CustomResultState extends State<CustomResult> {
-  @override
   Widget build(BuildContext context) {
+    debugPrint("status2222222 $status");
     return Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -39,12 +35,10 @@ class _CustomResultState extends State<CustomResult> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: widget.status == "lose" ||
-                              widget.status == "you_surrender"
+                      color: status == "lose" || status == "you_surrender"
                           ? const Color.fromARGB(255, 229, 50, 26)
                               .withOpacity(0.5)
-                          : widget.status == "enemy_surrender" ||
-                                  widget.status == "win"
+                          : status == "enemy_surrender" || status == "win"
                               ? const Color.fromARGB(255, 238, 85, 136)
                               : const Color.fromARGB(255, 220, 202, 202)
                                   .withOpacity(0.5),
@@ -63,13 +57,13 @@ class _CustomResultState extends State<CustomResult> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.status == "enemy_surrender"
+                    status == "enemy_surrender"
                         ? "${Singleton.instance.languages.value.enemySerrender}"
-                        : widget.status == "you_surrender"
+                        : status == "you_surrender"
                             ? "${Singleton.instance.languages.value.youSurrender}"
-                            : widget.status == "win"
+                            : status == "win"
                                 ? "${Singleton.instance.languages.value.youWin}"
-                                : widget.status == "lose"
+                                : status == "lose"
                                     ? "${Singleton.instance.languages.value.youLose}"
                                     : "${Singleton.instance.languages.value.weEqual}",
                     style: const TextStyle(
@@ -78,10 +72,9 @@ class _CustomResultState extends State<CustomResult> {
                         fontSize: 24),
                   ),
                   SvgPicture.asset(
-                    widget.status == "lose" || widget.status == "you_surrender"
+                    status == "lose" || status == "you_surrender"
                         ? "assets/lose/${Random().nextInt(4) + 1}.svg"
-                        : widget.status == "enemy_surrender" ||
-                                widget.status == "win"
+                        : status == "enemy_surrender" || status == "win"
                             ? "assets/win/${Random().nextInt(4) + 1}.svg"
                             : "assets/equal/${Random().nextInt(3) + 1}.svg",
                     height: 130,
@@ -109,7 +102,7 @@ class _CustomResultState extends State<CustomResult> {
                 width: MediaQuery.of(context).size.width,
               ),
             ),
-            if (widget.status != "equal")
+            if (status != "equal")
               Positioned(
                 bottom: 10,
                 child: SizedBox(
@@ -118,7 +111,7 @@ class _CustomResultState extends State<CustomResult> {
                       child: CustomBotton(
                         title: "${Singleton.instance.languages.value.next}",
                         ontap: () {
-                          widget.ontap();
+                          ontap();
                         },
                         isdisble: false,
                       ),

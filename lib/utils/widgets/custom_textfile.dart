@@ -7,12 +7,14 @@ class CustomTextfile extends StatelessWidget {
   final Function? onchanged;
   final String? hintText;
   final TextInputType textInputType;
+  final Function? onComplete;
   final int maxLength;
   final bool autofous;
   const CustomTextfile({
     super.key,
     required this.controller,
     this.onchanged,
+    this.onComplete,
     this.autofous = false,
     this.maxLength = 1,
     this.textInputType = TextInputType.text,
@@ -33,14 +35,18 @@ class CustomTextfile extends StatelessWidget {
           onChanged: (value) {
             onchanged == null ? () {} : onchanged!(value);
           },
+          onEditingComplete: () {
+            onComplete!();
+          },
           autofocus: autofous,
           decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(top: 8, bottom: 8),
-              isDense: true,
-              border: InputBorder.none,
-              hintText: "$hintText",
-              hintStyle: TextStyle(
-                  color: Colors.white.withOpacity(0.8), fontSize: 14)),
+            contentPadding: const EdgeInsets.only(top: 6, bottom: 6),
+            isDense: true,
+            border: InputBorder.none,
+            hintText: "$hintText",
+            hintStyle:
+                TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+          ),
         ),
       ),
     );

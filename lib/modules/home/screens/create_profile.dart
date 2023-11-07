@@ -85,7 +85,7 @@ class ProfielScreen extends StatelessWidget {
                 h: 40,
                 w: 120,
                 title: controller.page.value == 0
-                    ? "${Singleton.instance.languages.value.next}"
+                    ? "${Singleton.instance.languages.value.ok}"
                     : "${Singleton.instance.languages.value.create}",
                 ontap: () {
                   controller.onTap();

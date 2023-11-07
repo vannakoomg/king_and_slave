@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:animation_aba/utils/controller/singleton.dart';
@@ -57,9 +56,9 @@ class HomeController extends GetxController {
   Future<String> setupLanguages() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('language') == null) {
-      await obj.setString('language', 'en');
+      await obj.setString('language', 'kh');
       Singleton.instance.lang.value = obj.getString("language")!;
-      return "en";
+      return "kh";
     } else {
       Singleton.instance.lang.value = obj.getString("language")!;
       return obj.getString("language")!;

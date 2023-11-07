@@ -93,6 +93,7 @@ class FeedBackScreen extends StatelessWidget {
                         ),
                       ),
                       CustomBotton(
+                          w: 120,
                           title: "${Singleton.instance.languages.value.create}",
                           ontap: () {
                             controller.feedback().then((value) {

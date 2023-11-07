@@ -1,4 +1,5 @@
 import 'package:animation_aba/const/appcolor.dart';
+import 'package:animation_aba/modules/game/screens/room_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomBotton extends StatelessWidget {
@@ -29,24 +30,33 @@ class CustomBotton extends StatelessWidget {
           height: h,
           width: w,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color:
-                    isdisble ? Colors.white : AppColor.primary.withOpacity(0.7),
-                spreadRadius: isdisble ? 1 : 10,
-                blurRadius: isdisble ? 25 : 25,
+                color: AppColor.primary.withOpacity(0.6),
+                spreadRadius: isdisble ? 1 : 9,
+                blurRadius: isdisble ? 25 : 30,
                 offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: Center(
-              child: Text(
-            title,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
-          )),
+          child: CustomPaint(
+            painter: SettingStyle(),
+            child: SizedBox(
+              height: h,
+              width: w,
+              child: Center(
+                  child: Text(
+                title,
+                style: TextStyle(
+                    color:
+                        isdisble ? Colors.white.withOpacity(0.7) : Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500),
+              )),
+            ),
+          ),
         ));
   }
 }

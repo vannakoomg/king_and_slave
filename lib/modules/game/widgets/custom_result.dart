@@ -17,7 +17,6 @@ class CustomResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("status2222222 $status");
     return Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -36,14 +35,14 @@ class CustomResult extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: status == "lose" || status == "you_surrender"
-                          ? const Color.fromARGB(255, 229, 50, 26)
+                          ? const Color.fromARGB(255, 245, 68, 45)
                               .withOpacity(0.5)
                           : status == "enemy_surrender" || status == "win"
                               ? const Color.fromARGB(255, 238, 85, 136)
                               : const Color.fromARGB(255, 220, 202, 202)
                                   .withOpacity(0.5),
-                      spreadRadius: 100,
-                      blurRadius: 80,
+                      spreadRadius: 120,
+                      blurRadius: 100,
                       offset: const Offset(0, 2), // changes position of shadow
                     ),
                   ],

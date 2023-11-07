@@ -114,7 +114,12 @@ class RoomController extends GetxController {
               isenterPassword.value = false,
             });
       } else {
-        play.update({"slave.profile.avatar": Singleton.instance.avatar.value});
+        play.update({
+          "slave.profile": {
+            "avatar": Singleton.instance.avatar.value,
+            "name": Singleton.instance.nickName.value
+          }
+        });
         play.update({"slave.index": -1}).then((value) => {
               Get.to(
                 () => GameScreen(id: roomId.value, you: type.value),

@@ -3,12 +3,12 @@ import 'package:animation_aba/modules/game/controller/game_controller.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/game_model.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
+import 'package:animation_aba/modules/game/screens/enemy_profile.dart';
 import 'package:animation_aba/modules/game/widgets/count_time.dart';
 import 'package:animation_aba/modules/game/widgets/chat_style.dart';
 import 'package:animation_aba/modules/game/widgets/custom_chat.dart';
 import 'package:animation_aba/modules/game/widgets/custom_result.dart';
 import 'package:animation_aba/modules/game/widgets/letstart.dart';
-import 'package:animation_aba/modules/game/widgets/show_overlay.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_loading.dart';
 import 'package:animation_aba/utils/widgets/custom_textfile.dart';
@@ -21,15 +21,24 @@ import 'package:get/get.dart';
 class GameScreen extends StatefulWidget {
   final String id;
   final int you;
-  const GameScreen({super.key, required this.id, required this.you});
+  final TextEditingController controller = TextEditingController();
+
+  GameScreen({
+    super.key,
+    required this.id,
+    required this.you,
+  }) {
+    controller.text = "hi";
+  }
 
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
 
+final controller = Get.put(Controller());
+final roomController = Get.put(RoomController());
+
 class _GameScreenState extends State<GameScreen> {
-  final controller = Get.put(Controller());
-  final roomController = Get.put(RoomController());
   @override
   void initState() {
     SystemChrome.setPreferredOrientations(
@@ -41,21 +50,18 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  void dispose() {
-    controller.timer!.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
+    // if (controller.isSetDefault.value) {
     controller.setDefault(w, h, widget.you);
+    // }
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: SafeArea(
           child: StreamBuilder<RoomModel>(
@@ -64,9 +70,19 @@ class _GameScreenState extends State<GameScreen> {
                 .doc(widget.id)
                 .snapshots()
                 .map((json) => RoomModel.fromJson(json.data()!)),
-            builder: (context, snapshots) {
+            builder: (_, snapshots) {
               if (snapshots.hasData) {
-                controller.listionGamePaly(snapshots.data!);
+                if (controller.oldData.value != RoomModel()) {
+                  controller.listionGamePaly(snapshots.data!);
+                  debugPrint("qqqqqq");
+                  //   if (controller.oldData.value != snapshots.data!) {
+                  //     controller.listionGamePaly(snapshots.data!);
+                  //   } else {
+                  //     debugPrint("wwwwwww =========");
+                  //   }
+                  // } else {
+                  //   debugPrint("wwwwwww null");
+                }
                 return Obx(() => GestureDetector(
                       onTap: () {
                         controller.isShowAdMob.value = true;
@@ -341,7 +357,7 @@ class _GameScreenState extends State<GameScreen> {
                                                 padding: const EdgeInsets.only(
                                                     bottom: 5,
                                                     left: 40,
-                                                    top: 0),
+                                                    top: 2),
                                                 width: 120,
                                                 height: 60,
                                                 color: Colors.transparent,
@@ -350,11 +366,11 @@ class _GameScreenState extends State<GameScreen> {
                                                   controller.gamePlay.value
                                                       ? "${Singleton.instance.languages.value.surrender}"
                                                       : "${Singleton.instance.languages.value.next}",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 11,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: Colors.black),
+                                                      color: AppColor.primary),
                                                 )),
                                               ),
                                             ),
@@ -385,7 +401,8 @@ class _GameScreenState extends State<GameScreen> {
                                         color: Colors.red,
                                       ),
                                     ),
-                                  Positioned(
+                                  AnimatedPositioned(
+                                    duration: const Duration(seconds: 1),
                                     bottom: 0,
                                     right: 0,
                                     child: GestureDetector(
@@ -415,6 +432,9 @@ class _GameScreenState extends State<GameScreen> {
                                     ),
                                   ),
                                   CustomChat(
+                                    ontap: () {
+                                      controller.isEnemyProfile.value = true;
+                                    },
                                     enemyAvatar: widget.you == 0
                                         ? snapshots
                                                 .data!.slave!.profile!.avatar ??
@@ -441,50 +461,65 @@ class _GameScreenState extends State<GameScreen> {
                                         Get.back();
                                       },
                                     ),
+                                  if (controller.isEnemyProfile.value)
+                                    EnemyPrifile(
+                                      name: widget.you == 0
+                                          ? snapshots
+                                              .data!.slave!.profile!.name!
+                                          : snapshots
+                                              .data!.king!.profile!.name!,
+                                      avatar: widget.you == 0
+                                          ? snapshots
+                                              .data!.slave!.profile!.avatar!
+                                          : snapshots
+                                              .data!.king!.profile!.avatar!,
+                                    )
                                 ],
                               ),
                             ),
                           ),
                           if (controller.isChat.value)
-                            Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(
-                                left: 10,
-                              ),
-                              color: Colors.black.withOpacity(0.4),
-                              child: Column(
-                                children: [
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: CustomTextfile(
-                                          autofous: true,
-                                          controller: controller
-                                              .chatTextController.value,
-                                          hintText: '',
-                                          onchanged: (value) {
-                                            controller.chatText.value = value;
+                            GestureDetector(
+                              onTap: () {
+                                controller.isChat.value = false;
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                ),
+                                color: Colors.black.withOpacity(0.4),
+                                child: Column(
+                                  children: [
+                                    const Spacer(),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            child: TextFormField(
+                                          controller: widget.controller,
+                                          autofocus: true,
+                                          decoration: const InputDecoration(
+                                            hintText: "adsfasfds",
+                                          ),
+                                        )),
+                                        IconButton(
+                                          onPressed: () {
+                                            controller.sendMessage();
                                           },
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          controller.sendMessage();
-                                        },
-                                        icon: Icon(
-                                          Icons.send,
-                                          size: 33,
-                                          color: AppColor.primary,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                ],
+                                          icon: Icon(
+                                            Icons.send,
+                                            size: 33,
+                                            color: AppColor.primary,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                         ],

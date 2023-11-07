@@ -133,9 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 45,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.black,
+                                color: Colors.white,
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 )),
                             width: 45,
                             child: ClipRRect(
@@ -162,14 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const Icon(
                                     Icons.favorite,
                                     size: 22,
-                                    color: Colors.black,
+                                    color: Colors.white,
                                   ),
                               ],
                             ),
                             Text(
                               Singleton.instance.nickName.value,
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: Colors.white.withOpacity(0.8),
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500),
                             ),
@@ -182,103 +182,123 @@ class _HomeScreenState extends State<HomeScreen> {
                 bottom: 0,
                 right: 0,
                 child: SizedBox(
-                  height: 80,
-                  width: 80,
-                  child: CustomPaint(
-                    size: const Size(100, 100),
-                    painter: SettingStyle(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 30),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.settings,
-                          color: Colors.black,
-                          size: 30,
+                  height: 70,
+                  width: 70,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: AppColor.primary,
+                                    blurRadius: 120,
+                                    spreadRadius: 35)
+                              ]),
                         ),
-                        onPressed: () {
-                          Get.to(() => const SettingScreen(),
-                              transition: Transition.noTransition);
-                        },
                       ),
-                    ),
+                      SizedBox(
+                        height: 70,
+                        width: 70,
+                        child: CustomPaint(
+                          painter: SettingStyle(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 30, left: 30),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                Get.to(() => const SettingScreen(),
+                                    transition: Transition.noTransition);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               if (controller.isshowLaw.value)
-                AnimatedOpacity(
-                  curve: Curves.easeInOutCirc,
-                  opacity: controller.isshowLaw.value ? 1 : 0,
-                  duration: const Duration(milliseconds: 300),
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.agress();
-                    },
-                    child: Container(
-                      color: Colors.black.withOpacity(0.95),
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top + 20),
-                      child: Stack(
-                        children: [
-                          Container(
-                            color: Colors.black.withOpacity(0.9),
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 40, bottom: 10),
-                            child: Center(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "${Singleton.instance.languages.value.law}",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                        Singleton
-                                            .instance.languages.value.lawDetail!
-                                            .replaceAll(r'\n', '\n'),
-                                        style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                            fontSize: 19)),
-                                    const SizedBox(
-                                      height: 40,
-                                    ),
-                                    const SizedBox(
-                                      height: 60,
-                                    )
-                                  ],
-                                ),
+                GestureDetector(
+                  onTap: () {
+                    controller.agress();
+                  },
+                  child: Container(
+                    color: Colors.black.withOpacity(0.95),
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 20),
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: Colors.black.withOpacity(0.9),
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 40, bottom: 10),
+                          child: Center(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "${Singleton.instance.languages.value.law}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                      Singleton
+                                          .instance.languages.value.lawDetail!
+                                          .replaceAll(r'\n', '\n'),
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(0.7),
+                                          fontSize: 19)),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  const SizedBox(
+                                    height: 60,
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                          Positioned(
-                            right: 40,
-                            bottom: 20,
-                            child: GestureDetector(
-                              onTap: () async {
-                                settingController.fetchLanguage();
-                              },
-                              child: SvgPicture.asset(
-                                "assets/setting/appsara.svg",
-                                height: 110,
-                              ),
+                        ),
+                        Positioned(
+                          right: 40,
+                          bottom: 20,
+                          child: GestureDetector(
+                            onTap: () async {
+                              settingController.fetchLanguage();
+                            },
+                            child: SvgPicture.asset(
+                              "assets/setting/appsara.svg",
+                              height: 110,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              if (controller.isFirst.value) const ProfielScreen(),
+              if (controller.isFirst.value &&
+                  Singleton.instance.languages.value.next != null)
+                const ProfielScreen(),
             ],
           ),
         ),

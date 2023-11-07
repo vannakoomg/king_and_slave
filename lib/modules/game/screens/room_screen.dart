@@ -176,11 +176,17 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                 });
                                                           } else {
                                                             play.update({
-                                                              "slave.profile.avatar":
-                                                                  Singleton
-                                                                      .instance
-                                                                      .avatar
-                                                                      .value
+                                                              "slave.profile": {
+                                                                "avatar":
+                                                                    Singleton
+                                                                        .instance
+                                                                        .avatar
+                                                                        .value,
+                                                                "name": Singleton
+                                                                    .instance
+                                                                    .nickName
+                                                                    .value
+                                                              }
                                                             });
                                                             play
                                                                 .update({
@@ -293,38 +299,17 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                   );
                                 }
                               }),
-                          GestureDetector(
-                            onTap: () {
-                              controller.createRoom();
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                  top: 10, bottom: 20, left: 5, right: 5),
-                              height: 45,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColor.primary.withOpacity(0.5),
-                                    spreadRadius: 10,
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
+                          CustomBotton(
+                              w: 140,
+                              title:
                                   "${Singleton.instance.languages.value.create}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          )
+                              ontap: () {
+                                controller.createRoom();
+                              },
+                              isdisble: false),
+                          const SizedBox(
+                            height: 10,
+                          ),
                         ],
                       ),
                     ),

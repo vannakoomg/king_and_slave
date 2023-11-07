@@ -52,13 +52,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       size: 35,
                                     )),
                                 Text(
                                   "${Singleton.instance.languages.value.setting}",
                                   style: TextStyle(
-                                      color: Colors.black.withOpacity(0.78),
+                                      color: Colors.white.withOpacity(0.78),
                                       fontSize: 28,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -107,7 +107,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         Singleton.instance.languages.value.law!,
                                         style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.7),
+                                                Colors.white.withOpacity(0.7),
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -137,7 +137,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             .customize!,
                                         style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.7),
+                                                Colors.white.withOpacity(0.7),
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -180,7 +180,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 Singleton.instance.languages
                                                     .value.language!,
                                                 style: TextStyle(
-                                                    color: Colors.black
+                                                    color: Colors.white
                                                         .withOpacity(0.7),
                                                     fontSize: 16,
                                                     fontWeight:

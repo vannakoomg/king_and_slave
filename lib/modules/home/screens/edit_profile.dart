@@ -1,11 +1,9 @@
-import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../utils/widgets/custom_textfile.dart';
 
 class EditProfileScreen extends StatelessWidget {

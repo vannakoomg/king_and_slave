@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
 
 class CountTimte extends StatelessWidget {
@@ -15,7 +16,7 @@ class CountTimte extends StatelessWidget {
           height: 5,
           width: MediaQuery.of(context).size.width * time / 120,
           decoration: BoxDecoration(
-              color: Colors.red,
+              color: AppColor.primary,
               border: Border.all(color: Colors.white, width: 0.8)),
         ));
   }

@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/game_model.dart';
 
 class Controller extends GetxController {
+  final isEnemyProfile = false.obs;
   final type = 0.obs;
   final roomId = "".obs;
   final listYourCard = <Cardmodel>[].obs;
@@ -50,14 +51,9 @@ class Controller extends GetxController {
   final isEnemyMessage = false.obs;
   final isYourMessage = false.obs;
   final isChat = false.obs;
-  final isEnemyProfile = false.obs;
   final chatTextController = TextEditingController().obs;
   final chatText = ''.obs;
-  final isAlready = false.obs;
-  final isSetDefault = true.obs;
   void setDefault(double w, double h, int type) {
-    debugPrint("555555555555 set");
-    isSetDefault.value = false;
     gamePlay.value = false;
     screenWight.value = w;
     screenHigh.value = h;
@@ -178,10 +174,7 @@ class Controller extends GetxController {
     isChat.value = true;
   }
 
-  final oldData = RoomModel().obs;
-  final uuuu = true.obs;
   void listionGamePaly(RoomModel roomModel) {
-    uuuu.value = roomModel.king!.turn!;
     if (status.value == '') {
       if (roomModel.slave!.index == -2) {
         showLoading.value = true;
@@ -219,37 +212,26 @@ class Controller extends GetxController {
             sword.value = false;
           }
         }
+        removelife();
       } else {
         if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
-          oldData.value = roomModel;
           if (roomModel.slave!.length == roomModel.king!.length) {
             Future.delayed(const Duration(milliseconds: 1000), () {
               endGame(roomModel.id!);
             });
           }
-          if (isAlready.value == false) {
-            if (type.value == 0) {
-              if (roomModel.slave!.turn == true) {
-                debugPrint("555555555555 king");
-                ischeckEnemy.value = false;
-                isAlready.value = true;
-
-                enmey(
-                  roomModel.slave!.index!,
-                  roomModel.slave!.card!,
-                );
-              }
-            } else {
-              if (roomModel.king!.turn == true) {
-                debugPrint("555555555555 slave");
-                enmey(
-                  roomModel.king!.index!,
-                  roomModel.king!.card!,
-                );
-                isAlready.value = true;
-
-                ischeckEnemy.value = false;
-              }
+          if (type.value == 0) {
+            if (roomModel.slave!.turn == true) {
+              ischeckEnemy.value = false;
+              enmey(
+                roomModel.slave!.index!,
+                roomModel.slave!.card!,
+              );
+            }
+          } else {
+            if (roomModel.king!.turn == true) {
+              enmey(roomModel.king!.index!, roomModel.king!.card!);
+              ischeckEnemy.value = false;
             }
           }
         }
@@ -306,10 +288,12 @@ class Controller extends GetxController {
         isStart.value = false;
         newPostion.value = positionYourCard[index];
         isPlaying.value = true;
+        debugPrint("remove at $index");
         positionYourCard.removeAt(index);
         listYourCard.removeAt(index);
         Future.delayed(const Duration(milliseconds: 100), () {
           positionYourCard.clear();
+          debugPrint(" romver kkkk$listYourCard");
           istouchCard.value = false;
           for (int i = 0; i < listYourCard.length; ++i) {
             positionYourCard.add(Postion(
@@ -368,6 +352,7 @@ class Controller extends GetxController {
 
   void onVerticalDragStart(int i) {
     sword.value = false;
+    debugPrint("isPlaying ${isPlaying.value}");
     if (isPlaying.value == false) {
       isPlaying.value = false;
       oldPostion.value = positionYourCard[i];
@@ -377,8 +362,6 @@ class Controller extends GetxController {
   }
 
   void enmey(int index, Cardmodel enmey) {
-    debugPrint("555555555555");
-
     enemyCard.value = enmey;
     openEnemy.value = false;
     positionEnemyCard[index] = Postion(
@@ -407,44 +390,39 @@ class Controller extends GetxController {
   }
 
   void endGame(String id) {
-    if (status.value == '') {
-      rotate.value = 3.14;
-      isStart.value = false;
-      ischeckEnemy.value = true;
-      timeEnemy.value = 120;
-      time.value = 120;
-      isRedLine.value = false;
-      Future.delayed(const Duration(milliseconds: 1500), () {
+    rotate.value = 3.14;
+    isStart.value = false;
+    ischeckEnemy.value = true;
+    timeEnemy.value = 120;
+    time.value = 120;
+    isRedLine.value = false;
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      isStart.value = true;
+      if ((yourCard.value.name == "king" && enemyCard.value.name != "slave") ||
+          (yourCard.value.name == "slave" && enemyCard.value.name == "king") ||
+          (yourCard.value.name == "soldier" &&
+              enemyCard.value.name == "slave")) {
+        status.value = "win";
         isStart.value = true;
-        if ((yourCard.value.name == "king" &&
-                enemyCard.value.name != "slave") ||
-            (yourCard.value.name == "slave" &&
-                enemyCard.value.name == "king") ||
-            (yourCard.value.name == "soldier" &&
-                enemyCard.value.name == "slave")) {
-          status.value = "win";
+        removelife();
+      } else if (yourCard.value.name == enemyCard.value.name) {
+        status.value = "equal";
+        debugPrint("status 1 : ${status.value}");
+        isStart.value = false;
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          status.value = "";
           isStart.value = true;
-          removelife();
-        } else if (yourCard.value.name == enemyCard.value.name) {
-          status.value = "equal";
-          debugPrint("status 1 : ${status.value}");
-          isStart.value = false;
-          Future.delayed(const Duration(milliseconds: 1500), () {
-            status.value = "";
-            isStart.value = true;
-          });
-        } else {
-          isStart.value = true;
-          status.value = "lose";
-          removelife();
-        }
-        isPlaying.value = false;
-        showEnemy.value = false;
-        rotate.value = 0;
-        enemyCard.value = Cardmodel();
-        isAlready.value = false;
-      });
-    }
+        });
+      } else {
+        isStart.value = true;
+        status.value = "lose";
+        removelife();
+      }
+      isPlaying.value = false;
+      showEnemy.value = false;
+      rotate.value = 0;
+      enemyCard.value = Cardmodel();
+    });
   }
 
   void ontapSword02() {
@@ -476,5 +454,28 @@ class Controller extends GetxController {
     if (isStart.value || showLoading.value) {
       sword.value = !sword.value;
     }
+  }
+
+  InterstitialAd? interstitialAd;
+
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: "ca-app-pub-3625881169262046/9283118792",
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              // _moveToHome();
+            },
+          );
+
+          interstitialAd = ad;
+        },
+        onAdFailedToLoad: (err) {
+          debugPrint('Failed to load an interstitial ad: ${err.message}');
+        },
+      ),
+    );
   }
 }

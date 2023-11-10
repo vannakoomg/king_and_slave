@@ -6,6 +6,7 @@ class RoomModel {
   King? king;
   King? slave;
   String? createDate;
+  String? chatId;
   RoomModel(
       {this.id,
       this.name,
@@ -13,9 +14,11 @@ class RoomModel {
       this.type,
       this.king,
       this.slave,
-      this.createDate});
+      this.createDate,
+      this.chatId});
 
   RoomModel.fromJson(Map<String, dynamic> json) {
+    chatId = json['chatId'];
     id = json['id'];
     name = json['name'];
     createDate = json['createDate'];
@@ -27,6 +30,7 @@ class RoomModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['chatId'] = chatId;
     data['id'] = id;
     data['createDate'] = createDate;
     data['name'] = name;
@@ -49,7 +53,6 @@ class King {
   int? length;
   bool? turn;
   String? status;
-  String? message;
 
   King(
       {this.card,
@@ -57,7 +60,6 @@ class King {
       this.length,
       this.turn,
       this.status,
-      this.message,
       this.profile});
 
   King.fromJson(Map<String, dynamic> json) {
@@ -68,7 +70,6 @@ class King {
     length = json['length'];
     turn = json['turn'];
     status = json['status'];
-    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,7 +84,6 @@ class King {
     data['length'] = length;
     data['turn'] = turn;
     data['status'] = status;
-    data['message'] = message;
     return data;
   }
 }

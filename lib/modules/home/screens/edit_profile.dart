@@ -13,6 +13,7 @@ class EditProfileScreen extends StatelessWidget {
     final controller = Get.put(HomeController());
     controller.userNameController.value.text =
         Singleton.instance.nickName.value;
+    controller.userName.value = Singleton.instance.nickName.value;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -110,6 +111,9 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   CustomBotton(
                       h: 40,
                       w: 120,
@@ -119,7 +123,7 @@ class EditProfileScreen extends StatelessWidget {
                       },
                       isdisble: controller.userName.value == '' ? true : false),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                 ],
               ))),

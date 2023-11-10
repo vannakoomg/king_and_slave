@@ -229,7 +229,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             .instance.languages.value.feedback!,
                                         style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.7),
+                                                Colors.white.withOpacity(0.7),
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       ),

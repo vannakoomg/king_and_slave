@@ -1,4 +1,6 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CustomOwnTextfile extends StatefulWidget {
@@ -19,74 +21,117 @@ class CustomOwnTextfileState extends State<CustomOwnTextfile> {
   final controlleeeee = Get.put(Controler());
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black.withOpacity(0.5),
-      child: Column(
-        children: [
-          const Spacer(),
-          Container(
-            padding: const EdgeInsets.all(0),
-            color: Colors.black,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.97),
-                  borderRadius: BorderRadius.circular(70)),
-              margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
-              child: Row(
+    _controller.text = controlleeeee.textInput.value;
+    return Obx(() => Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black.withOpacity(0.5),
+          child: Column(
+            children: [
+              const Spacer(),
+              Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      textAlign: TextAlign.justify,
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        hintStyle: TextStyle(color: Colors.white),
-                        labelStyle: TextStyle(color: Colors.white),
-                        contentPadding: EdgeInsets.only(
-                            left: 8, right: 8, top: 4, bottom: 4),
-                        isDense: true,
-                        border: InputBorder.none,
+                    child: Container(
+                      padding: const EdgeInsets.all(0),
+                      color: Colors.black,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.97),
+                            borderRadius: BorderRadius.circular(70)),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 4),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                cursorColor: AppColor.primary,
+                                textAlign: TextAlign.justify,
+                                controller: _controller,
+                                decoration: const InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, right: 8, top: 4, bottom: 4),
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                ),
+                                style: const TextStyle(fontSize: 13),
+                                autofocus: true,
+                                showCursor: true,
+                                readOnly: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  widget.onSaveMessage();
+                                  _controller.text = "";
+                                  widget.onChange("");
+                                  controlleeeee.textInput.value = "";
+                                },
+                                child: AnimatedContainer(
+                                  height: 25,
+                                  width: 25,
+                                  duration: const Duration(milliseconds: 250),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: controlleeeee.textInput.value != ''
+                                        ? AppColor.primary
+                                        : Colors.transparent,
+                                  ),
+                                  child: const Center(
+                                      child: Icon(
+                                    Icons.arrow_upward_rounded,
+                                    color: Colors.white,
+                                    size: 18,
+                                  )),
+                                )),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                          ],
+                        ),
                       ),
-                      style: const TextStyle(fontSize: 16),
-                      autofocus: true,
-                      showCursor: true,
-                      readOnly: true,
                     ),
                   ),
-                  const SizedBox(
-                    width: 2,
-                  ),
-                  if (_controller.text != "")
-                    Container(
-                      height: 25,
-                      width: 30,
-                      color: Colors.green,
-                    ),
                   GestureDetector(
-                      onTap: () {
-                        _controller.text = "";
-                      },
-                      child: const Icon(Icons.golf_course)),
-                  const SizedBox(
-                    width: 5,
-                  ),
+                    onTap: () {
+                      _controller.text = "";
+                      widget.onChange("");
+                      controlleeeee.textInput.value = "";
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationZ(3.14),
+                      transformAlignment: Alignment.center,
+                      margin: const EdgeInsets.only(left: 2, right: 2),
+                      height: 27,
+                      width: 27,
+                      color: Colors.transparent,
+                      child: const Center(
+                          child: Icon(
+                        Icons.cut,
+                        color: Colors.white,
+                      )),
+                    ),
+                  )
                 ],
               ),
-            ),
+              CustomKeyboard(
+                ontap: widget.onSaveMessage,
+                onTextInput: (myText) {
+                  _insertText(myText);
+                },
+                onBackspace: () {
+                  _backspace();
+                },
+              ),
+            ],
           ),
-          CustomKeyboard(
-            ontap: widget.onSaveMessage,
-            onTextInput: (myText) {
-              _insertText(myText);
-            },
-            onBackspace: () {
-              _backspace();
-            },
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   void _insertText(String myText) {
@@ -99,6 +144,7 @@ class CustomOwnTextfileState extends State<CustomOwnTextfile> {
     );
     final myTextLength = myText.length;
     _controller.text = newText;
+    controlleeeee.textInput.value = newText;
     widget.onChange(newText);
     _controller.selection = textSelection.copyWith(
       baseOffset: textSelection.start + myTextLength,
@@ -146,6 +192,7 @@ class CustomOwnTextfileState extends State<CustomOwnTextfile> {
       extentOffset: newStart,
     );
     widget.onChange(newText);
+    controlleeeee.textInput.value = newText;
   }
 
   bool _isUtf16Surrogate(int value) {
@@ -170,10 +217,7 @@ class CustomKeyboard extends StatelessWidget {
     required this.ontap,
   });
 
-  // void _textInputHandler(String text) => onTextInput.call(text);
-
   void deleteText() => onBackspace.call();
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(Controler());
@@ -183,37 +227,48 @@ class CustomKeyboard extends StatelessWidget {
             padding: const EdgeInsets.only(left: 1, right: 1),
             height: MediaQuery.of(context).size.width / 1.9,
             color: Colors.black,
-            child: controller.isSymbol.value
+            child: controller.isEmoji.value
                 ? Column(
                     children: [
-                      buildRow(controller.symbol1, EdgeInsets.zero,
+                      buildRow(controller.emoji1, EdgeInsets.zero,
                           controller.isUpperCase.value),
-                      buildRow(controller.symbol2, EdgeInsets.zero,
+                      buildRow(controller.emoji2, EdgeInsets.zero,
                           controller.isUpperCase.value),
-                      buildRow3(controller.symbol3, EdgeInsets.zero,
+                      buildRow4(controller.emoji3, EdgeInsets.zero,
                           controller.isUpperCase.value, () {}),
                       buildRowThree(ontap),
                     ],
                   )
-                : Column(
-                    children: [
-                      buildRow(controller.enRow1, EdgeInsets.zero,
-                          controller.isUpperCase.value),
-                      buildRow(
-                          controller.enRow2,
-                          const EdgeInsets.only(left: 30, right: 30),
-                          controller.isUpperCase.value),
-                      buildRow3(
-                          controller.enRow3,
-                          const EdgeInsets.only(left: 20, right: 20),
-                          controller.isUpperCase.value, () {
-                        debugPrint("dfsfdsfd");
-                        controller.isUpperCase.value =
-                            !controller.isUpperCase.value;
-                      }),
-                      buildRowThree(ontap),
-                    ],
-                  ),
+                : controller.isSymbol.value
+                    ? Column(
+                        children: [
+                          buildRow(controller.symbol1, EdgeInsets.zero,
+                              controller.isUpperCase.value),
+                          buildRow(controller.symbol2, EdgeInsets.zero,
+                              controller.isUpperCase.value),
+                          buildRow4(controller.symbol3, EdgeInsets.zero,
+                              controller.isUpperCase.value, () {}),
+                          buildRowThree(ontap),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          buildRow(controller.enRow1, EdgeInsets.zero,
+                              controller.isUpperCase.value),
+                          buildRow(
+                              controller.enRow2,
+                              const EdgeInsets.only(left: 30, right: 30),
+                              controller.isUpperCase.value),
+                          buildRow3(
+                              controller.enRow3,
+                              const EdgeInsets.only(left: 20, right: 20),
+                              controller.isUpperCase.value, () {
+                            controller.isUpperCase.value =
+                                !controller.isUpperCase.value;
+                          }),
+                          buildRowThree(ontap),
+                        ],
+                      ),
           ),
         ));
   }
@@ -223,13 +278,19 @@ class CustomKeyboard extends StatelessWidget {
       child: Container(
         padding: pedding,
         child: Row(
-          children: letter.map((e) {
-            return TextKey(
-              text: isUpperCase ? e.toUpperCase() : e,
-              onTextInput: onTextInput,
-              isUpperCase: isUpperCase,
-            );
-          }).toList(),
+          children: [
+            Expanded(
+              child: Row(
+                children: letter.map((e) {
+                  return Textyyyyyyy(
+                    text: isUpperCase ? e.toUpperCase() : e,
+                    onTextInput: onTextInput,
+                    isUpperCase: isUpperCase,
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -247,15 +308,21 @@ class CustomKeyboard extends StatelessWidget {
                 ontap();
               },
               child: Container(
-                margin: const EdgeInsets.all(4),
-                width: 40,
-                color: Colors.white,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: const Color(0xffff0a54),
+                ),
+                margin: const EdgeInsets.only(right: 2, top: 2),
+                width: 45,
+                child: SvgPicture.asset(!isUpperCase
+                    ? "assets/chat/lowerCase.svg"
+                    : "assets/chat/upperCase.svg"),
               ),
             ),
             Expanded(
               child: Row(
                 children: letter.map((e) {
-                  return TextKey(
+                  return Textyyyyyyy(
                     text: e,
                     onTextInput: onTextInput,
                     isUpperCase: isUpperCase,
@@ -268,9 +335,63 @@ class CustomKeyboard extends StatelessWidget {
                 deleteText();
               },
               child: Container(
-                margin: const EdgeInsets.all(4),
-                width: 40,
-                color: Colors.white,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: const Color(0xffff0a54)),
+                margin: const EdgeInsets.only(left: 2, top: 5, bottom: 3),
+                width: 45,
+                child: const Center(
+                    child: Icon(
+                  Icons.backspace_sharp,
+                  color: Colors.white,
+                  size: 18,
+                )),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded buildRow4(List<String> letter, EdgeInsets pedding, bool isUpperCase,
+      Function ontap) {
+    return Expanded(
+      child: Container(
+        padding: pedding,
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: letter.map((e) {
+                  return e != ""
+                      ? Textyyyyyyy(
+                          text: e,
+                          onTextInput: onTextInput,
+                          isUpperCase: isUpperCase,
+                        )
+                      : Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              deleteText();
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  top: 4, left: 2, right: 3, bottom: 2),
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffff0a54),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: const Center(
+                                  child: Icon(
+                                Icons.backspace_sharp,
+                                color: Colors.black,
+                                size: 16,
+                              )),
+                            ),
+                          ),
+                        );
+                }).toList(),
               ),
             ),
           ],
@@ -289,6 +410,7 @@ class CustomKeyboard extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 controler.isSymbol.value = !controler.isSymbol.value;
+                controler.isEmoji.value = false;
               },
               child: Container(
                 width: 60,
@@ -302,6 +424,27 @@ class CustomKeyboard extends StatelessWidget {
                 )),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                controler.isEmoji.value = !controler.isEmoji.value;
+              },
+              child: AnimatedContainer(
+                curve: Curves.easeIn,
+                duration: const Duration(milliseconds: 230),
+                margin: const EdgeInsets.only(left: 4),
+                width: 40,
+                decoration: BoxDecoration(
+                    color: controler.isEmoji.value
+                        ? Colors.white.withOpacity(1)
+                        : Colors.pink.withOpacity(1),
+                    borderRadius: BorderRadius.circular(5)),
+                child: const Center(
+                    child: Text(
+                  "🎃",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )),
+              ),
+            ),
             Expanded(
                 child: GestureDetector(
               onTap: () {
@@ -310,7 +453,7 @@ class CustomKeyboard extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(left: 4, right: 4),
                 decoration: BoxDecoration(
-                    color: Colors.pink.withOpacity(0.8),
+                    color: const Color.fromARGB(255, 229, 42, 98),
                     borderRadius: BorderRadius.circular(5)),
                 child: const Center(
                     child: Text(
@@ -324,7 +467,7 @@ class CustomKeyboard extends StatelessWidget {
                 ontapSend();
               },
               child: Container(
-                width: 60,
+                width: 80,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5)),
@@ -346,19 +489,18 @@ class CustomKeyboard extends StatelessWidget {
   }
 }
 
-class TextKey extends StatelessWidget {
-  const TextKey({
+class Textyyyyyyy extends StatelessWidget {
+  final String text;
+  final ValueSetter<String> onTextInput;
+  final int flex;
+  final bool isUpperCase;
+  const Textyyyyyyy({
     super.key,
     required this.text,
     required this.onTextInput,
     required this.isUpperCase,
     this.flex = 1,
   });
-
-  final String text;
-  final ValueSetter<String> onTextInput;
-  final int flex;
-  final bool isUpperCase;
 
   @override
   Widget build(BuildContext context) {
@@ -372,7 +514,8 @@ class TextKey extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.pink, borderRadius: BorderRadius.circular(5)),
+                  color: const Color(0xffff5c8a),
+                  borderRadius: BorderRadius.circular(5)),
               margin:
                   const EdgeInsets.only(left: 1, right: 1, top: 4, bottom: 2),
               child: Center(
@@ -390,10 +533,15 @@ class Controler extends GetxController {
   final send = 'Send'.obs;
   final isUpperCase = false.obs;
   final isSymbol = false.obs;
+  final isEmoji = false.obs;
+  final textInput = "".obs;
   final enRow1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
   final enRow2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
   final enRow3 = ["z", "x", "c", "v", "b", "n", "m"];
-  final symbol1 = ["☾", "⅕", "➵", "♪♫", "0", "1", "•", "≠", "⌗", "👻"];
+  final symbol1 = ["☾", "⅕", "➵", "♪♫", "0", "1", "•", "≠", "⌗", "‱"];
   final symbol2 = ["π", "∞", "％", "∛", "∅", "∆", "∫", "∥", "=", "∡"];
-  final symbol3 = ["♟", "卐", "៛", "❆", "⌘", "℃", "＠", "♞"];
+  final symbol3 = ["⍬", "♟", "卐", "៛", "❆", "⌘", "℃", "＠", "♞", ""];
+  final emoji1 = ["😂", "😄", "🤪", "😉", "😝", "🤫", "🤧", "😱", "😏", "😇"];
+  final emoji2 = ["🤑", "🥶️", "🥴️", "😬", "🤮", "🤯", "😑", "😵", "👽", "👻"];
+  final emoji3 = ["🙈", "🤖", "🤡", "🔪", "😈", "🌹", "💖", "💘", "💞", ""];
 }

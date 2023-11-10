@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animation_aba/modules/game/models/chat_model.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/modules/game/screens/game_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
@@ -17,6 +18,7 @@ class RoomController extends GetxController {
   final passwordTextEditController = TextEditingController().obs;
   final enterPasswordTextEditController = TextEditingController().obs;
   final roomId = ''.obs;
+  final chatId = ''.obs;
   final roomPassword = ''.obs;
   final isWorngPassword = false.obs;
   final isDisbleButtonOk = true.obs;
@@ -58,38 +60,49 @@ class RoomController extends GetxController {
   void submit(int type) async {
     isloadingCreateroom.value = true;
     final docuser = FirebaseFirestore.instance.collection("room").doc();
-    final room = RoomModel(
-      createDate: DateTime.now().toString(),
-      type: type,
-      id: docuser.id,
-      name: roomNameTextEditController.value.text.trim(),
-      password: passwordTextEditController.value.text.trim(),
-      king: King(
-          card: Cardmodel(image: "", name: ""),
-          index: -1,
-          length: -1,
-          turn: false,
-          status: '',
-          message: '',
-          profile: ProfileModel(
-              avatar: type == 0 ? Singleton.instance.avatar.value : "",
-              name: type == 0 ? Singleton.instance.nickName.value : '')),
-      slave: King(
-          card: Cardmodel(image: "", name: ""),
-          index: -2,
-          length: -1,
-          turn: false,
-          status: '',
-          message: '',
-          profile: ProfileModel(
-              avatar: type == 1 ? Singleton.instance.avatar.value : "",
-              name: type == 1 ? Singleton.instance.nickName.value : '')),
-    );
-    final json = room.toJson();
-    await docuser.set(json).then((value) => {
-          isloadingCreateroom.value = false,
-          Get.to(() => GameScreen(id: docuser.id, you: type))
-        });
+    final docChat = FirebaseFirestore.instance.collection("chat").doc();
+    final chat = ChatModel(
+        messagelking: Messagelking(title: "", turn: false),
+        messagelslave: Messagelking(title: "", turn: false));
+    final jsonChat = chat.toJson();
+    await docChat.set(jsonChat).then((value) async {
+      final room = RoomModel(
+        chatId: docChat.id,
+        createDate: DateTime.now().toString(),
+        type: type,
+        id: docuser.id,
+        name: roomNameTextEditController.value.text.trim(),
+        password: passwordTextEditController.value.text.trim(),
+        king: King(
+            card: Cardmodel(image: "", name: ""),
+            index: -1,
+            length: -1,
+            turn: false,
+            status: '',
+            profile: ProfileModel(
+                avatar: type == 0 ? Singleton.instance.avatar.value : "",
+                name: type == 0 ? Singleton.instance.nickName.value : '')),
+        slave: King(
+            card: Cardmodel(image: "", name: ""),
+            index: -2,
+            length: -1,
+            turn: false,
+            status: '',
+            profile: ProfileModel(
+                avatar: type == 1 ? Singleton.instance.avatar.value : "",
+                name: type == 1 ? Singleton.instance.nickName.value : '')),
+      );
+      final json = room.toJson();
+      await docuser.set(json).then((value) => {
+            isloadingCreateroom.value = false,
+            Get.to(() => GameScreen(
+                  id: docuser.id,
+                  you: type,
+                  chatID: docChat.id,
+                ))
+          });
+    });
+
     isCreateRoom.value = false;
     roomNameTextEditController.value = TextEditingController();
     passwordTextEditController.value = TextEditingController();
@@ -109,7 +122,8 @@ class RoomController extends GetxController {
           }
         }).then((value) => {
               Get.to(
-                () => GameScreen(id: roomId.value, you: type.value),
+                () => GameScreen(
+                    id: roomId.value, you: type.value, chatID: chatId.value),
               ),
               isenterPassword.value = false,
             });
@@ -122,7 +136,11 @@ class RoomController extends GetxController {
         });
         play.update({"slave.index": -1}).then((value) => {
               Get.to(
-                () => GameScreen(id: roomId.value, you: type.value),
+                () => GameScreen(
+                  id: roomId.value,
+                  you: type.value,
+                  chatID: chatId.value,
+                ),
               ),
               isenterPassword.value = false,
             });

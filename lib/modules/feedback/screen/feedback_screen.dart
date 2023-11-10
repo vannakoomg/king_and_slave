@@ -128,7 +128,7 @@ class FeedBackScreen extends StatelessWidget {
                               ? true
                               : false),
                       const SizedBox(
-                        height: 20,
+                        height: 30,
                       )
                     ],
                   )),

@@ -3,7 +3,6 @@ import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/home/screens/create_profile.dart';
 import 'package:animation_aba/modules/home/screens/edit_profile.dart';
-import 'package:animation_aba/modules/home/widgets/custom_setting.dart';
 import 'package:animation_aba/modules/settings/controller/settings_controller.dart';
 import 'package:animation_aba/modules/settings/screens/setting_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
@@ -179,8 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )),
               Positioned(
-                bottom: 0,
-                right: 0,
+                top: 5,
+                right: 10,
                 child: SizedBox(
                   height: 70,
                   width: 70,
@@ -190,37 +189,34 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          height: 20,
-                          width: 20,
+                          height: 0,
+                          width: 0,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
                                     color: AppColor.primary,
-                                    blurRadius: 120,
-                                    spreadRadius: 35)
+                                    blurRadius: 190,
+                                    spreadRadius: 45)
                               ]),
                         ),
                       ),
                       SizedBox(
                         height: 70,
                         width: 70,
-                        child: CustomPaint(
-                          painter: SettingStyle(),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30, left: 30),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.settings,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              onPressed: () {
-                                Get.to(() => const SettingScreen(),
-                                    transition: Transition.noTransition);
-                              },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 30, left: 30),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                              size: 25,
                             ),
+                            onPressed: () {
+                              Get.to(() => const SettingScreen(),
+                                  transition: Transition.noTransition);
+                            },
                           ),
                         ),
                       ),
@@ -256,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(
                                     height: 10,
@@ -267,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .replaceAll(r'\n', '\n'),
                                       style: TextStyle(
                                           color: Colors.white.withOpacity(0.7),
-                                          fontSize: 19)),
+                                          fontSize: 17.5)),
                                   const SizedBox(
                                     height: 40,
                                   ),

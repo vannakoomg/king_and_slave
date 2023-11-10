@@ -12,12 +12,21 @@ class CountTimte extends StatelessWidget {
     return Positioned(
         bottom: 0,
         right: 0,
-        child: Container(
-          height: 5,
-          width: MediaQuery.of(context).size.width * time / 120,
-          decoration: BoxDecoration(
-              color: AppColor.primary,
-              border: Border.all(color: Colors.white, width: 0.8)),
+        child: Column(
+          children: [
+            Container(
+              height: 0.8,
+              width: MediaQuery.of(context).size.width * time / 120,
+              color: Colors.white,
+            ),
+            Container(
+              height: 4,
+              width: MediaQuery.of(context).size.width * time / 120,
+              decoration: BoxDecoration(
+                color: AppColor.primary,
+              ),
+            ),
+          ],
         ));
   }
 }

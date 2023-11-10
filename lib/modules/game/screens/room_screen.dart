@@ -81,7 +81,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 : "${Singleton.instance.languages.value.slave}",
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 25,
+                                fontSize: 23,
                                 fontWeight: FontWeight.w600),
                           ),
                           StreamBuilder<List<RoomModel>>(
@@ -132,6 +132,10 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                   .value =
                                                               snapshots
                                                                   .data![i].id!;
+                                                          controller.chatId
+                                                                  .value =
+                                                              snapshots.data![i]
+                                                                  .chatId!;
                                                           controller
                                                                   .roomPassword
                                                                   .value =
@@ -165,13 +169,19 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                               }
                                                             }).then((value) => {
                                                                   Get.to(
-                                                                    () => GameScreen(
-                                                                        id: snapshots
-                                                                            .data![
-                                                                                i]
-                                                                            .id!,
-                                                                        you:
-                                                                            yourType),
+                                                                    () =>
+                                                                        GameScreen(
+                                                                      id: snapshots
+                                                                          .data![
+                                                                              i]
+                                                                          .id!,
+                                                                      you:
+                                                                          yourType,
+                                                                      chatID: snapshots
+                                                                          .data![
+                                                                              i]
+                                                                          .chatId!,
+                                                                    ),
                                                                   )
                                                                 });
                                                           } else {
@@ -193,9 +203,17 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                               "slave.index": -1
                                                             }).then((value) => {
                                                                       Get.to(
-                                                                        () => GameScreen(
-                                                                            id: snapshots.data![i].id!,
-                                                                            you: yourType),
+                                                                        () =>
+                                                                            GameScreen(
+                                                                          id: snapshots
+                                                                              .data![i]
+                                                                              .id!,
+                                                                          you:
+                                                                              yourType,
+                                                                          chatID: snapshots
+                                                                              .data![i]
+                                                                              .chatId!,
+                                                                        ),
                                                                       )
                                                                     });
                                                           }
@@ -299,7 +317,11 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                   );
                                 }
                               }),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           CustomBotton(
+                              h: 40,
                               w: 140,
                               title:
                                   "${Singleton.instance.languages.value.create}",
@@ -379,9 +401,11 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                     controller.isloadingCreateroom.value ==
                                             false
                                         ? CustomBotton(
+                                            h: 35,
                                             title:
                                                 "${Singleton.instance.languages.value.ok}",
                                             ontap: () {
+                                              debugPrint("vanak");
                                               unFocus(context);
                                               controller.isDisbleButtonOk
                                                   .value = true;
@@ -425,13 +449,13 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                   yourType == 0
                                       ? SvgPicture.asset(
                                           "assets/map/mongkot.svg",
-                                          height: 60,
-                                          width: 60,
+                                          height: 50,
+                                          width: 50,
                                         )
                                       : SvgPicture.asset(
                                           "assets/map/hat.svg",
-                                          height: 60,
-                                          width: 60,
+                                          height: 50,
+                                          width: 50,
                                         ),
                                   CustomTextfile(
                                     controller: controller

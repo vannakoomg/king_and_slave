@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:animation_aba/modules/game/models/chat_model.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ class Controller extends GetxController {
   final isEnemyProfile = false.obs;
   final type = 0.obs;
   final roomId = "".obs;
+  final chatId = "".obs;
   final listYourCard = <Cardmodel>[].obs;
   final listEnemyCard = <Cardmodel>[].obs;
   final yourCard = Cardmodel().obs;
@@ -49,10 +51,11 @@ class Controller extends GetxController {
   final enemyMessage = ''.obs;
   final yourMessage = ''.obs;
   final isEnemyMessage = false.obs;
-  final isYourMessage = false.obs;
   final isChat = false.obs;
   final chatTextController = TextEditingController().obs;
   final chatText = ''.obs;
+  final enemyAvatar = "".obs;
+
   void setDefault(double w, double h, int type) {
     gamePlay.value = false;
     screenWight.value = w;
@@ -150,7 +153,6 @@ class Controller extends GetxController {
         if (timeEnemy.value > 0) {
           if (ischeckEnemy.value) {
             timeEnemy.value--;
-            debugPrint("timegmae ${timeEnemy.value} ");
           }
           if (timeEnemy.value <= 0) {
             debugPrint("eneme_surrender ");
@@ -171,7 +173,7 @@ class Controller extends GetxController {
   }
 
   void ontapChat() {
-    isChat.value = true;
+    isChat.value = !isChat.value;
   }
 
   void listionGamePaly(RoomModel roomModel) {
@@ -236,47 +238,52 @@ class Controller extends GetxController {
           }
         }
       }
-      if (type.value == 0) {
-        if (roomModel.slave!.message != '' &&
-            roomModel.slave!.message != enemyMessage.value) {
-          enemyMessage.value = roomModel.slave!.message!;
-          isEnemyMessage.value = true;
-          Future.delayed(const Duration(milliseconds: 4000), () {
-            isEnemyMessage.value = false;
-          });
-        }
-      } else {
-        if (roomModel.king!.message != '' &&
-            roomModel.king!.message != enemyMessage.value) {
-          enemyMessage.value = roomModel.king!.message!;
-          isEnemyMessage.value = true;
-          Future.delayed(const Duration(milliseconds: 4000), () {
-            isEnemyMessage.value = false;
-          });
-        }
-      }
     }
   }
 
-  void sendMessage() {
+  Future<void> listeningChat(ChatModel chatModel) async {
+    if (type.value == 0) {
+      if (chatModel.messagelslave!.turn! == true) {
+        enemyMessage.value = chatModel.messagelslave!.title!;
+        isEnemyMessage.value = true;
+      }
+    } else {
+      if (chatModel.messagelking!.turn == true) {
+        enemyMessage.value = chatModel.messagelking!.title!;
+        isEnemyMessage.value = true;
+      }
+    }
+    Future.delayed(const Duration(seconds: 4), () {
+      isEnemyMessage.value = false;
+      enemyMessage.value = "";
+    });
+  }
+
+  void sendMessage() async {
     final play =
-        FirebaseFirestore.instance.collection('room').doc(roomId.value);
+        FirebaseFirestore.instance.collection('chat').doc(chatId.value);
+    if (enemyMessage.value == chatText.value) {
+      chatText.value = "${chatText.value} ";
+    }
     if (type.value == 0) {
       play.update({
-        "king.message": chatText.value,
+        "messagelking": {"turn": true, "title": chatText.value},
+        "messagelslave.turn": false,
       });
     } else {
       play.update({
-        "slave.message": chatText.value,
+        "messagelslave": {"turn": true, "title": chatText.value},
+        "messagelking.turn": false
       });
     }
-    isChat.value = false;
     yourMessage.value = chatText.value;
-    isYourMessage.value = true;
+    isChat.value = false;
     chatText.value = '';
     chatTextController.value = TextEditingController();
-    Future.delayed(const Duration(milliseconds: 4000), () {
-      isYourMessage.value = false;
+
+    await Future.delayed(const Duration(seconds: 2), () {
+      yourMessage.value = "";
+      debugPrint("message ${yourMessage.value}");
     });
   }
 

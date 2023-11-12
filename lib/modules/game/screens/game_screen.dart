@@ -70,15 +70,6 @@ class _GameScreenState extends State<GameScreen> {
                     .map((json) => RoomModel.fromJson(json.data()!)),
                 builder: (context, snapshots) {
                   if (snapshots.hasData) {
-                    if (widget.you == 0) {
-                      controller.enemyAvatar.value =
-                          snapshots.data!.slave!.profile!.avatar!;
-                      debugPrint(controller.enemyAvatar.value);
-                    } else {
-                      controller.enemyAvatar.value =
-                          snapshots.data!.king!.profile!.avatar!;
-                      debugPrint(controller.enemyAvatar.value);
-                    }
                     controller.listionGamePaly(snapshots.data!);
                     return Obx(() => GestureDetector(
                           onTap: () {
@@ -440,19 +431,19 @@ class _GameScreenState extends State<GameScreen> {
                                             Get.back();
                                           },
                                         ),
-                                      if (controller.isEnemyProfile.value)
-                                        EnemyPrifile(
-                                          name: widget.you == 0
-                                              ? snapshots
-                                                  .data!.king!.profile!.name!
-                                              : snapshots
-                                                  .data!.slave!.profile!.name!,
-                                          avatar: widget.you == 0
-                                              ? snapshots
-                                                  .data!.slave!.profile!.avatar!
-                                              : snapshots
-                                                  .data!.king!.profile!.avatar!,
-                                        ),
+                                      // if (controller.isEnemyProfile.value)
+                                      //   EnemyPrifile(
+                                      //     name: widget.you == 0
+                                      //         ? snapshots
+                                      //             .data!.king!.profile!.name!
+                                      //         : snapshots
+                                      //             .data!.slave!.profile!.name!,
+                                      //     avatar: widget.you == 0
+                                      //         ? snapshots
+                                      //             .data!.slave!.profile!.avatar!
+                                      //         : snapshots
+                                      //             .data!.king!.profile!.avatar!,
+                                      //   ),
                                     ],
                                   ),
                                 ),
@@ -504,7 +495,11 @@ class _GameScreenState extends State<GameScreen> {
                                   controller.isEnemyProfile.value =
                                       !controller.isEnemyProfile.value;
                                 },
-                                enemyAvatar: controller.enemyAvatar.value,
+                                enemyAvatar: widget.you == 0
+                                    ? snapshotsChat
+                                        .data!.messagelslave!.profile!.avatar!
+                                    : snapshotsChat
+                                        .data!.messagelking!.profile!.avatar!,
                                 enemyMessage: controller.enemyMessage.value,
                                 h: h,
                                 w: w,

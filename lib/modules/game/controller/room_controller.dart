@@ -62,8 +62,32 @@ class RoomController extends GetxController {
     final docuser = FirebaseFirestore.instance.collection("room").doc();
     final docChat = FirebaseFirestore.instance.collection("chat").doc();
     final chat = ChatModel(
-        messagelking: Messagelking(title: "", turn: false),
-        messagelslave: Messagelking(title: "", turn: false));
+        messagelking: Messagelking(
+          title: "",
+          turn: false,
+          profile: type == 0
+              ? ProfileModel(
+                  avatar: Singleton.instance.avatar.value,
+                  name: Singleton.instance.nickName.value,
+                )
+              : ProfileModel(
+                  avatar: "",
+                  name: "",
+                ),
+        ),
+        messagelslave: Messagelking(
+          title: "",
+          turn: false,
+          profile: type == 1
+              ? ProfileModel(
+                  avatar: Singleton.instance.avatar.value,
+                  name: Singleton.instance.nickName.value,
+                )
+              : ProfileModel(
+                  avatar: "",
+                  name: "",
+                ),
+        ));
     final jsonChat = chat.toJson();
     await docChat.set(jsonChat).then((value) async {
       final room = RoomModel(
@@ -74,23 +98,19 @@ class RoomController extends GetxController {
         name: roomNameTextEditController.value.text.trim(),
         password: passwordTextEditController.value.text.trim(),
         king: King(
-            card: Cardmodel(image: "", name: ""),
-            index: -1,
-            length: -1,
-            turn: false,
-            status: '',
-            profile: ProfileModel(
-                avatar: type == 0 ? Singleton.instance.avatar.value : "",
-                name: type == 0 ? Singleton.instance.nickName.value : '')),
+          card: Cardmodel(image: "", name: ""),
+          index: -1,
+          length: -1,
+          turn: false,
+          status: '',
+        ),
         slave: King(
-            card: Cardmodel(image: "", name: ""),
-            index: -2,
-            length: -1,
-            turn: false,
-            status: '',
-            profile: ProfileModel(
-                avatar: type == 1 ? Singleton.instance.avatar.value : "",
-                name: type == 1 ? Singleton.instance.nickName.value : '')),
+          card: Cardmodel(image: "", name: ""),
+          index: -2,
+          length: -1,
+          turn: false,
+          status: '',
+        ),
       );
       final json = room.toJson();
       await docuser.set(json).then((value) => {
@@ -112,14 +132,17 @@ class RoomController extends GetxController {
     if (roomPassword.value == enterPasswordTextEditController.value.text) {
       final play =
           FirebaseFirestore.instance.collection('room').doc(roomId.value);
+      final chat =
+          FirebaseFirestore.instance.collection('chat').doc(chatId.value);
       if (type.value == 0) {
-        debugPrint("dddddd");
+        chat.update({
+          "messagelking.profile": {
+            "avatar": Singleton.instance.avatar.value,
+            "name": Singleton.instance.nickName.value,
+          }
+        });
         play.update({
           "slave.index": -1,
-          "king.profile": {
-            "avatar": Singleton.instance.avatar.value,
-            "name": Singleton.instance.nickName.value
-          }
         }).then((value) => {
               Get.to(
                 () => GameScreen(
@@ -128,10 +151,10 @@ class RoomController extends GetxController {
               isenterPassword.value = false,
             });
       } else {
-        play.update({
-          "slave.profile": {
+        chat.update({
+          "messagelslave.profile": {
             "avatar": Singleton.instance.avatar.value,
-            "name": Singleton.instance.nickName.value
+            "name": Singleton.instance.nickName.value,
           }
         });
         play.update({"slave.index": -1}).then((value) => {

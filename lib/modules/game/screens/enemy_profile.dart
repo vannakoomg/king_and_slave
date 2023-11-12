@@ -1,4 +1,5 @@
 import 'package:animation_aba/const/appcolor.dart';
+import 'package:animation_aba/modules/bot/model/bot_controller.dart';
 import 'package:animation_aba/modules/game/controller/game_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,9 +13,11 @@ class EnemyPrifile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(Controller());
+    final botController = Get.put(BotController());
     return GestureDetector(
       onTap: () {
         controller.isEnemyProfile.value = false;
+        botController.isEnemyProfile.value = false;
       },
       child: Container(
         color: Colors.black.withOpacity(0.6),

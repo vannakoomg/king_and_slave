@@ -13,5 +13,6 @@ class Singleton extends GetxController {
   final nickName = ''.obs;
   final languages = LanguagesModel().obs;
   final lang = ''.obs;
+  final bot = ''.obs;
   final life = 0.obs;
 }

@@ -153,10 +153,19 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                   .doc(snapshots
                                                                       .data![i]
                                                                       .id!);
+                                                          final chat =
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'chat')
+                                                                  .doc(snapshots
+                                                                      .data![i]
+                                                                      .chatId);
+
                                                           if (yourType == 0) {
-                                                            play.update({
-                                                              "slave.index": -1,
-                                                              "king.profile": {
+                                                            chat.update({
+                                                              "messagelking.profile":
+                                                                  {
                                                                 "avatar":
                                                                     Singleton
                                                                         .instance
@@ -165,8 +174,11 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                 "name": Singleton
                                                                     .instance
                                                                     .nickName
-                                                                    .value
+                                                                    .value,
                                                               }
+                                                            });
+                                                            play.update({
+                                                              "slave.index": -1,
                                                             }).then((value) => {
                                                                   Get.to(
                                                                     () =>
@@ -185,8 +197,9 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                   )
                                                                 });
                                                           } else {
-                                                            play.update({
-                                                              "slave.profile": {
+                                                            chat.update({
+                                                              "messagelslave.profile":
+                                                                  {
                                                                 "avatar":
                                                                     Singleton
                                                                         .instance
@@ -195,7 +208,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                                                 "name": Singleton
                                                                     .instance
                                                                     .nickName
-                                                                    .value
+                                                                    .value,
                                                               }
                                                             });
                                                             play

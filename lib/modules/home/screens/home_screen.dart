@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:animation_aba/const/appcolor.dart';
+import 'package:animation_aba/modules/bot/model/bot_controller.dart';
+import 'package:animation_aba/modules/bot/screen/bot_screen.dart';
 import 'package:animation_aba/modules/game/screens/room_screen.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/modules/home/screens/create_profile.dart';
@@ -21,9 +25,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
+  final botControler = BotController();
   final settingController = Get.put(SettingController());
   @override
   void initState() {
+    Singleton.instance.bot.value = "assets/chat/${Random().nextInt(4) + 1}.svg";
     controller.setLife();
     controller.checkIsFirst();
     controller.setupLanguages().then((value) => {
@@ -295,6 +301,20 @@ class _HomeScreenState extends State<HomeScreen> {
               if (controller.isFirst.value &&
                   Singleton.instance.languages.value.next != null)
                 const ProfielScreen(),
+              Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => const BotScreen(
+                            you: 0,
+                          ));
+                    },
+                    child: SvgPicture.asset(
+                      Singleton.instance.bot.value,
+                      height: 60,
+                    ),
+                  ))
             ],
           ),
         ),

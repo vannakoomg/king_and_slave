@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animation_aba/modules/bot/screen/bot_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class HomeController extends GetxController {
     final SharedPreferences obj = await SharedPreferences.getInstance();
     obj.setString('first', "s");
     isshowLaw.value = false;
+    Get.to(() => const BotScreen(you: 0));
   }
 
   void getiamge() async {

@@ -314,9 +314,8 @@ class CustomKeyboard extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.only(right: 2, top: 2),
                 width: 45,
-                child: SvgPicture.asset(!isUpperCase
-                    ? "assets/chat/lowerCase.svg"
-                    : "assets/chat/upperCase.svg"),
+                child: SvgPicture.asset(
+                    !isUpperCase ? "assets/chat/3.svg" : "assets/chat/4.svg"),
               ),
             ),
             Expanded(

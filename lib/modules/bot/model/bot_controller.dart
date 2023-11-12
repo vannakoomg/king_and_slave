@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:math';
-
-import 'package:animation_aba/modules/game/models/chat_model.dart';
 import 'package:animation_aba/modules/game/models/room_model.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../game/models/game_model.dart';
 
-import '../models/game_model.dart';
-
-class Controller extends GetxController {
+class BotController extends GetxController {
   final isEnemyProfile = false.obs;
   final type = 0.obs;
   final roomId = "".obs;
@@ -54,9 +49,10 @@ class Controller extends GetxController {
   final isChat = false.obs;
   final chatTextController = TextEditingController().obs;
   final chatText = ''.obs;
-  final enemyAvatar = "".obs;
+  final botImage = "".obs;
 
-  void setDefault(double w, double h, int type) {
+  Future<void> setDefault(double w, double h, int type) async {
+    debugPrint("Your Type $type");
     gamePlay.value = false;
     screenWight.value = w;
     screenHigh.value = h;
@@ -87,18 +83,39 @@ class Controller extends GetxController {
       listEnemyCard.add(Cardmodel(
           image: enemy[k] == "king"
               ? Singleton.instance.king.value
-              : you[j] == "slave"
+              : enemy[k] == "slave"
                   ? Singleton.instance.slave.value
                   : Singleton.instance.soldier.value,
-          name: you[k]));
+          name: enemy[k]));
+      debugPrint("iamge enemy ${listEnemyCard[i].name}");
+      debugPrint("iamge enemy ${listEnemyCard[i].image}");
       you.removeAt(j);
       enemy.removeAt(k);
     }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      int i = Random().nextInt(5);
+      enmey(
+        i,
+        Cardmodel(
+          image: listEnemyCard[i].image,
+          name: listEnemyCard[i].name,
+        ),
+      );
+      Future.delayed(Duration(seconds: i + 1), () {
+        enemyMessage.value =
+            "Hi Bot ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
+        isEnemyMessage.value = true;
+        Future.delayed(const Duration(milliseconds: 4000), () {
+          enemyMessage.value = "";
+          isEnemyMessage.value = true;
+        });
+      });
+    });
+    debugPrint(" you list $listYourCard");
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
-    if (!isPlaying.value) {
-      // for get new posstion
+    if (!isPlaying.value && showEnemy.value == true) {
       istouchCard.value = true;
       if (neww.x! < 0) {
         neww.x = 00;
@@ -120,181 +137,31 @@ class Controller extends GetxController {
     }
   }
 
+  final emoji1 = ["😂", "😄", "🤪", "😉", "😝", "🤫", "🤧", "🤖", "🤡", "🤖"];
+
   Timer? timer;
-  void removelife() async {
-    final SharedPreferences obj = await SharedPreferences.getInstance();
-    int life = obj.getInt('life')!;
-    obj.setInt('life', life - 1);
-    Singleton.instance.life.value = obj.getInt('life')!;
-    debugPrint("life in game = ${obj.getInt('life')}");
-  }
 
   void checkTime() {
-    if (status.value == "") {
-      timer = Timer.periodic(const Duration(milliseconds: 1000),
-          (Timer timer) async {
-        final play =
-            FirebaseFirestore.instance.collection('room').doc(roomId.value);
-        if (isStart.value && time.value > 0 && status.value == "") {
-          time.value--;
-          if (time.value == 0) {
-            if (type.value == 0) {
-              play.update({
-                "king.status": "lose",
-              });
-            } else {
-              play.update({
-                "slave.status": "lose",
-              });
-            }
-            status.value = "you_surrender";
-          }
+    timer =
+        Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) async {
+      if (status.value == "") {
+        time.value--;
+        if (time.value == 0) {
+          status.value = "you_surrender";
         }
-        if (timeEnemy.value > 0) {
-          if (ischeckEnemy.value) {
-            timeEnemy.value--;
-          }
-          if (timeEnemy.value <= 0) {
-            debugPrint("eneme_surrender ");
-            if (type.value == 0) {
-              play.update({
-                "slave.status": "lose",
-              });
-            } else {
-              play.update({
-                "king.status": "lose",
-              });
-            }
-            status.value = "enemy_surrender";
-          }
-        }
-      });
-    }
+      }
+    });
   }
 
   void ontapChat() {
     isChat.value = !isChat.value;
   }
 
-  void listionGamePaly(RoomModel roomModel) {
-    if (status.value == '') {
-      if (roomModel.slave!.index == -2) {
-        showLoading.value = true;
-      } else {
-        showLoading.value = false;
-      }
-      if (roomModel.slave!.index == -1 &&
-          roomModel.king!.index == -1 &&
-          roomModel.king!.status == '' &&
-          roomModel.slave!.status == '') {
-        letStart.value = true;
-        Future.delayed(const Duration(milliseconds: 5500), () {
-          timeEnemy.value = 120;
-          letStart.value = false;
-          isStart.value = true;
-          isShowTime.value = true;
-          gamePlay.value = true;
-        });
-      }
-      if (roomModel.king!.status != '' || roomModel.slave!.status != '') {
-        if (roomModel.slave!.status == "lose" &&
-            roomModel.king!.status == "lose") {
-          isStart.value = false;
-          sword.value = false;
-          status.value = "you_surrender";
-        } else {
-          if ((type.value == 0 && roomModel.slave!.status == "lose")) {
-            status.value = 'enemy_surrender';
-            isStart.value = false;
-            sword.value = false;
-          }
-          if (type.value == 1 && roomModel.king!.status == "lose") {
-            status.value = 'enemy_surrender';
-            isStart.value = false;
-            sword.value = false;
-          }
-        }
-        removelife();
-      } else {
-        if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
-          if (roomModel.slave!.length == roomModel.king!.length) {
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              endGame(roomModel.id!);
-            });
-          }
-          if (type.value == 0) {
-            if (roomModel.slave!.turn == true) {
-              ischeckEnemy.value = false;
-              enmey(
-                roomModel.slave!.index!,
-                roomModel.slave!.card!,
-              );
-            }
-          } else {
-            if (roomModel.king!.turn == true) {
-              enmey(roomModel.king!.index!, roomModel.king!.card!);
-              ischeckEnemy.value = false;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  Future<void> listeningChat(ChatModel chatModel) async {
-    if (type.value == 0) {
-      if (chatModel.messagelslave!.turn! == true) {
-        enemyMessage.value = chatModel.messagelslave!.title!;
-        isEnemyMessage.value = true;
-      }
-    } else {
-      if (chatModel.messagelking!.turn == true) {
-        enemyMessage.value = chatModel.messagelking!.title!;
-        isEnemyMessage.value = true;
-      }
-    }
-    Future.delayed(const Duration(seconds: 4), () {
-      isEnemyMessage.value = false;
-      enemyMessage.value = "";
-    });
-  }
-
   void sendMessage() async {
-    final play =
-        FirebaseFirestore.instance.collection('chat').doc(chatId.value);
-    if (enemyMessage.value == chatText.value) {
-      chatText.value = "${chatText.value} ";
-    }
-    if (type.value == 0) {
-      play.update({
-        "messagelking": {
-          "turn": true,
-          "title": chatText.value,
-          "profile": {
-            "avatar": Singleton.instance.avatar.value,
-            "name": Singleton.instance.nickName.value,
-          }
-        },
-        "messagelslave.turn": false,
-      });
-    } else {
-      play.update({
-        "messagelslave": {
-          "turn": true,
-          "title": chatText.value,
-          "profile": {
-            "avatar": Singleton.instance.avatar.value,
-            "name": Singleton.instance.nickName.value,
-          }
-        },
-        "messagelking.turn": false
-      });
-    }
     yourMessage.value = chatText.value;
     isChat.value = false;
     chatText.value = '';
     chatTextController.value = TextEditingController();
-
     await Future.delayed(const Duration(seconds: 2), () {
       yourMessage.value = "";
       debugPrint("message ${yourMessage.value}");
@@ -302,7 +169,7 @@ class Controller extends GetxController {
   }
 
   void onVerticalDragEnd(int index) {
-    if (isPlaying.value == false) {
+    if (isPlaying.value == false && showEnemy.value == true) {
       if (positionYourCard[index].y! + 40 >
           screenHigh.value / 2 - highOfCard.value) {
         time.value = 120;
@@ -318,44 +185,28 @@ class Controller extends GetxController {
           istouchCard.value = false;
           for (int i = 0; i < listYourCard.length; ++i) {
             positionYourCard.add(Postion(
-                x: i * 0.2 * screenWight.value +
-                    (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
-                y: 10));
+              x: i * 0.2 * screenWight.value +
+                  (5 - listYourCard.length) * 0.2 * screenWight.value / 2,
+              y: 10,
+            ));
           }
         });
-        final play =
-            FirebaseFirestore.instance.collection('room').doc(roomId.value);
-        if (type.value == 0) {
-          play.update({
-            "king": {
-              "card": {
-                "image": yourCard.value.image,
-                "name": yourCard.value.name
-              },
-              "index": index,
-              "length": listYourCard.length,
-              "turn": true,
-              "status": "",
-              "message": "",
-            },
-            "slave.turn": false
-          });
-        } else {
-          play.update({
-            "slave": {
-              "card": {
-                "image": yourCard.value.image,
-                "name": yourCard.value.name
-              },
-              "index": index,
-              "length": listYourCard.length,
-              "turn": true,
-              "status": "",
-              "message": ""
-            },
-            "king.turn": false
-          });
+        if (listYourCard.length == listEnemyCard.length) {
+          endGame();
         }
+
+        Future.delayed(const Duration(milliseconds: 3200), () {
+          if (status.value == '') {
+            int i = Random().nextInt(listEnemyCard.length);
+            debugPrint("image url ${listEnemyCard[i].name}");
+            enmey(
+                i,
+                Cardmodel(
+                  image: listEnemyCard[i].image,
+                  name: listEnemyCard[i].name,
+                ));
+          }
+        });
       } else {
         positionYourCard[index] = oldPostion.value;
         istouchCard.value = false;
@@ -365,8 +216,7 @@ class Controller extends GetxController {
 
   void onVerticalDragStart(int i) {
     sword.value = false;
-    debugPrint("isPlaying ${isPlaying.value}");
-    if (isPlaying.value == false) {
+    if (isPlaying.value == false && showEnemy.value == true) {
       isPlaying.value = false;
       oldPostion.value = positionYourCard[i];
       index.value = i;
@@ -402,7 +252,7 @@ class Controller extends GetxController {
     });
   }
 
-  void endGame(String id) {
+  void endGame() {
     rotate.value = 3.14;
     isStart.value = false;
     ischeckEnemy.value = true;
@@ -410,6 +260,7 @@ class Controller extends GetxController {
     time.value = 120;
     isRedLine.value = false;
     Future.delayed(const Duration(milliseconds: 1500), () {
+      debugPrint("image image ${yourCard.value.name} ${enemyCard.value.name}");
       isStart.value = true;
       if ((yourCard.value.name == "king" && enemyCard.value.name != "slave") ||
           (yourCard.value.name == "slave" && enemyCard.value.name == "king") ||
@@ -417,7 +268,6 @@ class Controller extends GetxController {
               enemyCard.value.name == "slave")) {
         status.value = "win";
         isStart.value = true;
-        removelife();
       } else if (yourCard.value.name == enemyCard.value.name) {
         status.value = "equal";
         debugPrint("status 1 : ${status.value}");
@@ -429,8 +279,9 @@ class Controller extends GetxController {
       } else {
         isStart.value = true;
         status.value = "lose";
-        removelife();
       }
+      debugPrint("status 4444 : ${status.value}");
+
       isPlaying.value = false;
       showEnemy.value = false;
       rotate.value = 0;
@@ -439,34 +290,17 @@ class Controller extends GetxController {
   }
 
   void ontapSword02() {
-    if (isStart.value || showLoading.value) {
-      sword.value = false;
-      final play =
-          FirebaseFirestore.instance.collection('room').doc(roomId.value);
-      if (gamePlay.value == false) {
+    sword.value = false;
+    if (gamePlay.value == false) {
+      Get.back();
+      Future.delayed(const Duration(milliseconds: 500), () {
         Get.back();
-        play.delete();
-      } else {
-        if (type.value == 0) {
-          play.update({
-            "king.status": "lose",
-          });
-        } else {
-          play.update({
-            "slave.status": "lose",
-          });
-        }
-        Future.delayed(const Duration(milliseconds: 500), () {
-          Get.back();
-        });
-      }
+      });
     }
   }
 
   void ontapSword01() {
-    if (isStart.value || showLoading.value) {
-      sword.value = !sword.value;
-    }
+    sword.value = !sword.value;
   }
 
   InterstitialAd? interstitialAd;

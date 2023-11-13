@@ -39,7 +39,6 @@ class _GameScreenState extends State<GameScreen> {
     controller.roomId.value = widget.id.toString();
     controller.chatId.value = widget.chatID.toString();
     controller.checkTime();
-
     super.initState();
   }
 

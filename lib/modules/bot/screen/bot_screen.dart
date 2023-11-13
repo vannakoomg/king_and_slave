@@ -36,6 +36,8 @@ class _GameScreenState extends State<BotScreen> {
   final homeController = Get.put(HomeController());
   @override
   void initState() {
+    controller.showEnemy.value = false;
+    controller.isPlaying.value = false;
     controller.status.value = "";
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

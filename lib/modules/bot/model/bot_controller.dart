@@ -98,7 +98,8 @@ class BotController extends GetxController {
     }
     if (isfirst) {
       Future.delayed(const Duration(seconds: 1), () {
-        botMessage.value = "Hi I am Bot , come for help you!";
+        botMessage.value =
+            Singleton.instance.languages.value.botMessage01 ?? '-';
         Future.delayed(const Duration(seconds: 3), () {
           botMessage.value = "";
           int i = Random().nextInt(5);
@@ -110,13 +111,15 @@ class BotController extends GetxController {
             ),
           );
           Future.delayed(const Duration(seconds: 1), () {
-            botMessage.value = "ខ្ញុំបានបោះសន្លឹលបៀរមួយហើយដល់វេនរបស់អ្នកម្ដង";
+            botMessage.value =
+                Singleton.instance.languages.value.botMessage02 ?? '-';
             Future.delayed(const Duration(milliseconds: 1500), () {
               isShowhand.value = true;
             });
             handHigh.value = 10;
             Future.delayed(const Duration(seconds: 2), () async {
-              botMessage.value = "longPress and move the card";
+              botMessage.value =
+                  Singleton.instance.languages.value.botMessage03 ?? "-";
               handHigh.value = h / 2 - 100;
               for (int i = 0; i < 10; ++i) {
                 if (understand.value == false) {
@@ -150,7 +153,7 @@ class BotController extends GetxController {
         );
         Future.delayed(const Duration(seconds: 2), () {
           enemyMessage.value =
-              "HI BOT ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
+              "${Singleton.instance.languages.value.botMessageHi} ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
           isEnemyMessage.value = true;
           Future.delayed(const Duration(milliseconds: 5000), () {
             enemyMessage.value = "";
@@ -216,7 +219,9 @@ class BotController extends GetxController {
       debugPrint("message ${yourMessage.value}");
     });
     Future.delayed(const Duration(seconds: 2), () {
-      enemyMessage.value = "Bot can replye 😂😂😂😂";
+      enemyMessage.value =
+          Singleton.instance.languages.value.botMessageReply ?? "You so cute";
+      "Bot can replye 😂😂😂😂";
       Future.delayed(const Duration(seconds: 3), () {
         enemyMessage.value = "";
       });
@@ -253,7 +258,8 @@ class BotController extends GetxController {
           Future.delayed(const Duration(milliseconds: 3200), () {
             if (status.value == '') {
               Future.delayed(const Duration(milliseconds: 600), () {
-                botMessage.value = "you did it good";
+                botMessage.value =
+                    Singleton.instance.languages.value.botMessage04 ?? "-";
               });
               Future.delayed(const Duration(seconds: 2), () {
                 int i = Random().nextInt(listEnemyCard.length);
@@ -270,14 +276,14 @@ class BotController extends GetxController {
               });
             } else {
               botMessage.value = status.value == "lose"
-                  ? "What The F* bro , you play lose with the bot !!!"
-                  : "Nice bro you win with the bot  🤖🤖🤖🤖 ";
+                  ? Singleton.instance.languages.value.botMessage051 ?? "-"
+                  : Singleton.instance.languages.value.botMessage052 ?? "-";
               Future.delayed(const Duration(seconds: 4), () {
                 botMessage.value = "";
                 Future.delayed(const Duration(milliseconds: 1000), () {
                   botMessage.value = status.value == "lose"
-                      ? "but never mind ,Now you can enjoy the Real World 🌹🌹🌹🌹🌹🌹, go lock ! "
-                      : "Now you can enjoy the Real World 🌹🌹🌹🌹🌹🌹, go lock ! ";
+                      ? Singleton.instance.languages.value.botMessage061 ?? "-"
+                      : Singleton.instance.languages.value.botMessage062 ?? "-";
                 });
               });
             }
@@ -292,6 +298,32 @@ class BotController extends GetxController {
                     image: listEnemyCard[i].image,
                     name: listEnemyCard[i].name,
                   ));
+            } else {
+              if (status.value == "lose") {
+                enemyMessage.value =
+                    Singleton.instance.languages.value.botMessage051 ?? "-";
+                isEnemyMessage.value = true;
+                Future.delayed(const Duration(milliseconds: 4), () {
+                  enemyMessage.value =
+                      Singleton.instance.languages.value.botMessage08 ??
+                          "You so cute";
+                  isEnemyMessage.value = true;
+                });
+              } else {
+                enemyMessage.value =
+                    Singleton.instance.languages.value.botMessage07 ?? "OK";
+                isEnemyMessage.value = true;
+                Future.delayed(const Duration(milliseconds: 4), () {
+                  enemyMessage.value =
+                      Singleton.instance.languages.value.botMessage08 ??
+                          "You so cute";
+                  isEnemyMessage.value = true;
+                });
+              }
+              Future.delayed(const Duration(seconds: 5), () {
+                enemyMessage.value = "";
+                isEnemyMessage.value = false;
+              });
             }
           });
         }
@@ -369,7 +401,6 @@ class BotController extends GetxController {
         status.value = "lose";
       }
       debugPrint("status 4444 : ${status.value}");
-
       isPlaying.value = false;
       showEnemy.value = false;
       rotate.value = 0;

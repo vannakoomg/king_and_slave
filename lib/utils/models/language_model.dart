@@ -39,51 +39,86 @@ class LanguagesModel {
   String? nickName;
   String? updateProfile;
   String? avatar;
+  String? botMessage01;
+  String? botMessage02;
+  String? botMessage03;
+  String? botMessage04;
+  String? botMessage051;
+  String? botMessage052;
+  String? botMessage061;
+  String? botMessage062;
+  String? botMessage07;
+  String? botMessage08;
+  String? botMessageReply;
+  String? botMessageHi;
 
-  LanguagesModel({
-    this.enemySerrender,
-    this.king,
-    this.letsGo,
-    this.next,
-    this.ok,
-    this.password,
-    this.slave,
-    this.surrender,
-    this.wait,
-    this.weEqual,
-    this.youLose,
-    this.youSurrender,
-    this.youWin,
-    this.number1,
-    this.number2,
-    this.number3,
-    this.join,
-    this.create,
-    this.roomName,
-    this.wrongPassword,
-    this.introduction,
-    this.introductionDetail,
-    this.setting,
-    this.customize,
-    this.law,
-    this.lawDetail,
-    this.sound,
-    this.language,
-    this.noLife,
-    this.nextDayYouGetX5life,
-    this.x5,
-    this.feedback,
-    this.feedbackTitle,
-    this.enterFeedback,
-    this.thankforFeedback,
-    this.question,
-    this.tellTrueAnswer,
-    this.avatar,
-    this.nickName,
-    this.updateProfile,
-  });
+  LanguagesModel(
+      {this.enemySerrender,
+      this.king,
+      this.letsGo,
+      this.next,
+      this.ok,
+      this.password,
+      this.slave,
+      this.surrender,
+      this.wait,
+      this.weEqual,
+      this.youLose,
+      this.youSurrender,
+      this.youWin,
+      this.number1,
+      this.number2,
+      this.number3,
+      this.join,
+      this.create,
+      this.roomName,
+      this.wrongPassword,
+      this.introduction,
+      this.introductionDetail,
+      this.setting,
+      this.customize,
+      this.law,
+      this.lawDetail,
+      this.sound,
+      this.language,
+      this.noLife,
+      this.nextDayYouGetX5life,
+      this.x5,
+      this.feedback,
+      this.feedbackTitle,
+      this.enterFeedback,
+      this.thankforFeedback,
+      this.question,
+      this.tellTrueAnswer,
+      this.avatar,
+      this.nickName,
+      this.updateProfile,
+      this.botMessage01,
+      this.botMessage02,
+      this.botMessage03,
+      this.botMessage04,
+      this.botMessage051,
+      this.botMessage052,
+      this.botMessage061,
+      this.botMessage062,
+      this.botMessage07,
+      this.botMessage08,
+      this.botMessageReply,
+      this.botMessageHi});
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
+    botMessage01 = json['bot_message01'];
+    botMessage02 = json['bot_message02'];
+    botMessage03 = json['bot_message03'];
+    botMessage04 = json['bot_message04'];
+    botMessage051 = json['bot_message05_1'];
+    botMessage052 = json['bot_message05_2'];
+    botMessage061 = json['bot_message06_1'];
+    botMessage062 = json['bot_message06_2'];
+    botMessage07 = json['bot_message07'];
+    botMessage08 = json['bot_message08'];
+    botMessageReply = json['bot_message_reply'];
+    botMessageHi = json['bot_message_hi'];
     tellTrueAnswer = json['tell_true_answer'];
     question = json['question'];
     enemySerrender = json['enemy_serrender'];
@@ -128,6 +163,18 @@ class LanguagesModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['bot_message01'] = botMessage01;
+    data['bot_message02'] = botMessage02;
+    data['bot_message03'] = botMessage03;
+    data['bot_message04'] = botMessage04;
+    data['bot_message05_1'] = botMessage051;
+    data['bot_message05_2'] = botMessage052;
+    data['bot_message06_1'] = botMessage061;
+    data['bot_message06_2'] = botMessage062;
+    data['bot_message07'] = botMessage07;
+    data['bot_message08'] = botMessage08;
+    data['bot_message_reply'] = botMessageReply;
+    data['bot_message_hi'] = botMessageHi;
     data['update_profile'] = updateProfile;
     data['nickname'] = nickName;
     data['avatar'] = avatar;

@@ -54,361 +54,382 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Obx(
-          () => Stack(
-            children: [
-              controller.isLoading.value
-                  ? Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                          color: Colors.white, size: 30),
-                    )
-                  : SizedBox(
-                      height: double.infinity,
-                      width: double.infinity,
-                      child: Column(children: [
-                        Expanded(
-                          child: Stack(children: [
-                            Row(
+          () => controller.isLoading.value
+              ? Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Colors.black.withOpacity(0.6),
+                  child: Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.white, size: 30),
+                  ),
+                )
+              : Stack(
+                  children: [
+                    AnimatedOpacity(
+                      duration: const Duration(seconds: 1),
+                      opacity: 1,
+                      child: SvgPicture.asset(
+                        "assets/background/background.svg",
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: double.infinity,
+                    //   width: double.infinity,
+                    //   child: Column(children: [
+                    //     Expanded(
+                    //       child: Stack(children: [
+                    //         Row(
+                    //           children: [
+                    //             Expanded(
+                    //                 child: GestureDetector(
+                    //               onTap: () async {
+                    //                 Get.to(() => const RoomScreen(),
+                    //                     arguments: 0);
+                    //               },
+                    //               child: Container(
+                    //                 color: AppColor.primary,
+                    //                 child: Center(
+                    //                   child: SvgPicture.asset(
+                    //                     "assets/background/king.svg",
+                    //                     height:
+                    //                         (MediaQuery.of(context).size.width /
+                    //                                 2) *
+                    //                             0.8,
+                    //                     width:
+                    //                         (MediaQuery.of(context).size.width /
+                    //                                 2) *
+                    //                             0.8,
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             )),
+                    //             Expanded(
+                    //               child: GestureDetector(
+                    //                 onTap: () {
+                    //                   Get.to(
+                    //                     () => const RoomScreen(),
+                    //                     arguments: 1,
+                    //                   );
+                    //                 },
+                    //                 child: Container(
+                    //                   color: Colors.black,
+                    //                   child: Center(
+                    //                     child: SvgPicture.asset(
+                    //                       "assets/background/slave.svg",
+                    //                       height: (MediaQuery.of(context)
+                    //                                   .size
+                    //                                   .width /
+                    //                               2) *
+                    //                           0.8,
+                    //                       width: (MediaQuery.of(context)
+                    //                                   .size
+                    //                                   .width /
+                    //                               2) *
+                    //                           0.8,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             )
+                    //           ],
+                    //         ),
+                    //       ]),
+                    //     ),
+                    //   ]),
+                    // ),
+                    Positioned(
+                        bottom: MediaQuery.of(context).size.height / 6,
+                        child: Container(
+                          height: 50,
+                          color: Colors.transparent,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Container(
+                              color: AppColor.primary,
+                              height: 45,
+                              width: MediaQuery.of(context).size.width / 1.8,
+                              child: const Center(
+                                child: Text(
+                                  "S T A R T",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )),
+                    if (controller.isFirst.value == false)
+                      Positioned(
+                          top: MediaQuery.of(context).padding.top,
+                          left: 10,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            child: Row(
                               children: [
-                                Expanded(
-                                    child: GestureDetector(
-                                  onTap: () async {
-                                    Get.to(() => const RoomScreen(),
-                                        arguments: 0);
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.editPrifile.value =
+                                        Singleton.instance.avatar.value;
+                                    debugPrint("");
+                                    controller.imageEdit.clear();
+                                    controller.imageEdit
+                                        .addAll(controller.imagePrifile);
+                                    controller.imageEdit
+                                        .remove(controller.editPrifile.value);
+                                    Get.to(const EditProfileScreen(),
+                                        transition: Transition.noTransition);
                                   },
                                   child: Container(
-                                    color: AppColor.primary,
-                                    child: Center(
+                                    clipBehavior: Clip.antiAlias,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                        )),
+                                    width: 45,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
                                       child: SvgPicture.asset(
-                                        "assets/background/king.svg",
-                                        height:
-                                            (MediaQuery.of(context).size.width /
-                                                    2) *
-                                                0.8,
-                                        width:
-                                            (MediaQuery.of(context).size.width /
-                                                    2) *
-                                                0.8,
+                                        Singleton.instance.avatar.value,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                )),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                        () => const RoomScreen(),
-                                        arguments: 1,
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.black,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          "assets/background/slave.svg",
-                                          height: (MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2) *
-                                              0.8,
-                                          width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2) *
-                                              0.8,
-                                        ),
-                                      ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        for (int i = 0;
+                                            i < Singleton.instance.life.value;
+                                            ++i)
+                                          const Icon(
+                                            Icons.favorite,
+                                            size: 22,
+                                            color: Colors.white,
+                                          ),
+                                      ],
                                     ),
-                                  ),
+                                    Text(
+                                      Singleton.instance.nickName.value,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(0.8),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
-                          ]),
-                        ),
-                      ]),
-                    ),
-              if (controller.isFirst.value == false)
-                Positioned(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 10,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              controller.editPrifile.value =
-                                  Singleton.instance.avatar.value;
-                              debugPrint("");
-                              controller.imageEdit.clear();
-                              controller.imageEdit
-                                  .addAll(controller.imagePrifile);
-                              controller.imageEdit
-                                  .remove(controller.editPrifile.value);
-                              Get.to(const EditProfileScreen(),
-                                  transition: Transition.noTransition);
-                            },
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Colors.white,
-                                  )),
-                              width: 45,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: SvgPicture.asset(
-                                  Singleton.instance.avatar.value,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  for (int i = 0;
-                                      i < Singleton.instance.life.value;
-                                      ++i)
-                                    const Icon(
-                                      Icons.favorite,
-                                      size: 22,
-                                      color: Colors.white,
-                                    ),
-                                ],
-                              ),
-                              Text(
-                                Singleton.instance.nickName.value,
-                                style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    )),
-              if (controller.isFirst.value == false)
-                Positioned(
-                  top: 5,
-                  right: 10,
-                  child: SizedBox(
-                    height: 70,
-                    width: 70,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            height: 0,
-                            width: 0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: AppColor.primary,
-                                      blurRadius: 190,
-                                      spreadRadius: 45)
-                                ]),
-                          ),
-                        ),
-                        SizedBox(
+                          )),
+                    if (controller.isFirst.value == false)
+                      Positioned(
+                        top: 5,
+                        right: 10,
+                        child: SizedBox(
                           height: 70,
                           width: 70,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30, left: 30),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.settings,
-                                color: Colors.white,
-                                size: 25,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.transparent,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: AppColor.primary,
+                                            blurRadius: 80,
+                                            spreadRadius: 45)
+                                      ]),
+                                ),
                               ),
-                              onPressed: () {
-                                Get.to(() => const SettingScreen(),
-                                    transition: Transition.noTransition);
-                              },
-                            ),
+                              SizedBox(
+                                height: 70,
+                                width: 70,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 30, left: 30),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.settings,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    onPressed: () {
+                                      Get.to(() => const SettingScreen(),
+                                          transition: Transition.noTransition);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              if (controller.isFirst.value &&
-                  Singleton.instance.languages.value.next != null)
-                const ProfielScreen(),
-              if (controller.isFirst.value == false)
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        color: Colors.transparent,
-                        width: 100,
-                        height: 110,
-                        child: Stack(
-                          children: [
-                            AnimatedPositioned(
-                              curve: Curves.easeInBack,
-                              right: botControler.isBot.value ? 10 : 30,
-                              bottom: botControler.isBot.value ? 80 : 30,
-                              duration: const Duration(milliseconds: 500),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.to(() => const BotScreen(
-                                        you: 1,
-                                        isFirst: false,
-                                      ));
-                                  botControler.isBot.value = false;
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/map/hat.svg",
-                                  height: 17,
-                                  width: 17,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 20,
-                              child: Container(
-                                width: 40,
-                                height: 60,
-                                color: Colors.black,
-                              ),
-                            ),
-                            AnimatedPositioned(
-                              curve: Curves.easeInBack,
-                              right: botControler.isBot.value ? 50 : 30,
-                              bottom: botControler.isBot.value ? 80 : 30,
-                              duration: const Duration(milliseconds: 500),
-                              child: GestureDetector(
-                                onTap: () {
-                                  controller.isshowLaw.value = false;
-                                  Get.to(() => const BotScreen(
-                                        you: 0,
-                                        isFirst: false,
-                                      ));
-                                  botControler.isBot.value = false;
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/map/mongkot.svg",
-                                  height: 19,
-                                  width: 17,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 20,
-                              child: Container(
-                                width: 60,
-                                height: 60,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  botControler.isBot.value =
-                                      !botControler.isBot.value;
-                                },
-                                child: SvgPicture.asset(
-                                  Singleton.instance.bot.value,
-                                  height: 60,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                    )),
-              if (controller.isshowLaw.value)
-                GestureDetector(
-                  onTap: () {
-                    controller.isshowLaw.value = false;
-                    controller.agress();
-                  },
-                  child: Container(
-                    color: Colors.black.withOpacity(0.95),
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 20),
-                    child: Stack(
-                      children: [
-                        Container(
-                          color: Colors.black.withOpacity(0.9),
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 40, bottom: 10),
-                          child: Center(
-                            child: SingleChildScrollView(
-                              child: Column(
+                    if (controller.isFirst.value &&
+                        Singleton.instance.languages.value.next != null)
+                      const ProfielScreen(),
+                    if (controller.isFirst.value == false)
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              color: Colors.transparent,
+                              width: 130,
+                              height: 130,
+                              child: Stack(
                                 children: [
-                                  Text(
-                                    "${Singleton.instance.languages.value.law}",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
+                                  AnimatedPositioned(
+                                    curve: Curves.easeInBack,
+                                    right: botControler.isBot.value ? 15 : 40,
+                                    bottom: botControler.isBot.value ? 100 : 30,
+                                    duration: const Duration(milliseconds: 350),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => const BotScreen(
+                                              you: 1,
+                                              isFirst: false,
+                                            ));
+                                        botControler.isBot.value = false;
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/map/hat.svg",
+                                        height: 22,
+                                        width: 22,
+                                      ),
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    height: 10,
+                                  AnimatedPositioned(
+                                    curve: Curves.easeInBack,
+                                    right: botControler.isBot.value ? 70 : 40,
+                                    bottom: botControler.isBot.value ? 100 : 30,
+                                    duration: const Duration(milliseconds: 350),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.isshowLaw.value = false;
+                                        Get.to(() => const BotScreen(
+                                              you: 0,
+                                              isFirst: false,
+                                            ));
+                                        botControler.isBot.value = false;
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/map/mongkot.svg",
+                                        height: 23,
+                                        width: 23,
+                                      ),
+                                    ),
                                   ),
-                                  Text(
-                                      Singleton
-                                          .instance.languages.value.lawDetail!
-                                          .replaceAll(r'\n', '\n'),
-                                      style: TextStyle(
-                                          color: Colors.white.withOpacity(0.7),
-                                          fontSize: 17.5)),
-                                  const SizedBox(
-                                    height: 40,
+                                  Positioned(
+                                    right: 20,
+                                    bottom: 0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        botControler.isBot.value =
+                                            !botControler.isBot.value;
+                                      },
+                                      child: SvgPicture.asset(
+                                        Singleton.instance.bot.value,
+                                        height: 70,
+                                      ),
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    height: 60,
-                                  )
                                 ],
                               ),
                             ),
+                          )),
+                    if (controller.isshowLaw.value)
+                      GestureDetector(
+                        onTap: () {
+                          controller.agress();
+                        },
+                        child: Container(
+                          color: Colors.black.withOpacity(0.95),
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top + 20),
+                          child: Stack(
+                            children: [
+                              Container(
+                                color: Colors.black.withOpacity(0.9),
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, top: 40, bottom: 10),
+                                child: Center(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "${Singleton.instance.languages.value.law}",
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                            Singleton.instance.languages.value
+                                                .lawDetail!
+                                                .replaceAll(r'\n', '\n'),
+                                            style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                fontSize: 17.5)),
+                                        const SizedBox(
+                                          height: 40,
+                                        ),
+                                        const SizedBox(
+                                          height: 60,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 40,
+                                bottom: 20,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    settingController.fetchLanguage();
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/setting/appsara.svg",
+                                    height: 110,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Positioned(
-                          right: 40,
-                          bottom: 20,
-                          child: GestureDetector(
-                            onTap: () async {
-                              settingController.fetchLanguage();
-                            },
-                            child: SvgPicture.asset(
-                              "assets/setting/appsara.svg",
-                              height: 110,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                  ],
                 ),
-            ],
-          ),
         ),
       ),
     );

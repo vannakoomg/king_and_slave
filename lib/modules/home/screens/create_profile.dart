@@ -42,11 +42,7 @@ class ProfielScreen extends StatelessWidget {
                           controller.imagePrifile.asMap().entries.map((e) {
                         return GestureDetector(
                           onTap: () {
-                            unFocus(context);
-                            Future.delayed(const Duration(milliseconds: 1200),
-                                () {
-                              controller.selecteProfile(e.key);
-                            });
+                            controller.selecteProfile(e.key);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -94,6 +90,7 @@ class ProfielScreen extends StatelessWidget {
                   ? "${Singleton.instance.languages.value.ok}"
                   : "${Singleton.instance.languages.value.create}",
               ontap: () {
+                unFocus(context);
                 controller.onTap();
               },
               isdisble:

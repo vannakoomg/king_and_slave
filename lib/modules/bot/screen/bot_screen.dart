@@ -34,8 +34,12 @@ class BotScreen extends StatefulWidget {
 class _GameScreenState extends State<BotScreen> {
   final controller = Get.put(BotController());
   final homeController = Get.put(HomeController());
+
   @override
   void initState() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      homeController.isshowLaw.value = false;
+    });
     controller.showEnemy.value = false;
     controller.isPlaying.value = false;
     controller.status.value = "";
@@ -381,6 +385,7 @@ class _GameScreenState extends State<BotScreen> {
                                       } else {
                                         Get.back();
                                       }
+                                      homeController.isshowLaw.value = false;
                                     },
                                   ),
                                 if (controller.isEnemyProfile.value)

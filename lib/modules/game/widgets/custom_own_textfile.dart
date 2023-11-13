@@ -56,7 +56,10 @@ class CustomOwnTextfileState extends State<CustomOwnTextfile> {
                                   isDense: true,
                                   border: InputBorder.none,
                                 ),
-                                style: const TextStyle(fontSize: 13),
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
                                 autofocus: true,
                                 showCursor: true,
                                 readOnly: true,
@@ -310,7 +313,7 @@ class CustomKeyboard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: const Color(0xffff0a54),
+                  color: AppColor.primary.withOpacity(0.3),
                 ),
                 margin: const EdgeInsets.only(right: 2, top: 2),
                 width: 45,
@@ -520,7 +523,7 @@ class Textyyyyyyy extends StatelessWidget {
               child: Center(
                   child: Text(
                 isUpperCase ? text.toUpperCase() : text.toLowerCase(),
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               )),
             ),
           ),

@@ -76,7 +76,7 @@ class CustomChat extends StatelessWidget {
                             overflow: TextOverflow.clip,
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 13,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -108,7 +108,7 @@ class CustomChat extends StatelessWidget {
                                 // overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 13,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400),
                               ),
                             ),

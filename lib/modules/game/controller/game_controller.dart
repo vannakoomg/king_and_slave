@@ -202,6 +202,7 @@ class Controller extends GetxController {
           isStart.value = false;
           sword.value = false;
           status.value = "you_surrender";
+          removelife();
         } else {
           if ((type.value == 0 && roomModel.slave!.status == "lose")) {
             status.value = 'enemy_surrender';
@@ -214,7 +215,6 @@ class Controller extends GetxController {
             sword.value = false;
           }
         }
-        removelife();
       } else {
         if (roomModel.slave!.index! >= 0 || roomModel.king!.index! >= 0) {
           if (roomModel.slave!.length == roomModel.king!.length) {
@@ -417,7 +417,6 @@ class Controller extends GetxController {
               enemyCard.value.name == "slave")) {
         status.value = "win";
         isStart.value = true;
-        removelife();
       } else if (yourCard.value.name == enemyCard.value.name) {
         status.value = "equal";
         debugPrint("status 1 : ${status.value}");

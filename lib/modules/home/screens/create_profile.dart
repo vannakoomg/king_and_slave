@@ -1,4 +1,5 @@
 import 'package:animation_aba/const/appcolor.dart';
+import 'package:animation_aba/main.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_botton.dart';
@@ -33,7 +34,7 @@ class ProfielScreen extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              height: 160,
+              // height: 160,
               child: controller.page.value == 0
                   ? Wrap(
                       alignment: WrapAlignment.center,
@@ -41,7 +42,11 @@ class ProfielScreen extends StatelessWidget {
                           controller.imagePrifile.asMap().entries.map((e) {
                         return GestureDetector(
                           onTap: () {
-                            controller.selecteProfile(e.key);
+                            unFocus(context);
+                            Future.delayed(const Duration(milliseconds: 1200),
+                                () {
+                              controller.selecteProfile(e.key);
+                            });
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -68,6 +73,7 @@ class ProfielScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomTextfile(
+                          autofous: true,
                           controller: controller.userNameController.value,
                           hintText:
                               "${Singleton.instance.languages.value.nickName}",
@@ -82,18 +88,19 @@ class ProfielScreen extends StatelessWidget {
               height: 40,
             ),
             CustomBotton(
-                h: 40,
-                w: 120,
-                title: controller.page.value == 0
-                    ? "${Singleton.instance.languages.value.ok}"
-                    : "${Singleton.instance.languages.value.create}",
-                ontap: () {
-                  controller.onTap();
-                },
-                isdisble: controller.page.value == 1 &&
-                        controller.userName.value == ''
-                    ? true
-                    : false),
+              h: 40,
+              w: 120,
+              title: controller.page.value == 0
+                  ? "${Singleton.instance.languages.value.ok}"
+                  : "${Singleton.instance.languages.value.create}",
+              ontap: () {
+                controller.onTap();
+              },
+              isdisble:
+                  controller.page.value == 1 && controller.userName.value == ''
+                      ? true
+                      : false,
+            ),
           ]),
         ));
   }

@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class CustomFree5Life extends StatelessWidget {
               ),
               Container(
                 height: 1,
-                color: Colors.white,
+                color: AppColor.primary,
                 width: double.infinity,
               ),
               const SizedBox(
@@ -79,10 +80,10 @@ class CustomFree5Life extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: controller.randomColors(),
                           borderRadius: BorderRadius.circular(10)),
-                      child: const Center(
+                      child: Center(
                         child: Text(
-                          "4",
-                          style: TextStyle(
+                          "${controller.randomNumber()}",
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
                               fontWeight: FontWeight.w500),

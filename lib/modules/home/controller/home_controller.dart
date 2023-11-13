@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   final isShowAdMob = false.obs;
   final isFirst = false.obs;
   final isshowLaw = false.obs;
+  final isLoading = true.obs;
 
   void checkIsFirst() async {
     final SharedPreferences obj = await SharedPreferences.getInstance();
@@ -21,13 +22,14 @@ class HomeController extends GetxController {
     } else {
       isFirst.value = false;
     }
+    debugPrint("isiiiiiiiiiiiii ${isFirst.value}");
   }
 
   void agress() async {
-    final SharedPreferences obj = await SharedPreferences.getInstance();
-    obj.setString('first', "s");
-    isshowLaw.value = false;
-    Get.to(() => const BotScreen(you: 0));
+    Get.to(() => const BotScreen(
+          you: 0,
+          isFirst: true,
+        ));
   }
 
   void getiamge() async {
@@ -53,6 +55,7 @@ class HomeController extends GetxController {
           "Singleton.instance.avatar.value ${Singleton.instance.avatar.value}");
       Singleton.instance.nickName.value = obj.getString('nickName')!;
     }
+    isLoading.value = false;
   }
 
   Future<String> setupLanguages() async {

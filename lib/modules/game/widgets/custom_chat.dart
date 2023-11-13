@@ -85,7 +85,7 @@ class CustomChat extends StatelessWidget {
                 ]),
               )),
           Positioned(
-              bottom: h / 2 - 80,
+              bottom: h / 2 - 100,
               right: 5,
               child: SizedBox(
                 height: 90,

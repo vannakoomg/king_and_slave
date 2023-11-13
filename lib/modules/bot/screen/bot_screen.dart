@@ -1,7 +1,7 @@
-import 'dart:math';
+// ignore_for_file: deprecated_member_use
 
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/bot/model/bot_controller.dart';
-import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/game_model.dart';
 import 'package:animation_aba/modules/game/screens/enemy_profile.dart';
 import 'package:animation_aba/modules/game/widgets/count_time.dart';
@@ -9,18 +9,23 @@ import 'package:animation_aba/modules/game/widgets/custom_chat.dart';
 import 'package:animation_aba/modules/game/widgets/custom_own_textfile.dart';
 import 'package:animation_aba/modules/game/widgets/custom_result.dart';
 import 'package:animation_aba/modules/game/widgets/letstart.dart';
+import 'package:animation_aba/modules/home/controller/home_controller.dart';
+import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BotScreen extends StatefulWidget {
   final int you;
+  final bool isFirst;
   const BotScreen({
     super.key,
     required this.you,
+    required this.isFirst,
   });
   @override
   State<BotScreen> createState() => _GameScreenState();
@@ -28,12 +33,16 @@ class BotScreen extends StatefulWidget {
 
 class _GameScreenState extends State<BotScreen> {
   final controller = Get.put(BotController());
+  final homeController = Get.put(HomeController());
   @override
   void initState() {
+    controller.status.value = "";
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     controller.type.value = widget.you;
-    controller.checkTime();
+    if (widget.isFirst == false) {
+      controller.checkTime();
+    }
     super.initState();
   }
 
@@ -49,7 +58,7 @@ class _GameScreenState extends State<BotScreen> {
     double h = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
-    controller.setDefault(w, h, widget.you).then((value) {});
+    controller.setDefault(w, h, widget.you, widget.isFirst).then((value) {});
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
@@ -189,8 +198,8 @@ class _GameScreenState extends State<BotScreen> {
                                               .positionYourCard[e.key].x,
                                           child: GestureDetector(
                                             onVerticalDragEnd: (value) {
-                                              controller
-                                                  .onVerticalDragEnd(e.key);
+                                              controller.onVerticalDragEnd(
+                                                  e.key, widget.isFirst);
                                             },
                                             onVerticalDragStart: (value) {
                                               controller
@@ -349,7 +358,7 @@ class _GameScreenState extends State<BotScreen> {
                                     child: Container(
                                       height: 1,
                                       width: MediaQuery.of(context).size.width,
-                                      color: Colors.red,
+                                      color: AppColor.primary,
                                     ),
                                   ),
                                 CountTimte(time: controller.time.value),
@@ -357,8 +366,19 @@ class _GameScreenState extends State<BotScreen> {
                                   CustomResult(
                                     status: controller.status.value,
                                     roomId: controller.roomId.value,
-                                    ontap: () {
-                                      Get.back();
+                                    ontap: () async {
+                                      if (homeController.isFirst.value) {
+                                        controller.botMessage.value = "";
+                                        final SharedPreferences obj =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        obj.setString('first', "s");
+                                        homeController.isFirst.value = false;
+                                        homeController.isshowLaw.value = false;
+                                        Get.back();
+                                      } else {
+                                        Get.back();
+                                      }
                                     },
                                   ),
                                 if (controller.isEnemyProfile.value)
@@ -391,7 +411,9 @@ class _GameScreenState extends State<BotScreen> {
                     children: [
                       Text("${controller.isChat.value}"),
                       CustomChat(
-                        isEnemyMessage: controller.isEnemyMessage.value,
+                        isEnemyMessage: widget.isFirst
+                            ? true
+                            : controller.isEnemyMessage.value,
                         ontapChat: () {
                           controller.ontapChat();
                         },
@@ -400,13 +422,29 @@ class _GameScreenState extends State<BotScreen> {
                               !controller.isEnemyProfile.value;
                         },
                         enemyAvatar: Singleton.instance.bot.value,
-                        enemyMessage: controller.enemyMessage.value,
+                        enemyMessage: widget.isFirst
+                            ? controller.botMessage.value
+                            : controller.enemyMessage.value,
                         h: h,
                         w: w,
                         yourMessage: controller.yourMessage.value,
                       ),
                     ],
-                  ))
+                  )),
+              Obx(() => controller.isShowhand.value &&
+                      controller.understand.value == false
+                  ? AnimatedPositioned(
+                      bottom: controller.handHigh.value,
+                      left: w / 2 - 20,
+                      duration: const Duration(milliseconds: 1000),
+                      child: SvgPicture.asset(
+                        "assets/chat/hand.svg",
+                        height: 100,
+                        width: 100,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const SizedBox())
             ],
           ),
         ),

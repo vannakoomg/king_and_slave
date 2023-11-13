@@ -1,3 +1,4 @@
+import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/controller/game_controller.dart';
 import 'package:animation_aba/modules/game/controller/room_controller.dart';
 import 'package:animation_aba/modules/game/models/chat_model.dart';
@@ -355,7 +356,7 @@ class _GameScreenState extends State<GameScreen> {
                                         curve: Curves.ease,
                                         left:
                                             controller.sword.value ? -40 : -120,
-                                        top: h / 2 - 9,
+                                        top: h / 2 - 20,
                                         child: SizedBox(
                                           height: 40,
                                           width: 180,
@@ -418,7 +419,7 @@ class _GameScreenState extends State<GameScreen> {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
-                                            color: Colors.red,
+                                            color: AppColor.primary,
                                           ),
                                         ),
                                       if (controller.isShowTime.value)
@@ -431,19 +432,6 @@ class _GameScreenState extends State<GameScreen> {
                                             Get.back();
                                           },
                                         ),
-                                      // if (controller.isEnemyProfile.value)
-                                      //   EnemyPrifile(
-                                      //     name: widget.you == 0
-                                      //         ? snapshots
-                                      //             .data!.king!.profile!.name!
-                                      //         : snapshots
-                                      //             .data!.slave!.profile!.name!,
-                                      //     avatar: widget.you == 0
-                                      //         ? snapshots
-                                      //             .data!.slave!.profile!.avatar!
-                                      //         : snapshots
-                                      //             .data!.king!.profile!.avatar!,
-                                      //   ),
                                     ],
                                   ),
                                 ),
@@ -505,6 +493,19 @@ class _GameScreenState extends State<GameScreen> {
                                 w: w,
                                 yourMessage: controller.yourMessage.value,
                               ),
+                              if (controller.isEnemyProfile.value)
+                                EnemyPrifile(
+                                  name: widget.you == 0
+                                      ? snapshotsChat
+                                          .data!.messagelslave!.profile!.name!
+                                      : snapshotsChat
+                                          .data!.messagelking!.profile!.name!,
+                                  avatar: widget.you == 0
+                                      ? snapshotsChat
+                                          .data!.messagelslave!.profile!.avatar!
+                                      : snapshotsChat
+                                          .data!.messagelking!.profile!.avatar!,
+                                ),
                             ],
                           ));
                     } else {

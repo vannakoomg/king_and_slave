@@ -54,7 +54,10 @@ class RoomController extends GetxController {
 
   int randomNumber() {
     int i = Random().nextInt(10) + 1;
-    return i != 4 ? i : Random().nextInt(3);
+    if (i == 4) {
+      i = i + 1;
+    }
+    return i;
   }
 
   void submit(int type) async {

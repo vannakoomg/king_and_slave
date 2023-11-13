@@ -127,6 +127,7 @@ class CustomResult extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: Center(
                       child: CustomBotton(
+                        h: 35,
                         title: "${Singleton.instance.languages.value.next}",
                         ontap: () {
                           ontap();

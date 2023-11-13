@@ -9,6 +9,7 @@ import '../../game/models/game_model.dart';
 
 class BotController extends GetxController {
   final isEnemyProfile = false.obs;
+  final isBot = false.obs;
   final type = 0.obs;
   final roomId = "".obs;
   final chatId = "".obs;
@@ -50,8 +51,11 @@ class BotController extends GetxController {
   final chatTextController = TextEditingController().obs;
   final chatText = ''.obs;
   final botImage = "".obs;
-
-  Future<void> setDefault(double w, double h, int type) async {
+  final botMessage = "".obs;
+  final isShowhand = false.obs;
+  final handHigh = 0.0.obs;
+  final understand = false.obs;
+  Future<void> setDefault(double w, double h, int type, bool isfirst) async {
     debugPrint("Your Type $type");
     gamePlay.value = false;
     screenWight.value = w;
@@ -92,30 +96,75 @@ class BotController extends GetxController {
       you.removeAt(j);
       enemy.removeAt(k);
     }
-    Future.delayed(const Duration(milliseconds: 500), () {
-      int i = Random().nextInt(5);
-      enmey(
-        i,
-        Cardmodel(
-          image: listEnemyCard[i].image,
-          name: listEnemyCard[i].name,
-        ),
-      );
-      Future.delayed(Duration(seconds: i + 1), () {
-        enemyMessage.value =
-            "Hi Bot ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
-        isEnemyMessage.value = true;
-        Future.delayed(const Duration(milliseconds: 4000), () {
-          enemyMessage.value = "";
-          isEnemyMessage.value = true;
+    if (isfirst) {
+      Future.delayed(const Duration(seconds: 1), () {
+        botMessage.value = "Hi I am Bot , come for help you!";
+        Future.delayed(const Duration(seconds: 3), () {
+          botMessage.value = "";
+          int i = Random().nextInt(5);
+          enmey(
+            i,
+            Cardmodel(
+              image: listEnemyCard[i].image,
+              name: listEnemyCard[i].name,
+            ),
+          );
+          Future.delayed(const Duration(seconds: 1), () {
+            botMessage.value = "ខ្ញុំបានបោះសន្លឹលបៀរមួយហើយដល់វេនរបស់អ្នកម្ដង";
+            Future.delayed(const Duration(milliseconds: 1500), () {
+              isShowhand.value = true;
+            });
+            handHigh.value = 10;
+            Future.delayed(const Duration(seconds: 2), () async {
+              botMessage.value = "longPress and move the card";
+              handHigh.value = h / 2 - 100;
+              for (int i = 0; i < 10; ++i) {
+                if (understand.value == false) {
+                  await Future.delayed(const Duration(milliseconds: 2500),
+                      () async {
+                    isShowhand.value = false;
+                    handHigh.value = 10;
+                    await Future.delayed(const Duration(seconds: 1), () async {
+                      isShowhand.value = true;
+                      await Future.delayed(const Duration(milliseconds: 100),
+                          () {
+                        handHigh.value = h / 2 - 100;
+                      });
+                    });
+                  });
+                }
+              }
+            });
+          });
         });
       });
-    });
-    debugPrint(" you list $listYourCard");
+    } else {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        int i = Random().nextInt(5);
+        enmey(
+          i,
+          Cardmodel(
+            image: listEnemyCard[i].image,
+            name: listEnemyCard[i].name,
+          ),
+        );
+        Future.delayed(const Duration(seconds: 2), () {
+          enemyMessage.value =
+              "HI BOT ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
+          isEnemyMessage.value = true;
+          Future.delayed(const Duration(milliseconds: 5000), () {
+            enemyMessage.value = "";
+            isEnemyMessage.value = true;
+          });
+        });
+      });
+    }
   }
 
   void onVerticalDragUpdate(Postion old, Postion neww, int index) {
     if (!isPlaying.value && showEnemy.value == true) {
+      understand.value = true;
+
       istouchCard.value = true;
       if (neww.x! < 0) {
         neww.x = 00;
@@ -162,13 +211,19 @@ class BotController extends GetxController {
     isChat.value = false;
     chatText.value = '';
     chatTextController.value = TextEditingController();
-    await Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 4), () async {
       yourMessage.value = "";
       debugPrint("message ${yourMessage.value}");
     });
+    Future.delayed(const Duration(seconds: 2), () {
+      enemyMessage.value = "Bot can replye 😂😂😂😂";
+      Future.delayed(const Duration(seconds: 3), () {
+        enemyMessage.value = "";
+      });
+    });
   }
 
-  void onVerticalDragEnd(int index) {
+  void onVerticalDragEnd(int index, bool isfirst) {
     if (isPlaying.value == false && showEnemy.value == true) {
       if (positionYourCard[index].y! + 40 >
           screenHigh.value / 2 - highOfCard.value) {
@@ -194,19 +249,52 @@ class BotController extends GetxController {
         if (listYourCard.length == listEnemyCard.length) {
           endGame();
         }
-
-        Future.delayed(const Duration(milliseconds: 3200), () {
-          if (status.value == '') {
-            int i = Random().nextInt(listEnemyCard.length);
-            debugPrint("image url ${listEnemyCard[i].name}");
-            enmey(
-                i,
-                Cardmodel(
-                  image: listEnemyCard[i].image,
-                  name: listEnemyCard[i].name,
-                ));
-          }
-        });
+        if (isfirst) {
+          Future.delayed(const Duration(milliseconds: 3200), () {
+            if (status.value == '') {
+              Future.delayed(const Duration(milliseconds: 600), () {
+                botMessage.value = "you did it good";
+              });
+              Future.delayed(const Duration(seconds: 2), () {
+                int i = Random().nextInt(listEnemyCard.length);
+                debugPrint("image url ${listEnemyCard[i].name}");
+                enmey(
+                    i,
+                    Cardmodel(
+                      image: listEnemyCard[i].image,
+                      name: listEnemyCard[i].name,
+                    ));
+                Future.delayed(const Duration(seconds: 2), () {
+                  botMessage.value = "";
+                });
+              });
+            } else {
+              botMessage.value = status.value == "lose"
+                  ? "What The F* bro , you play lose with the bot !!!"
+                  : "Nice bro you win with the bot  🤖🤖🤖🤖 ";
+              Future.delayed(const Duration(seconds: 4), () {
+                botMessage.value = "";
+                Future.delayed(const Duration(milliseconds: 1000), () {
+                  botMessage.value = status.value == "lose"
+                      ? "but never mind ,Now you can enjoy the Real World 🌹🌹🌹🌹🌹🌹, go lock ! "
+                      : "Now you can enjoy the Real World 🌹🌹🌹🌹🌹🌹, go lock ! ";
+                });
+              });
+            }
+          });
+        } else {
+          Future.delayed(const Duration(milliseconds: 3200), () {
+            if (status.value == '') {
+              int i = Random().nextInt(listEnemyCard.length);
+              enmey(
+                  i,
+                  Cardmodel(
+                    image: listEnemyCard[i].image,
+                    name: listEnemyCard[i].name,
+                  ));
+            }
+          });
+        }
       } else {
         positionYourCard[index] = oldPostion.value;
         istouchCard.value = false;

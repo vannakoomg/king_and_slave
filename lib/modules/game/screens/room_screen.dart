@@ -30,7 +30,6 @@ class _GameRoomScreenState extends State<RoomScreen> {
   final controller = Get.put(RoomController());
   @override
   void initState() {
-    // controller.loadRewardedAd();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.initState();
@@ -73,7 +72,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 ? "assets/map/mongkot.svg"
                                 : "assets/map/hat.svg",
                             color: AppColor.primary,
-                            height: 60,
+                            height: 50,
                           ),
                           Text(
                             yourType == 0
@@ -81,7 +80,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                 : "${Singleton.instance.languages.value.slave}",
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 23,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w600),
                           ),
                           StreamBuilder<List<RoomModel>>(

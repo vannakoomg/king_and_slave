@@ -115,7 +115,7 @@ class EditProfileScreen extends StatelessWidget {
                     height: 10,
                   ),
                   CustomBotton(
-                      h: 40,
+                      h: 35,
                       w: 120,
                       title: "${Singleton.instance.languages.value.ok}",
                       ontap: () {

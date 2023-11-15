@@ -1,5 +1,6 @@
 import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/game/screens/room_style.dart';
+import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:flutter/material.dart';
 
 class CustomBotton extends StatelessWidget {
@@ -12,7 +13,7 @@ class CustomBotton extends StatelessWidget {
   const CustomBotton(
       {super.key,
       required this.title,
-      this.h = 40,
+      this.h = 35,
       this.w = 100,
       required this.ontap,
       required this.isdisble});
@@ -52,7 +53,7 @@ class CustomBotton extends StatelessWidget {
                 style: TextStyle(
                     color:
                         isdisble ? Colors.white.withOpacity(0.7) : Colors.white,
-                    fontSize: 15,
+                    fontSize: Singleton.instance.lang.value == "kh" ? 18 : 15,
                     fontWeight: FontWeight.w500),
               )),
             ),

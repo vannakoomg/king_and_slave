@@ -38,10 +38,10 @@ class CustomResult extends StatelessWidget {
                           ? const Color.fromARGB(255, 245, 68, 45)
                               .withOpacity(0.5)
                           : status == "enemy_surrender" || status == "win"
-                              ? const Color.fromARGB(255, 238, 85, 136)
+                              ? const Color.fromARGB(255, 235, 99, 145)
                               : const Color.fromARGB(255, 220, 202, 202)
                                   .withOpacity(0.5),
-                      spreadRadius: 120,
+                      spreadRadius: 100,
                       blurRadius: 100,
                       offset: const Offset(0, 2), // changes position of shadow
                     ),

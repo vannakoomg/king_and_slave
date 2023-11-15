@@ -4,13 +4,11 @@ import 'package:animation_aba/const/appcolor.dart';
 import 'package:animation_aba/modules/bot/model/bot_controller.dart';
 import 'package:animation_aba/modules/game/models/game_model.dart';
 import 'package:animation_aba/modules/game/screens/enemy_profile.dart';
-import 'package:animation_aba/modules/game/widgets/count_time.dart';
 import 'package:animation_aba/modules/game/widgets/custom_chat.dart';
 import 'package:animation_aba/modules/game/widgets/custom_own_textfile.dart';
 import 'package:animation_aba/modules/game/widgets/custom_result.dart';
 import 'package:animation_aba/modules/game/widgets/letstart.dart';
 import 'package:animation_aba/modules/home/controller/home_controller.dart';
-import 'package:animation_aba/modules/home/screens/home_screen.dart';
 import 'package:animation_aba/utils/controller/singleton.dart';
 import 'package:animation_aba/utils/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +35,7 @@ class _GameScreenState extends State<BotScreen> {
 
   @override
   void initState() {
+    debugPrint("1111111111111${widget.isFirst}");
     Future.delayed(const Duration(milliseconds: 500), () {
       homeController.isshowLaw.value = false;
     });
@@ -323,6 +322,8 @@ class _GameScreenState extends State<BotScreen> {
                                         Row(children: [
                                           GestureDetector(
                                             onTap: () {
+                                              homeController
+                                                  .firstIntroduction();
                                               controller.ontapSword02();
                                             },
                                             child: Container(
@@ -367,27 +368,35 @@ class _GameScreenState extends State<BotScreen> {
                                       color: AppColor.primary,
                                     ),
                                   ),
-                                CountTimte(time: controller.time.value),
-                                if (controller.status.value != "")
-                                  CustomResult(
-                                    status: controller.status.value,
-                                    roomId: controller.roomId.value,
-                                    ontap: () async {
-                                      if (homeController.isFirst.value) {
-                                        controller.botMessage.value = "";
-                                        final SharedPreferences obj =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        obj.setString('first', "s");
-                                        homeController.isFirst.value = false;
-                                        homeController.isshowLaw.value = false;
-                                        Get.back();
-                                      } else {
-                                        Get.back();
-                                      }
-                                      homeController.isshowLaw.value = false;
-                                    },
-                                  ),
+                                controller.status.value != ""
+                                    ? CustomResult(
+                                        status: controller.status.value,
+                                        roomId: controller.roomId.value,
+                                        ontap: () async {
+                                          debugPrint(
+                                              "vsdfsdf${widget.isFirst}");
+                                          if (widget.isFirst == true) {
+                                            homeController.firstIntroduction();
+                                          }
+                                          if (homeController.isFirst.value) {
+                                            controller.botMessage.value = "";
+                                            final SharedPreferences obj =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            obj.setString('first', "s");
+                                            homeController.isFirst.value =
+                                                false;
+                                            homeController.isshowLaw.value =
+                                                false;
+                                            Get.back();
+                                          } else {
+                                            Get.back();
+                                          }
+                                          homeController.isshowLaw.value =
+                                              false;
+                                        },
+                                      )
+                                    : const SizedBox(),
                                 if (controller.isEnemyProfile.value)
                                   EnemyPrifile(
                                     name: "I AM BOT",

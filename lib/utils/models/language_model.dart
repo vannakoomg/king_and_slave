@@ -51,9 +51,13 @@ class LanguagesModel {
   String? botMessage08;
   String? botMessageReply;
   String? botMessageHi;
+  String? introduction02;
+  String? introduction01;
 
   LanguagesModel(
       {this.enemySerrender,
+      this.introduction02,
+      this.introduction01,
       this.king,
       this.letsGo,
       this.next,
@@ -107,6 +111,9 @@ class LanguagesModel {
       this.botMessageHi});
 
   LanguagesModel.fromJson(Map<String, dynamic> json) {
+    introduction02 = json['introduction02'];
+    introduction01 = json['introduction01'];
+
     botMessage01 = json['bot_message01'];
     botMessage02 = json['bot_message02'];
     botMessage03 = json['bot_message03'];
@@ -174,6 +181,8 @@ class LanguagesModel {
     data['bot_message07'] = botMessage07;
     data['bot_message08'] = botMessage08;
     data['bot_message_reply'] = botMessageReply;
+    data['introduction02'] = introduction02;
+    data['introduction01'] = introduction01;
     data['bot_message_hi'] = botMessageHi;
     data['update_profile'] = updateProfile;
     data['nickname'] = nickName;

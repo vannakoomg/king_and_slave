@@ -155,7 +155,7 @@ class BotController extends GetxController {
           enemyMessage.value =
               "${Singleton.instance.languages.value.botMessageHi} ${emoji1[Random().nextInt(10)]} ${emoji1[Random().nextInt(10)]}";
           isEnemyMessage.value = true;
-          Future.delayed(const Duration(milliseconds: 5000), () {
+          Future.delayed(const Duration(milliseconds: 3000), () {
             enemyMessage.value = "";
             isEnemyMessage.value = true;
           });
@@ -299,6 +299,7 @@ class BotController extends GetxController {
                     name: listEnemyCard[i].name,
                   ));
             } else {
+              debugPrint("status ${status.value}");
               if (status.value == "lose") {
                 enemyMessage.value =
                     Singleton.instance.languages.value.botMessage051 ?? "-";
@@ -306,24 +307,24 @@ class BotController extends GetxController {
                 Future.delayed(const Duration(milliseconds: 4), () {
                   enemyMessage.value =
                       Singleton.instance.languages.value.botMessage08 ??
-                          "You so cute";
+                          "You so cutedfdf";
                   isEnemyMessage.value = true;
                 });
               } else {
                 enemyMessage.value =
-                    Singleton.instance.languages.value.botMessage07 ?? "OK";
+                    Singleton.instance.languages.value.botMessage07 ?? "";
                 isEnemyMessage.value = true;
                 Future.delayed(const Duration(milliseconds: 4), () {
                   enemyMessage.value =
                       Singleton.instance.languages.value.botMessage08 ??
-                          "You so cute";
+                          "You so cutefdfd";
                   isEnemyMessage.value = true;
                 });
               }
-              Future.delayed(const Duration(seconds: 5), () {
-                enemyMessage.value = "";
-                isEnemyMessage.value = false;
-              });
+              // Future.delayed(const Duration(seconds: 5), () {
+              //   enemyMessage.value = "";
+              //   isEnemyMessage.value = false;
+              // });
             }
           });
         }

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:animation_aba/const/appcolor.dart';
@@ -15,18 +17,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
-  final botControler = BotController();
+  final botControler = Get.put(BotController());
   final settingController = Get.put(SettingController());
   @override
   void initState() {
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               .then((value) async {
             Singleton.instance.languages.value =
                 LanguagesModel.fromJson(value.data()!);
+            controller.isLoading.value = false;
             controller.getiamge();
           })
         });
@@ -53,384 +56,474 @@ class _HomeScreenState extends State<HomeScreen> {
       onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: Obx(
-          () => controller.isLoading.value
-              ? Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  color: Colors.black.withOpacity(0.6),
-                  child: Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: Colors.white, size: 30),
+        body: Obx(() => Stack(
+              children: [
+                AnimatedOpacity(
+                  duration: const Duration(seconds: 1),
+                  opacity: 1,
+                  child: SvgPicture.asset(
+                    "assets/background/background.svg",
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
                   ),
-                )
-              : Stack(
-                  children: [
-                    AnimatedOpacity(
-                      duration: const Duration(seconds: 1),
-                      opacity: 1,
-                      child: SvgPicture.asset(
-                        "assets/background/background.svg",
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    // SizedBox(
-                    //   height: double.infinity,
-                    //   width: double.infinity,
-                    //   child: Column(children: [
-                    //     Expanded(
-                    //       child: Stack(children: [
-                    //         Row(
-                    //           children: [
-                    //             Expanded(
-                    //                 child: GestureDetector(
-                    //               onTap: () async {
-                    //                 Get.to(() => const RoomScreen(),
-                    //                     arguments: 0);
-                    //               },
-                    //               child: Container(
-                    //                 color: AppColor.primary,
-                    //                 child: Center(
-                    //                   child: SvgPicture.asset(
-                    //                     "assets/background/king.svg",
-                    //                     height:
-                    //                         (MediaQuery.of(context).size.width /
-                    //                                 2) *
-                    //                             0.8,
-                    //                     width:
-                    //                         (MediaQuery.of(context).size.width /
-                    //                                 2) *
-                    //                             0.8,
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             )),
-                    //             Expanded(
-                    //               child: GestureDetector(
-                    //                 onTap: () {
-                    //                   Get.to(
-                    //                     () => const RoomScreen(),
-                    //                     arguments: 1,
-                    //                   );
-                    //                 },
-                    //                 child: Container(
-                    //                   color: Colors.black,
-                    //                   child: Center(
-                    //                     child: SvgPicture.asset(
-                    //                       "assets/background/slave.svg",
-                    //                       height: (MediaQuery.of(context)
-                    //                                   .size
-                    //                                   .width /
-                    //                               2) *
-                    //                           0.8,
-                    //                       width: (MediaQuery.of(context)
-                    //                                   .size
-                    //                                   .width /
-                    //                               2) *
-                    //                           0.8,
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             )
-                    //           ],
-                    //         ),
-                    //       ]),
-                    //     ),
-                    //   ]),
-                    // ),
-                    Positioned(
-                        bottom: MediaQuery.of(context).size.height / 6,
-                        child: Container(
-                          height: 50,
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Container(
-                              color: AppColor.primary,
-                              height: 45,
-                              width: MediaQuery.of(context).size.width / 1.8,
-                              child: const Center(
-                                child: Text(
-                                  "S T A R T",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )),
-                    if (controller.isFirst.value == false)
-                      Positioned(
-                          top: MediaQuery.of(context).padding.top,
-                          left: 10,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 60,
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.editPrifile.value =
-                                        Singleton.instance.avatar.value;
-                                    debugPrint("");
-                                    controller.imageEdit.clear();
-                                    controller.imageEdit
-                                        .addAll(controller.imagePrifile);
-                                    controller.imageEdit
-                                        .remove(controller.editPrifile.value);
-                                    Get.to(const EditProfileScreen(),
-                                        transition: Transition.noTransition);
-                                  },
-                                  child: Container(
-                                    clipBehavior: Clip.antiAlias,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        border: Border.all(
-                                          color: Colors.white,
-                                        )),
-                                    width: 45,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: SvgPicture.asset(
-                                        Singleton.instance.avatar.value,
-                                        fit: BoxFit.cover,
+                ),
+                controller.isLoading.value
+                    ? Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Colors.black.withOpacity(0.7),
+                        child: Center(
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: Colors.white, size: 30),
+                        ),
+                      )
+                    : Stack(
+                        children: [
+                          if (controller.introductionStap.value == 0 &&
+                              controller.isFirst.value == false)
+                            Positioned(
+                                bottom: MediaQuery.of(context).size.height / 6,
+                                child: Container(
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(
+                                    child: Container(
+                                      color: AppColor.primary,
+                                      height: 45,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.8,
+                                      child: Center(
+                                        child: Text(
+                                          "${Singleton.instance.languages.value.letsGo}",
+                                          style: GoogleFonts.playfairDisplaySc(
+                                              textStyle: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700)),
+                                        ),
                                       ),
                                     ),
                                   ),
+                                )),
+                          SizedBox(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Row(children: [
+                              Expanded(
+                                  child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const RoomScreen(),
+                                      arguments: 1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
                                 ),
-                                const SizedBox(
-                                  width: 10,
+                              )),
+                              Expanded(
+                                  child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const RoomScreen(),
+                                      arguments: 0);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              ))
+                            ]),
+                          ),
+                          if (controller.isFirst.value == false)
+                            Positioned(
+                                top: MediaQuery.of(context).padding.top,
+                                left: 10,
+                                child: Stack(
                                   children: [
-                                    Row(
-                                      children: [
-                                        for (int i = 0;
-                                            i < Singleton.instance.life.value;
-                                            ++i)
-                                          const Icon(
-                                            Icons.favorite,
-                                            size: 22,
-                                            color: Colors.white,
-                                          ),
-                                      ],
+                                    Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.transparent,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: AppColor.primary,
+                                                blurRadius: 60,
+                                                spreadRadius: 45)
+                                          ]),
                                     ),
-                                    Text(
-                                      Singleton.instance.nickName.value,
-                                      style: TextStyle(
-                                          color: Colors.white.withOpacity(0.8),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 60,
+                                      child: Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              controller.editPrifile.value =
+                                                  Singleton
+                                                      .instance.avatar.value;
+                                              debugPrint("");
+                                              controller.imageEdit.clear();
+                                              controller.imageEdit.addAll(
+                                                  controller.imagePrifile);
+                                              controller.imageEdit.remove(
+                                                  controller.editPrifile.value);
+                                              Get.to(const EditProfileScreen(),
+                                                  transition:
+                                                      Transition.noTransition);
+                                            },
+                                            child: Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              width: 45,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: SvgPicture.asset(
+                                                  Singleton
+                                                      .instance.avatar.value,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  for (int i = 0;
+                                                      i <
+                                                          Singleton.instance
+                                                              .life.value;
+                                                      ++i)
+                                                    const Icon(
+                                                      Icons.favorite,
+                                                      size: 22,
+                                                      color: Colors.white,
+                                                    ),
+                                                ],
+                                              ),
+                                              Text(
+                                                Singleton
+                                                    .instance.nickName.value,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                          )),
-                    if (controller.isFirst.value == false)
-                      Positioned(
-                        top: 5,
-                        right: 10,
-                        child: SizedBox(
-                          height: 70,
-                          width: 70,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.transparent,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: AppColor.primary,
-                                            blurRadius: 80,
-                                            spreadRadius: 45)
-                                      ]),
-                                ),
-                              ),
-                              SizedBox(
+                                )),
+                          if (controller.isFirst.value == false)
+                            Positioned(
+                              top: 5,
+                              right: 10,
+                              child: SizedBox(
                                 height: 70,
                                 width: 70,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 30, left: 30),
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.settings,
-                                      color: Colors.white,
-                                      size: 25,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: 10,
+                                        width: 10,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: AppColor.primary,
+                                                  blurRadius: 80,
+                                                  spreadRadius: 45)
+                                            ]),
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      Get.to(() => const SettingScreen(),
-                                          transition: Transition.noTransition);
-                                    },
-                                  ),
+                                    SizedBox(
+                                      height: 70,
+                                      width: 70,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 30, left: 30),
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.settings,
+                                            color: Colors.white,
+                                            size: 25,
+                                          ),
+                                          onPressed: () {
+                                            Get.to(() => const SettingScreen(),
+                                                transition:
+                                                    Transition.noTransition);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    if (controller.isFirst.value &&
-                        Singleton.instance.languages.value.next != null)
-                      const ProfielScreen(),
-                    if (controller.isFirst.value == false)
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              color: Colors.transparent,
-                              width: 130,
-                              height: 130,
-                              child: Stack(
-                                children: [
-                                  AnimatedPositioned(
-                                    curve: Curves.easeInBack,
-                                    right: botControler.isBot.value ? 15 : 40,
-                                    bottom: botControler.isBot.value ? 100 : 30,
-                                    duration: const Duration(milliseconds: 350),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Get.to(() => const BotScreen(
-                                              you: 1,
-                                              isFirst: false,
-                                            ));
-                                        botControler.isBot.value = false;
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/map/hat.svg",
-                                        height: 22,
-                                        width: 22,
-                                      ),
-                                    ),
-                                  ),
-                                  AnimatedPositioned(
-                                    curve: Curves.easeInBack,
-                                    right: botControler.isBot.value ? 70 : 40,
-                                    bottom: botControler.isBot.value ? 100 : 30,
-                                    duration: const Duration(milliseconds: 350),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        controller.isshowLaw.value = false;
-                                        Get.to(() => const BotScreen(
-                                              you: 0,
-                                              isFirst: false,
-                                            ));
-                                        botControler.isBot.value = false;
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/map/mongkot.svg",
-                                        height: 23,
-                                        width: 23,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 20,
-                                    bottom: 0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        botControler.isBot.value =
-                                            !botControler.isBot.value;
-                                      },
-                                      child: SvgPicture.asset(
-                                        Singleton.instance.bot.value,
-                                        height: 70,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
-                          )),
-                    if (controller.isshowLaw.value)
-                      GestureDetector(
-                        onTap: () {
-                          controller.agress();
-                        },
-                        child: Container(
-                          color: Colors.black.withOpacity(0.95),
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).padding.top + 20),
-                          child: Stack(
-                            children: [
-                              Container(
-                                color: Colors.black.withOpacity(0.9),
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.only(
-                                    left: 20, right: 20, top: 40, bottom: 10),
-                                child: Center(
-                                  child: SingleChildScrollView(
-                                    child: Column(
+                          if (controller.isFirst.value &&
+                              Singleton.instance.languages.value.next != null)
+                            const ProfielScreen(),
+                          if (controller.isFirst.value == false)
+                            Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    width: 150,
+                                    height: 130,
+                                    child: Stack(
                                       children: [
-                                        Text(
-                                          "${Singleton.instance.languages.value.law}",
-                                          style: const TextStyle(
+                                        AnimatedPositioned(
+                                          curve: Curves.easeInBack,
+                                          right: botControler.isBot.value
+                                              ? 15
+                                              : 30,
+                                          bottom: botControler.isBot.value
+                                              ? 100
+                                              : 30,
+                                          duration:
+                                              const Duration(milliseconds: 350),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => const BotScreen(
+                                                    you: 1,
+                                                    isFirst: false,
+                                                  ));
+                                              botControler.isBot.value = false;
+                                            },
+                                            child: SvgPicture.asset(
+                                              "assets/map/hat.svg",
+                                              height: 22,
+                                              width: 22,
                                               color: Colors.white,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(
-                                          height: 10,
+                                        AnimatedPositioned(
+                                          curve: Curves.easeInBack,
+                                          right: botControler.isBot.value
+                                              ? 100
+                                              : 30,
+                                          bottom: botControler.isBot.value
+                                              ? 30
+                                              : 30,
+                                          duration:
+                                              const Duration(milliseconds: 350),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              controller.isshowLaw.value =
+                                                  false;
+                                              Get.to(() => const BotScreen(
+                                                    you: 0,
+                                                    isFirst: false,
+                                                  ));
+                                              botControler.isBot.value = false;
+                                            },
+                                            child: SvgPicture.asset(
+                                              "assets/map/mongkot.svg",
+                                              height: 23,
+                                              width: 23,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                        Text(
-                                            Singleton.instance.languages.value
-                                                .lawDetail!
-                                                .replaceAll(r'\n', '\n'),
-                                            style: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                                fontSize: 17.5)),
-                                        const SizedBox(
-                                          height: 40,
+                                        Positioned(
+                                          right: 20,
+                                          bottom: 0,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              botControler.isBot.value =
+                                                  !botControler.isBot.value;
+                                            },
+                                            child: SvgPicture.asset(
+                                              Singleton.instance.bot.value,
+                                              height: 70,
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(
-                                          height: 60,
-                                        )
                                       ],
                                     ),
                                   ),
+                                )),
+                          if (controller.isshowLaw.value)
+                            GestureDetector(
+                              onTap: () {
+                                controller.agress();
+                              },
+                              child: Container(
+                                color: Colors.black.withOpacity(0.95),
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).padding.top +
+                                        20),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      color: Colors.black.withOpacity(0.9),
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: const EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                          top: 40,
+                                          bottom: 10),
+                                      child: Center(
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "${Singleton.instance.languages.value.law}",
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                  Singleton.instance.languages
+                                                      .value.lawDetail!
+                                                      .replaceAll(r'\n', '\n'),
+                                                  style: TextStyle(
+                                                      color: Colors.white
+                                                          .withOpacity(0.7),
+                                                      fontSize: 17.5)),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              const SizedBox(
+                                                height: 60,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 40,
+                                      bottom: 20,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          settingController.fetchLanguage();
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/setting/appsara.svg",
+                                          height: 110,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 5,
+                                      right: 10,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          settingController.fetchLanguage();
+                                        },
+                                        child: SvgPicture.asset(
+                                          Singleton.instance.lang.value == "kh"
+                                              ? "assets/setting/1.svg"
+                                              : "assets/setting/2.svg",
+                                          height: 18,
+                                          width: 30,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Positioned(
-                                right: 40,
-                                bottom: 20,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    settingController.fetchLanguage();
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/setting/appsara.svg",
-                                    height: 110,
-                                  ),
+                            ),
+                          if (controller.introductionStap.value != 0)
+                            GestureDetector(
+                              onTap: () {},
+                              child: AnimatedContainer(
+                                margin: EdgeInsets.only(
+                                    left: controller.introductionStap.value == 1
+                                        ? 1
+                                        : MediaQuery.of(context).size.width /
+                                            2),
+                                padding:
+                                    const EdgeInsets.only(left: 5, right: 5),
+                                duration: const Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.5),
+                                  border: Border.all(
+                                      color: AppColor.primary, width: 0.5),
                                 ),
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.height,
+                                child: controller.textIntroduction.value != ''
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: AppColor.primary,
+                                            ),
+                                            padding: const EdgeInsets.all(10),
+                                            child: Text(
+                                              controller.textIntroduction.value,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          SvgPicture.asset(
+                                            "assets/background/hand_touch.svg",
+                                            height: 60,
+                                            color: const Color.fromARGB(
+                                                255, 227, 86, 10),
+                                          )
+                                        ],
+                                      )
+                                    : const SizedBox(),
                               ),
-                            ],
-                          ),
-                        ),
+                            )
+                        ],
                       ),
-                  ],
-                ),
-        ),
+              ],
+            )),
       ),
     );
   }

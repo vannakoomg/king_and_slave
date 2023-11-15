@@ -22,7 +22,6 @@ class HomeController extends GetxController {
     } else {
       isFirst.value = false;
     }
-    debugPrint("isiiiiiiiiiiiii ${isFirst.value}");
   }
 
   void agress() async {
@@ -33,6 +32,7 @@ class HomeController extends GetxController {
   }
 
   void getiamge() async {
+    isLoading.value = false;
     final SharedPreferences obj = await SharedPreferences.getInstance();
     if (obj.getString('king') == null) {
       await obj.setString('king', "assets/king/${Random().nextInt(5) + 1}.svg");
@@ -55,7 +55,6 @@ class HomeController extends GetxController {
           "Singleton.instance.avatar.value ${Singleton.instance.avatar.value}");
       Singleton.instance.nickName.value = obj.getString('nickName')!;
     }
-    isLoading.value = false;
   }
 
   Future<String> setupLanguages() async {
@@ -102,7 +101,7 @@ class HomeController extends GetxController {
     "assets/profile/3.svg",
     "assets/profile/4.svg",
     "assets/profile/5.svg",
-  ].obs;
+  ];
   final imageEdit = [];
   final oldimage = ''.obs;
   void selecteProfile(int i) async {
@@ -145,4 +144,25 @@ class HomeController extends GetxController {
   final pageController = PageController().obs;
   final userNameController = TextEditingController().obs;
   final userName = ''.obs;
+  final introductionStap = 0.obs;
+  final textIntroduction = "".obs;
+  void firstIntroduction() {
+    Future.delayed(const Duration(milliseconds: 200), () {
+      introductionStap.value = 1;
+      textIntroduction.value =
+          Singleton.instance.languages.value.introduction01 ?? "";
+      Future.delayed(const Duration(seconds: 4), () {
+        textIntroduction.value = "";
+        introductionStap.value = 2;
+        Future.delayed(const Duration(milliseconds: 600), () {
+          introductionStap.value = 3;
+          textIntroduction.value =
+              Singleton.instance.languages.value.introduction02 ?? "";
+        });
+        Future.delayed(const Duration(seconds: 4), () {
+          introductionStap.value = 0;
+        });
+      });
+    });
+  }
 }

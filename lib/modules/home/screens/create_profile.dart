@@ -16,7 +16,7 @@ class ProfielScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
     return Obx(() => Container(
-          color: Colors.black,
+          color: Colors.black.withOpacity(0.9),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -34,7 +34,6 @@ class ProfielScreen extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              // height: 160,
               child: controller.page.value == 0
                   ? Wrap(
                       alignment: WrapAlignment.center,
@@ -50,16 +49,12 @@ class ProfielScreen extends StatelessWidget {
                             width: MediaQuery.of(context).size.width / 6,
                             height: MediaQuery.of(context).size.width / 6,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(e.value),
-                                  fit: BoxFit.cover,
-                                ),
                                 border: Border.all(
-                                  width: 3,
-                                  color: controller.index.value == e.key
-                                      ? AppColor.primary
-                                      : Colors.black,
-                                )),
+                              width: 3,
+                              color: controller.index.value == e.key
+                                  ? AppColor.primary
+                                  : Colors.black,
+                            )),
                             child: SvgPicture.asset(e.value),
                           ),
                         );

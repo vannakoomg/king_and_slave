@@ -65,7 +65,7 @@ class _GameScreenState extends State<BotScreen> {
         MediaQuery.of(context).padding.bottom;
     controller.setDefault(w, h, widget.you, widget.isFirst).then((value) {});
     return WillPopScope(
-      onWillPop: () async => true,
+      onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(

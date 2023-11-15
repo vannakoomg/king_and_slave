@@ -383,6 +383,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                       height: 20,
                                     ),
                                     CustomTextfile(
+                                      autofous: true,
                                       controller: controller
                                           .roomNameTextEditController.value,
                                       hintText:
@@ -470,6 +471,7 @@ class _GameRoomScreenState extends State<RoomScreen> {
                                           width: 50,
                                         ),
                                   CustomTextfile(
+                                    autofous: true,
                                     controller: controller
                                         .enterPasswordTextEditController.value,
                                     hintText:

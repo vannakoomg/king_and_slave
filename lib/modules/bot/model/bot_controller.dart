@@ -301,7 +301,6 @@ class BotController extends GetxController {
                     name: listEnemyCard[i].name,
                   ));
             } else {
-              debugPrint("status ${status.value}");
               if (status.value == "lose") {
                 enemyMessage.value =
                     Singleton.instance.languages.value.botMessage051 ?? "-";
@@ -354,7 +353,6 @@ class BotController extends GetxController {
         x: screenWight / 2 - screenWight / 5 / 2,
         y: screenHigh / 2 - highOfCard.value - 5);
     Future.delayed(const Duration(milliseconds: 500), () {
-      showEnemy.value = true;
       newPostionEnmey.value = positionEnemyCard[index];
       onTapEnemy.value = true;
       listEnemyCard.removeAt(index);
@@ -372,6 +370,7 @@ class BotController extends GetxController {
           );
         }
       });
+      showEnemy.value = true;
     });
   }
 

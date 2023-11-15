@@ -137,106 +137,85 @@ class _HomeScreenState extends State<HomeScreen> {
                             Positioned(
                                 top: MediaQuery.of(context).padding.top,
                                 left: 10,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.transparent,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: AppColor.primary,
-                                                blurRadius: 60,
-                                                spreadRadius: 45)
-                                          ]),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 60,
-                                      child: Row(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              controller.editPrifile.value =
-                                                  Singleton
-                                                      .instance.avatar.value;
-                                              debugPrint("");
-                                              controller.imageEdit.clear();
-                                              controller.imageEdit.addAll(
-                                                  controller.imagePrifile);
-                                              controller.imageEdit.remove(
-                                                  controller.editPrifile.value);
-                                              Get.to(const EditProfileScreen(),
-                                                  transition:
-                                                      Transition.noTransition);
-                                            },
-                                            child: Container(
-                                              clipBehavior: Clip.antiAlias,
-                                              height: 45,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              width: 45,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child: SvgPicture.asset(
-                                                  Singleton
-                                                      .instance.avatar.value,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 60,
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.editPrifile.value =
+                                              Singleton.instance.avatar.value;
+                                          debugPrint("");
+                                          controller.imageEdit.clear();
+                                          controller.imageEdit
+                                              .addAll(controller.imagePrifile);
+                                          controller.imageEdit.remove(
+                                              controller.editPrifile.value);
+                                          Get.to(const EditProfileScreen(),
+                                              transition:
+                                                  Transition.noTransition);
+                                        },
+                                        child: Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          height: 45,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              color: Colors.white,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 10,
+                                          width: 45,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: SvgPicture.asset(
+                                              Singleton.instance.avatar.value,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  for (int i = 0;
-                                                      i <
-                                                          Singleton.instance
-                                                              .life.value;
-                                                      ++i)
-                                                    const Icon(
-                                                      Icons.favorite,
-                                                      size: 22,
-                                                      color: Colors.white,
-                                                    ),
-                                                ],
-                                              ),
-                                              Text(
-                                                Singleton
-                                                    .instance.nickName.value,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              for (int i = 0;
+                                                  i <
+                                                      Singleton
+                                                          .instance.life.value;
+                                                  ++i)
+                                                const Icon(
+                                                  Icons.favorite,
+                                                  size: 22,
+                                                  color: Colors.white,
+                                                ),
+                                            ],
+                                          ),
+                                          Text(
+                                            Singleton.instance.nickName.value,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 )),
                           if (controller.isFirst.value == false)
                             Positioned(
-                              top: 5,
-                              right: 10,
+                              top: 10,
+                              right: 20,
                               child: SizedBox(
                                 height: 70,
                                 width: 70,
@@ -264,7 +243,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 70,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 30, left: 30),
+                                          top: 30,
+                                          left: 30,
+                                        ),
                                         child: IconButton(
                                           icon: const Icon(
                                             Icons.settings,
@@ -288,8 +269,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             const ProfielScreen(),
                           if (controller.isFirst.value == false)
                             Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 15,
+                                right: 10,
                                 child: GestureDetector(
                                   onTap: () {},
                                   child: Container(

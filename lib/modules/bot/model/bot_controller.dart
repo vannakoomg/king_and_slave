@@ -56,7 +56,6 @@ class BotController extends GetxController {
   final handHigh = 0.0.obs;
   final understand = false.obs;
   Future<void> setDefault(double w, double h, int type, bool isfirst) async {
-    debugPrint("Your Type $type");
     gamePlay.value = false;
     screenWight.value = w;
     screenHigh.value = h;
@@ -67,6 +66,9 @@ class BotController extends GetxController {
     List enemy = type == 0
         ? ["slave", "soldier", "soldier", "soldier", "soldier"]
         : ["king", "soldier", "soldier", "soldier", "soldier"];
+    debugPrint("list $you");
+    debugPrint("list $enemy");
+
     highOfCard.value = 0.2 * w + 0.2 * w / 3;
     positionYourCard.clear();
     positionEnemyCard.clear();

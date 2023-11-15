@@ -35,7 +35,6 @@ class _GameScreenState extends State<BotScreen> {
 
   @override
   void initState() {
-    debugPrint("1111111111111${widget.isFirst}");
     Future.delayed(const Duration(milliseconds: 500), () {
       homeController.isshowLaw.value = false;
     });
@@ -304,59 +303,61 @@ class _GameScreenState extends State<BotScreen> {
                                 controller.showLoading.value == true
                                     ? const Customloading()
                                     : const SizedBox(),
-                                AnimatedPositioned(
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.ease,
-                                  left: controller.sword.value ? -40 : -120,
-                                  top: h / 2 - 9,
-                                  child: SizedBox(
-                                    height: 40,
-                                    width: 180,
-                                    child: Stack(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/sword/1.svg",
-                                          height: 60,
-                                          width: 140,
-                                        ),
-                                        Row(children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              homeController
-                                                  .firstIntroduction();
-                                              controller.ontapSword02();
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5, left: 40, top: 0),
-                                              width: 120,
-                                              height: 60,
-                                              color: Colors.transparent,
-                                              child: Center(
-                                                  child: Text(
-                                                "${Singleton.instance.languages.value.surrender}",
-                                                style: const TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              )),
-                                            ),
+                                if (widget.isFirst == false)
+                                  AnimatedPositioned(
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.ease,
+                                    left: controller.sword.value ? -40 : -120,
+                                    top: h / 2 - 9,
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 180,
+                                      child: Stack(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/sword/1.svg",
+                                            height: 60,
+                                            width: 140,
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              controller.ontapSword01();
-                                            },
-                                            child: Container(
-                                              width: 60,
-                                              height: 50,
-                                              color: Colors.transparent,
+                                          Row(children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.ontapSword02();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5,
+                                                    left: 40,
+                                                    top: 0),
+                                                width: 120,
+                                                height: 60,
+                                                color: Colors.transparent,
+                                                child: Center(
+                                                    child: Text(
+                                                  "${Singleton.instance.languages.value.surrender}",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black),
+                                                )),
+                                              ),
                                             ),
-                                          )
-                                        ]),
-                                      ],
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.ontapSword01();
+                                              },
+                                              child: Container(
+                                                width: 60,
+                                                height: 50,
+                                                color: Colors.transparent,
+                                              ),
+                                            )
+                                          ]),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
                                 if (controller.letStart.value == true &&
                                     controller.isStart.value == false)
                                   const LetStart(),
